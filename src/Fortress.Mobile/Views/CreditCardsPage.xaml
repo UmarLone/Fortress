@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.CreditCardsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctrl="clr-namespace:Fortress.Controls"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    xmlns:sfShimmer="clr-namespace:Syncfusion.Maui.Toolkit.Shimmer;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:vm="clr-namespace:Fortress.ViewModels"
+    Title="Credit Cards"
+    prism:ViewModelLocator.AutowireViewModel="Automatic"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <!--  Row 0 = hero header (always visible)
+      Row 1 = selection bar
+   Row 2 = content area where shimmer sits  -->
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <!--  Hero — pinned at top, never shimmer'd  -->
+        <ctrl:VaultPageHero
+            Grid.Row="0"
+            Title="Credit Cards"
+            BackCommand="{Binding GoBackCommand}"
+            CountText="{Binding CardsCountText}"
+            GradientEnd="{DynamicResource HeroGradientEnd}"
+            GradientStart="{DynamicResource HeroGradientStart}"
+            IconGlyph="&#xE870;"
+            SearchText="{Binding SearchText, Mode=TwoWay}"
+            Subtitle="VAULT" />
+
+        <!--  ═══ SELECTION MODE BAR ═══  -->
+        <Border
+         Grid.Row="1"
+            Margin="16,8,16,4"
+       Padding="14,10"
+     BackgroundColor="{DynamicResource CardBackgroundColor}"
+       IsVisible="{Binding IsSelectionMode}"
+   StrokeThickness="0">
+          <Border.StrokeShape>
+     <RoundRectangle CornerRadius="14" />
+            </Border.StrokeShape>
+   <Border.Shadow>
+           <Shadow
+        Brush="Black"
+Opacity="0.06"
+        Radius="8"
+            Offset="0,2" />
+    </Border.Shadow>
+        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+    <VerticalStackLayout VerticalOptions="Center">
+          <Label
+          FontAttributes="Bold"
+       FontSize="16"
+  Text="{Binding SelectedCountText}"
+         TextColor="{DynamicResource TextColor}" />
+        <Label
+       FontSize="11"
+     Text="Tap items to select"
+        TextColor="{DynamicResource TextSecondaryColor}" />
+ </VerticalStackLayout>
+ <Button
+          Grid.Column="1"
+           Padding="12,8"
+    BackgroundColor="{DynamicResource PrimaryLightestColor}"
+             Command="{Binding SelectAllCommand}"
+         CornerRadius="10"
+          FontAttributes="Bold"
+       FontSize="12"
+        HeightRequest="36"
+      Text="Select All"
+  TextColor="{DynamicResource PrimaryColor}" />
+            <Button
+               Grid.Column="2"
+            Padding="12,8"
+         BackgroundColor="{DynamicResource Gray-100}"
+        Command="{Binding ExitSelectionModeCommand}"
+             CornerRadius="10"
+                    FontAttributes="Bold"
+     FontSize="12"
+   HeightRequest="36"
+              Text="Cancel"
+  TextColor="{DynamicResource TextSecondaryColor}" />
+        </Grid>
+        </Border>
+
+   <!--  Content area — RefreshView + Shimmer stacked  -->
+  <Grid Grid.Row="2">
+
+            <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+                <CollectionView
+                    x:Name="CardsCollection"
+                    Margin="0"
+                    ItemsSource="{Binding Cards}">
+
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout
+                            Padding="40"
+                            HorizontalOptions="Center"
+                            Spacing="16"
+                            VerticalOptions="Center">
+                            <Border
+                                Padding="24"
+                                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                HeightRequest="88"
+                                HorizontalOptions="Center"
+                                StrokeThickness="0"
+                                WidthRequest="88">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="44" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=CreditCardOff}"
+                                    IconColor="{DynamicResource PrimaryColor}"
+                                    IconSize="40"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="20"
+                                HorizontalOptions="Center"
+                                Text="No cards yet"
+                                TextColor="{DynamicResource TextColor}" />
+                            <Label
+                                FontSize="14"
+                                HorizontalOptions="Center"
+                                HorizontalTextAlignment="Center"
+                                Text="Tap the + button to securely store your first credit card."
+                                TextColor="{DynamicResource TextSecondaryColor}" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="0" Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="vm:CreditCardItemViewModel">
+                            <Grid Padding="16,8,16,0">
+                                <Border
+                                    Padding="0"
+                                    HeightRequest="190"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="20" />
+                                    </Border.StrokeShape>
+                                    <Border.Shadow>
+                                        <Shadow
+                                            Brush="Black"
+                                            Opacity="0.14"
+                                            Radius="20"
+                                            Offset="0,6" />
+                                    </Border.Shadow>
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                            <GradientStop Offset="0" Color="{Binding NetworkGradientStart}" />
+                                            <GradientStop Offset="1" Color="{Binding NetworkGradientEnd}" />
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Grid>
+                                        <Ellipse
+                                            Margin="0,0,-40,0"
+                                            Fill="#20FFFFFF"
+                                            HeightRequest="180"
+                                            HorizontalOptions="End"
+                                            VerticalOptions="Start"
+                                            WidthRequest="180" />
+                                        <Ellipse
+                                            Margin="0,0,30,-30"
+                                            Fill="#10FFFFFF"
+                                            HeightRequest="140"
+                                            HorizontalOptions="End"
+                                            VerticalOptions="End"
+                                            WidthRequest="140" />
+                                        <Grid
+       Padding="24,22,24,22"
+        RowDefinitions="Auto,*,Auto,Auto"
+        RowSpacing="0">
+                                            <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                                                <Label
+                                                    Grid.Column="0"
+                                                    FontAttributes="Bold"
+                                                    FontSize="14"
+                                                    Opacity="0.85"
+                                                    Text="{Binding CardName}"
+                                                    TextColor="White"
+                                                    VerticalOptions="Center" />
+                                                <Label
+                                                    Grid.Column="1"
+                                                    FontAttributes="Bold"
+                                                    FontSize="13"
+                                                    Opacity="0.9"
+                                                    Text="{Binding CardNetwork}"
+                                                    TextColor="White"
+                                                    VerticalOptions="Center" />
+                                            </Grid>
+                                            <Border
+                                                Grid.Row="1"
+                                                Margin="0,16,0,0"
+                                                Padding="8,6"
+                                                BackgroundColor="#40FFFFFF"
+                                                HeightRequest="34"
+                                                HorizontalOptions="Start"
+                                                StrokeThickness="0"
+                                                VerticalOptions="Start"
+                                                WidthRequest="48">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="6" />
+                                                </Border.StrokeShape>
+                                                <mi:MauiIcon
+                                                    HorizontalOptions="Center"
+                                                    Icon="{mi:Material Icon=Memory}"
+                                                    IconColor="White"
+                                                    IconSize="18"
+                                                    VerticalOptions="Center" />
+                                            </Border>
+                                            <Label
+                                                Grid.Row="2"
+                                                Margin="0,10,0,0"
+                                                CharacterSpacing="3"
+                                                FontAttributes="Bold"
+                                                FontSize="19"
+                                                Text="{Binding MaskedNumber}"
+                                                TextColor="White" />
+                                            <Grid
+                                                Grid.Row="3"
+                                                Margin="0,12,0,0"
+                                                ColumnDefinitions="*,Auto,Auto,Auto"
+                                                ColumnSpacing="12">
+                                                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                                    <Label
+                                                        FontSize="10"
+                                                        Opacity="0.7"
+                                                        Text="CARD HOLDER"
+                                                        TextColor="White" />
+                                                    <Label
+                                                        FontAttributes="Bold"
+                                                        FontSize="13"
+                                                        LineBreakMode="TailTruncation"
+                                                        Text="{Binding CardHolder}"
+                                                        TextColor="White" />
+                                                </VerticalStackLayout>
+                                                <VerticalStackLayout
+                                                    Grid.Column="1"
+                                                    Spacing="2"
+                                                    VerticalOptions="End">
+                                                    <Label
+                                                        FontSize="10"
+                                                        Opacity="0.7"
+                                                        Text="EXPIRES"
+                                                        TextColor="White" />
+                                                    <Label
+                                                        FontAttributes="Bold"
+                                                        FontSize="13"
+                                                        Text="{Binding Expiry}"
+                                                        TextColor="White" />
+                                                </VerticalStackLayout>
+                                                <!--  Copy number  -->
+                                                <Border
+                                                    Grid.Column="2"
+                                                    Padding="0"
+                                                    BackgroundColor="#30FFFFFF"
+                                                    HeightRequest="36"
+                                                    StrokeThickness="0"
+                                                    VerticalOptions="End"
+                                                    WidthRequest="36">
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="10" />
+                                                    </Border.StrokeShape>
+                                                    <Grid>
+                                                        <mi:MauiIcon
+                                                            HorizontalOptions="Center"
+                                                            Icon="{mi:Material Icon=ContentCopy}"
+                                                            IconColor="White"
+                                                            IconSize="18"
+                                                            InputTransparent="True"
+                                                            VerticalOptions="Center" />
+                                                        <Button
+                                                            Padding="0"
+                                                            BackgroundColor="Transparent"
+                                                            BorderWidth="0"
+                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CopyNumberCommand}"
+                                                            CommandParameter="{Binding .}"
+                                                            HorizontalOptions="Fill"
+                                                            VerticalOptions="Fill" />
+                                                    </Grid>
+                                                </Border>
+                                                <!--  Edit  -->
+                                                <Border
+                                                    Grid.Column="3"
+                                                    Padding="0"
+                                                    BackgroundColor="#30FFFFFF"
+                                                    HeightRequest="36"
+                                                    StrokeThickness="0"
+                                                    VerticalOptions="End"
+                                                    WidthRequest="36">
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="10" />
+                                                    </Border.StrokeShape>
+                                                    <Grid>
+                                                        <mi:MauiIcon
+                                                            HorizontalOptions="Center"
+                                                            Icon="{mi:Material Icon=MoreVert}"
+                                                            IconColor="White"
+                                                            IconSize="18"
+                                                            InputTransparent="True"
+                                                            VerticalOptions="Center" />
+                                                        <Button
+                                                            Padding="0"
+                                                            BackgroundColor="Transparent"
+                                                            BorderWidth="0"
+                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CardOptionsCommand}"
+                                                            CommandParameter="{Binding .}"
+                                                            HorizontalOptions="Fill"
+                                                            VerticalOptions="Fill" />
+                                                    </Grid>
+                                                </Border>
+                                            </Grid>
+                                        </Grid>
+                                 <!--  Selection checkbox overlay (top-left)  -->
+     <ctrl:SelectionCheckMark
+    Margin="8,8,0,0"
+ HorizontalOptions="Start"
+    IsChecked="{Binding IsSelected, Mode=TwoWay}"
+       IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IsSelectionMode}"
+  VerticalOptions="Start" />
+
+     <!--  Normal mode: tap = options  -->
+      <Button
+         x:Name="ItemButton"
+Padding="0"
+                BackgroundColor="Transparent"
+          BorderWidth="0"
+      Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CardOptionsCommand}"
+   CommandParameter="{Binding .}"
+   HorizontalOptions="Fill"
+                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IsNotSelectionMode}"
+ Pressed="OnItemButtonPressed"
+ Released="OnItemButtonReleased"
+   VerticalOptions="Fill" />
+    <!--  Selection mode: tap = toggle selection  -->
+      <Button
+   Padding="0"
+             BackgroundColor="Transparent"
+         BorderWidth="0"
+       Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleItemSelectionCommand}"
+             CommandParameter="{Binding .}"
+          HorizontalOptions="Fill"
+          IsVisible="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.IsSelectionMode}"
+      VerticalOptions="Fill" />
+ </Grid>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                    <CollectionView.Footer>
+                        <BoxView HeightRequest="100" Color="Transparent" />
+                    </CollectionView.Footer>
+                </CollectionView>
+            </RefreshView>
+
+            <!--  Shimmer — covers only the card list, NOT the hero  -->
+            <sfShimmer:SfShimmer
+                BackgroundColor="{DynamicResource PageBackgroundColor}"
+                IsActive="{Binding IsRefreshing}"
+                IsVisible="{Binding IsRefreshing}"
+                Type="CirclePersona">
+                <sfShimmer:SfShimmer.CustomView>
+                    <VerticalStackLayout Padding="16,8" Spacing="10">
+                        <BoxView CornerRadius="20" HeightRequest="190" Color="{DynamicResource Gray-200}" />
+                        <BoxView CornerRadius="20" HeightRequest="190" Color="{DynamicResource Gray-200}" />
+                        <BoxView CornerRadius="20" HeightRequest="190" Color="{DynamicResource Gray-200}" />
+                    </VerticalStackLayout>
+                </sfShimmer:SfShimmer.CustomView>
+            </sfShimmer:SfShimmer>
+
+        </Grid>
+
+        <!--  FAB — Add button (normal mode) ──────────────────────────────  -->
+        <Border
+        Grid.RowSpan="3"
+     Margin="0,0,20,20"
+  Padding="0"
+            BackgroundColor="{DynamicResource PrimaryColor}"
+HeightRequest="60"
+    HorizontalOptions="End"
+      IsVisible="{Binding IsNotSelectionMode}"
+         StrokeThickness="0"
+            VerticalOptions="End"
+       WidthRequest="60">
+            <Border.StrokeShape>
+      <RoundRectangle CornerRadius="30" />
+   </Border.StrokeShape>
+  <Border.Shadow>
+        <Shadow
+       Brush="{DynamicResource PrimaryColor}"
+             Opacity="0.4"
+ Radius="16"
+            Offset="0,6" />
+      </Border.Shadow>
+     <Button
+  Padding="0"
+                BackgroundColor="Transparent"
+        BorderWidth="0"
+                Command="{Binding AddCardCommand}"
+      HeightRequest="60"
+       WidthRequest="60">
+     <Button.ImageSource>
+       <FontImageSource
+           FontFamily="MaterialIconsRegular"
+            Glyph="&#xE145;"
+  Size="28"
+     Color="White" />
+       </Button.ImageSource>
+       </Button>
+  </Border>
+
+        <!--  FAB — Delete button (selection mode) ─────────────────────────  -->
+        <Border
+            Grid.RowSpan="3"
+    Margin="16,0,16,20"
+       Padding="0"
+       BackgroundColor="#EF4444"
+      HeightRequest="56"
+            HorizontalOptions="Fill"
+    IsVisible="{Binding IsSelectionMode}"
+            StrokeThickness="0"
+  VerticalOptions="End">
+   <Border.StrokeShape>
+                <RoundRectangle CornerRadius="16" />
+     </Border.StrokeShape>
+            <Border.Shadow>
+    <Shadow
+           Brush="#EF4444"
+          Opacity="0.35"
+          Radius="14"
+        Offset="0,6" />
+   </Border.Shadow>
+    <Button
+        Padding="0"
+    BackgroundColor="Transparent"
+    BorderWidth="0"
+    Command="{Binding DeleteSelectedCommand}"
+            FontAttributes="Bold"
+      FontSize="16"
+   HeightRequest="56"
+        HorizontalOptions="Fill"
+       IsEnabled="{Binding HasSelection}"
+Text="{Binding SelectedCount, StringFormat='Delete {0} selected'}"
+   TextColor="White"
+         VerticalOptions="Fill" />
+        </Border>
+
+    </Grid>
+</ContentPage>

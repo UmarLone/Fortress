@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+
+    <!-- ================= REQUIRED / MAUI ================= -->
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
+
+    <key>CFBundleIdentifier</key>
+    <string>com.fortress.app</string>
+
+    <key>CFBundleDisplayName</key>
+    <string>Fortress</string>
+
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+
+    <key>CFBundleVersion</key>
+    <string>1</string>
+
+    <key>MinimumOSVersion</key>
+    <string>16.0</string>
+
+    <key>UIDeviceFamily</key>
+    <array>
+      <integer>1</integer>
+      <integer>2</integer>
+    </array>
+
+    <key>UIRequiredDeviceCapabilities</key>
+    <array>
+      <string>arm64</string>
+    </array>
+
+    <key>XSAppIconAssets</key>
+    <string>Assets.xcassets/appicon.appiconset</string>
+
+    <key>UILaunchStoryboardName</key>
+    <string>LaunchScreen</string>
+
+    <!-- ================= ORIENTATIONS ================= -->
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+      <string>UIInterfaceOrientationPortrait</string>
+    </array>
+
+    <key>UISupportedInterfaceOrientations~ipad</key>
+    <array>
+      <string>UIInterfaceOrientationPortrait</string>
+      <string>UIInterfaceOrientationPortraitUpsideDown</string>
+      <string>UIInterfaceOrientationLandscapeLeft</string>
+      <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+
+    <!-- ================= PERMISSIONS ================= -->
+
+    <key>NSCameraUsageDescription</key>
+    <string>This app requires access to the camera to scan QR codes.</string>
+
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Microphone access is required for secure authentication workflows.</string>
+
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>Speech recognition is used to let you add vault items by voice command.</string>
+
+    <key>NSFaceIDUsageDescription</key>
+    <string>Fortress uses Face ID to securely authenticate you.</string>
+
+    <key>NSBiometricsUsageDescription</key>
+    <string>Fortress uses biometrics (Face ID / Touch ID) to quickly log you in.</string>
+
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>Fortress uses Bluetooth to communicate with your Fortress device.</string>
+
+    <key>NSBluetoothPeripheralUsageDescription</key>
+    <string>Bluetooth access is required for Fortress authentication devices.</string>
+
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Location is used to improve device discovery and security features.</string>
+
+    <key>NSUserNotificationUsageDescription</key>
+    <string>Notifications are used to alert you of authentication events.</string>
+
+    <!-- ================= BACKGROUND MODES ================= -->
+
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>fetch</string>
+      <string>remote-notification</string>
+      <string>processing</string>
+      <string>bluetooth-central</string>
+    </array>
+
+    <!-- ================= SHINY BACKGROUND TASKS ================= -->
+
+    <key>BGTaskSchedulerPermittedIdentifiers</key>
+    <array>
+      <string>com.shiny.job</string>
+      <string>com.shiny.jobpower</string>
+      <string>com.shiny.jobnet</string>
+      <string>com.shiny.jobpowernet</string>
+    </array>
+
+    <!-- ================= URL SCHEMES ================= -->
+
+    <!-- ================= DOCUMENT TYPES (.fortress file) ================= -->
+
+    <key>CFBundleDocumentTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleTypeName</key>
+        <string>FORTRESS Shared Item</string>
+      <key>CFBundleTypeRole</key>
+    <string>Viewer</string>
+    <key>LSHandlerRank</key>
+        <string>Owner</string>
+        <key>LSItemContentTypes</key>
+        <array>
+          <string>com.fortress.app.fortress-file</string>
+</array>
+   </dict>
+    </array>
+
+    <key>UTExportedTypeDeclarations</key>
+    <array>
+      <dict>
+     <key>UTTypeIdentifier</key>
+        <string>com.fortress.app.fortress-file</string>
+        <key>UTTypeDescription</key>
+        <string>FORTRESS Shared Item</string>
+        <key>UTTypeConformsTo</key>
+   <array>
+    <string>public.data</string>
+        </array>
+        <key>UTTypeTagSpecification</key>
+     <dict>
+          <key>public.filename-extension</key>
+          <array>
+      <string>fortress</string>
+          </array>
+        </dict>
+      </dict>
+    </array>
+
+    <key>CFBundleURLTypes</key>
+    <array>
+      <!-- Fortress deep-link scheme -->
+      <dict>
+      <key>CFBundleURLName</key>
+      <string>com.fortress.app</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+        <string>fortress</string>
+   </array>
+      </dict>
+      <!-- Google OAuth 2.0 redirect — reverse of iOS client ID -->
+      <dict>
+        <key>CFBundleURLName</key>
+        <string>Google OAuth</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <!-- Replace YOUR_IOS_CLIENT_ID with the value from Google Cloud Console -->
+        <string>com.fortress.app</string>
+        </array>
+      </dict>
+      <!-- Dropbox OAuth 2.0 redirect — db-{AppKey} -->
+      <dict>
+        <key>CFBundleURLName</key>
+        <string>Dropbox OAuth</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>db-dxopwdvjvdc9kt4</string>
+        </array>
+      </dict>
+      <!-- Microsoft OneDrive / MSAL OAuth 2.0 redirect -->
+      <dict>
+        <key>CFBundleURLName</key>
+        <string>Microsoft OneDrive OAuth</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>msalae78027d-8c49-46b2-bbae-2e58a527c678</string>
+        </array>
+      </dict>
+    </array>
+
+    <!-- ================= APP TRANSPORT SECURITY ================= -->
+
+    <key>NSAppTransportSecurity</key>
+    <dict>
+      <key>NSAllowsArbitraryLoads</key>
+      <true/>
+    </dict>
+
+  </dict>
+</plist>

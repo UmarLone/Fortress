@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:background="#FFFFFF"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:gravity="center_vertical">
+
+  <!-- App icon in a rounded square container -->
+    <FrameLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/autofill_icon_bg"
+        android:layout_marginEnd="12dp">
+    <ImageView
+    android:id="@+id/icon"
+            android:layout_width="26dp"
+   android:layout_height="26dp"
+       android:layout_gravity="center"
+        android:adjustViewBounds="true"
+     android:src="@drawable/applogo"
+       android:contentDescription="Fortress" />
+    </FrameLayout>
+
+    <!-- Text column -->
+    <LinearLayout
+        android:layout_width="0dp"
+   android:layout_height="wrap_content"
+        android:layout_weight="1"
+      android:orientation="vertical"
+        android:gravity="center_vertical">
+
+     <TextView
+          android:id="@+id/FillRequestTitle"
+   android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textStyle="bold"
+        android:textColor="#1A73E8"
+   android:letterSpacing="0.01"
+       android:text="Fill with Fortress" />
+
+        <TextView
+        android:id="@+id/FillRequestSubtitle"
+         android:layout_width="wrap_content"
+   android:layout_height="wrap_content"
+            android:textSize="11sp"
+    android:textColor="#757575"
+     android:text="Autofill vault manager" />
+    </LinearLayout>
+
+</LinearLayout>

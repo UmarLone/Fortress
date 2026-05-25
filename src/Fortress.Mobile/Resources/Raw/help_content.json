@@ -1,0 +1,298 @@
+﻿[
+  {
+    "Category": "Getting Started",
+    "IconGlyph": "\uE425",
+    "Items": [
+      {
+      "Question": "What is FORTRESS?",
+        "Answer": "FORTRESS is a secure, offline-first password manager. All your passwords, credit cards, identities, secure notes and passkeys are encrypted on your device using AES-256 encryption before anything is stored or synced. Nobody — not even us — can read your data."
+      },
+      {
+ "Question": "How do I add my first password?",
+        "Answer": "Tap the + button on the Passwords screen. Fill in the website domain, username and password. You can also generate a strong password using the built-in Password Generator. Tap Save when done."
+      },
+      {
+"Question": "What is the Master Password?",
+        "Answer": "Your Master Password is the single key that encrypts and decrypts your entire vault. It is never stored on the device or sent to any server. If you forget it there is no recovery option, so write it down somewhere safe."
+},
+      {
+        "Question": "What types of items can I store?",
+        "Answer": "FORTRESS stores Passwords (web, mobile app and desktop app logins), Credit Cards, Identities (personal profiles for form autofill), Secure Notes, Authenticator (TOTP/2FA) codes, and Passkeys. All types are encrypted equally."
+      },
+      {
+        "Question": "How do I organise my vault with groups?",
+  "Answer": "Tap the Groups section from the home screen to create named groups (e.g. Work, Personal, Finance). You can then assign any login item to a group. Items can be filtered by group to quickly find what you need."
+      }
+    ]
+  },
+  {
+  "Category": "Security & Encryption",
+    "IconGlyph": "\uE897",
+    "Items": [
+      {
+        "Question": "How is my data protected?",
+    "Answer": "Every item in your vault is encrypted with AES-256-CBC using a key derived from your Master Password via PBKDF2 (100,000 iterations). The encrypted data is stored locally in a LiteDB database. Nothing is sent anywhere without your explicit action."
+      },
+      {
+        "Question": "What is the PIN / Biometric unlock?",
+        "Answer": "To avoid typing your Master Password every time, you can set a 4-digit PIN or enable fingerprint or Face ID under Settings → Security. The PIN unlocks a secure key store entry that holds a session key — your Master Password itself is never stored."
+      },
+      {
+        "Question": "What happens after too many wrong PINs?",
+        "Answer": "After reaching the configured maximum failed attempts (default 5) the app locks and requires your full Master Password. You can change this limit in Settings → Security → Max Failed Attempts."
+      },
+      {
+        "Question": "What is 'Require Auth Before Fill' on a credential?",
+        "Answer": "When you enable this toggle on an individual password, FORTRESS will ask for your biometric or PIN before autofilling that specific credential — even if the vault is already unlocked. This adds an extra layer of protection for high-value accounts like banking."
+      },
+      {
+        "Question": "What is the FORTRESS Risk Engine?",
+        "Answer": "FORTRESS includes an on-device ML risk engine that analyses every autofill request for phishing signals — domain mismatches, punycode tricks, suspicious hyphen patterns, WebView fills and more. If a fill request looks suspicious you will see a risk warning with the reason, and you can choose to fill anyway or cancel."
+      },
+      {
+    "Question": "What does 'Autofill Blocked (Risk)' mean in the Activity Log?",
+        "Answer": "It means the risk engine scored a fill request above the high-risk threshold (75 % probability) and surfaced a warning. If you cancelled, the event is recorded as Autofill Blocked. If you proceeded despite the warning it is recorded as Autofill Warned."
+      },
+      {
+        "Question": "Is my data backed up automatically?",
+        "Answer": "Cloud backup is optional and always encrypted before upload. Your vault is encrypted on-device first, then the encrypted blob is uploaded to Google Drive or Dropbox. The cloud provider never receives your plain-text data."
+      },
+    {
+   "Question": "What is screen capture protection?",
+    "Answer": "By default FORTRESS prevents screenshots and screen recording to stop sensitive data being captured. You can allow it in Settings → Security → Allow Screen Capture, for example when recording a tutorial."
+      }
+    ]
+  },
+  {
+    "Category": "Passwords",
+    "IconGlyph": "\uE0B0",
+"Items": [
+      {
+        "Question": "How do I generate a strong password?",
+        "Answer": "Open the Password Generator from the Passwords screen or the Add/Edit credential form. Choose the length (8–64 characters) and toggle uppercase, lowercase, numbers and symbols. Tap Copy or Use to apply the generated password."
+      },
+      {
+        "Question": "What does the password strength indicator mean?",
+      "Answer": "The strength bar rates your password as Weak, Fair, Good, Strong or Very Strong based on length, character variety and common pattern checks. Aim for at least Strong for any important account."
+      },
+      {
+        "Question": "Can I store passwords for mobile apps and desktop programs?",
+        "Answer": "Yes. When adding a password you can choose the type: Web (browser sites), Mobile App (Android/iOS apps) or Desktop App. Choosing the right type improves autofill matching accuracy."
+      },
+      {
+      "Question": "What is the Vault Health score?",
+        "Answer": "Vault Health analyses all your passwords for weaknesses: breached passwords (checked against Have I Been Pwned), reused passwords, weak passwords, old passwords and accounts missing 2FA. The overall score (0–100) reflects how secure your vault is. Tap any category to see the affected items."
+      },
+      {
+        "Question": "What is the Attack Surface view?",
+        "Answer": "Attack Surface groups your credentials by domain family to show how many accounts are linked. If one site is breached, all linked accounts are at risk. The view helps you prioritise which password chains to break first."
+      }
+    ]
+  },
+  {
+    "Category": "AutoFill",
+    "IconGlyph": "\uE32A",
+    "Items": [
+      {
+   "Question": "How do I enable AutoFill?",
+        "Answer": "On Android go to Settings → AutoFill Service and enable the toggle. On iOS go to your device Settings → General → AutoFill & Passwords and select FORTRESS. Once enabled, FORTRESS will suggest the correct login whenever a password field is focused in another app or browser."
+      },
+      {
+      "Question": "What is Inline AutoFill?",
+        "Answer": "Inline AutoFill (Android only) shows FORTRESS suggestions directly in the keyboard suggestion bar above the keyboard, so you can fill without a popup. Enable it in Settings → Auto-Fill → Inline Auto-Fill."
+      },
+      {
+   "Question": "What is Accessibility AutoFill?",
+        "Answer": "Some apps block the standard Android Autofill Framework. Accessibility AutoFill is a fallback that uses Android's Accessibility Service to detect those apps and show a fill notification. Enable it in Settings → Auto-Fill → Accessibility AutoFill, then toggle it on in Android Accessibility Settings."
+      },
+      {
+        "Question": "How do I block AutoFill on a specific site or app?",
+ "Answer": "In Settings → Auto-Fill → Blocked Sites you can add any site URL (e.g. https://example.com) or app package URI (e.g. androidapp://com.example.app). FORTRESS will never suggest autofill on blocked destinations. You can also block directly from the autofill sheet by tapping the shield icon."
+      },
+      {
+        "Question": "What is Auto-Fill Matching?",
+      "Answer": "Matching controls how strictly FORTRESS compares the current site/app to saved credentials. Broad Matching (50 %) casts a wide net; Standard Matching (70 %) is the default; Strict Matching (90 %) only suggests exact domain matches. Change it in Settings → Auto-Fill → Auto-Fill Matching."
+      },
+{
+        "Question": "What does 'Copy OTP on Auto-Fill' do?",
+  "Answer": "When this is on, after FORTRESS fills your username and password it automatically copies your TOTP code to the clipboard. This saves the extra step of opening the Authenticators screen to copy the code manually."
+      },
+      {
+        "Question": "Can FORTRESS autofill Credit Cards and Identities?",
+        "Answer": "Yes. When a checkout or identity form is detected, FORTRESS offers your stored credit cards or identity profiles. Select the card or profile and it fills the card number, expiry, CVV, name and address fields automatically."
+      }
+    ]
+  },
+  {
+    "Category": "Two-Factor Authentication (2FA)",
+    "IconGlyph": "\uE8E8",
+    "Items": [
+   {
+        "Question": "What is TOTP / 2FA?",
+        "Answer": "Time-based One-Time Passwords (TOTP) are 6-digit codes that change every 30 seconds. They add a second layer of security on top of your password. FORTRESS has a built-in authenticator so you can manage 2FA codes alongside your passwords."
+      },
+      {
+      "Question": "How do I add a 2FA account?",
+ "Answer": "Tap + on the Authenticators screen. You can scan the QR code shown by the website, paste the secret key manually, or import from Google/Microsoft Authenticator. The code refreshes automatically and a countdown ring shows how long it is valid."
+  },
+  {
+        "Question": "Can I import from Google Authenticator?",
+        "Answer": "Yes. On the Import screen select the Authenticators tab. Tap Scan Google QR Code and point your camera at the 'Transfer accounts' QR code Google Authenticator generates. All accounts are imported in one step."
+   },
+    {
+        "Question": "Can I export a QR code for an authenticator account?",
+     "Answer": "Yes. Open any authenticator account and tap the QR Code button. The QR Code page shows the otpauth:// URI as a scannable QR code so you can import it into another device or app. Tap Share to send the URI securely."
+    },
+   {
+        "Question": "How do I import authenticators from a backup file?",
+        "Answer": "On the Import screen select the Authenticators tab and tap Pick Backup File. FORTRESS supports Aegis JSON, Raivo OTP JSON, 2FAS JSON, plain otpauth URI lists and Google Authenticator migration files."
+      }
+    ]
+  },
+  {
+    "Category": "Passkeys",
+    "IconGlyph": "\uE897",
+    "Items": [
+      {
+        "Question": "What are Passkeys?",
+  "Answer": "Passkeys are a modern replacement for passwords based on the FIDO2/WebAuthn standard. Instead of a password you use a cryptographic key pair — the private key stays on your device and the public key is registered with the website. Login is instant and phishing-resistant."
+      },
+      {
+        "Question": "How do I use FORTRESS as my Passkey provider?",
+        "Answer": "On Android 14 and above, go to Settings → Passkeys → Passkey Provider and enable the toggle. FORTRESS will then appear in the Android Credential Manager as a passkey provider alongside Google Password Manager."
+      },
+      {
+      "Question": "Where can I see my saved Passkeys?",
+        "Answer": "Go to Settings → Passkeys → Saved Passkeys to view all your registered passkeys. Each entry shows the site name, username and the date it was created. You can delete passkeys you no longer need."
+      },
+   {
+        "Question": "Are Passkeys included in cloud backup?",
+        "Answer": "Yes. Passkey private keys are encrypted the same way as passwords and are included in any cloud backup. Restoring a backup restores your passkeys too."
+      }
+    ]
+  },
+  {
+    "Category": "Credit Cards & Identities",
+    "IconGlyph": "\uE870",
+  "Items": [
+      {
+        "Question": "How do I store a Credit Card?",
+        "Answer": "Tap + on the Credit Cards screen and enter the cardholder name, card number, expiry and CVV. All fields are individually encrypted. FORTRESS will suggest the card whenever a checkout form is detected."
+      },
+      {
+        "Question": "How do I store an Identity?",
+        "Answer": "Tap + on the Identities screen and fill in your personal details — name, email, phone, address and so on. FORTRESS uses this profile to autofill registration and checkout forms."
+      },
+      {
+        "Question": "Is my card number visible in plain text?",
+ "Answer": "No. Card numbers and CVV codes are always shown masked. Tap the eye icon to reveal a field only when needed. The decrypted value is held in memory only during that session."
+      }
+    ]
+  },
+  {
+    "Category": "Import & Export",
+    "IconGlyph": "\uE0C3",
+ "Items": [
+      {
+     "Question": "Which password managers can I import from?",
+        "Answer": "FORTRESS supports imports from Chrome/Edge (CSV), Firefox (CSV), Safari (CSV), Bitwarden (CSV and JSON), 1Password (CSV and JSON), Dashlane (CSV and JSON), LastPass (CSV) and any generic CSV. Select Import Vault in Settings → Account."
+      },
+    {
+        "Question": "What happens to duplicates during import?",
+        "Answer": "Before importing you can choose a duplicate strategy: Keep Existing (skip), Replace With Imported (overwrite) or Import As Duplicate (keep both). You can preview exactly what will be imported before committing."
+      },
+      {
+      "Question": "How do I export my vault?",
+        "Answer": "Go to Settings → Account → Export Vault. After confirming your Master Password, FORTRESS exports all your login items as a JSON file. The export is unencrypted — store it securely and delete it when no longer needed."
+      }
+    ]
+  },
+  {
+    "Category": "Activity Log",
+ "IconGlyph": "\uE873",
+    "Items": [
+   {
+        "Question": "What is the Activity Log?",
+  "Answer": "The Activity Log records important vault events locally on your device: vault unlocks and lock events, credential adds/edits/deletes, autofill fills, OTP copies, passkey registrations and uses, security setting changes, exports and imports. It is accessible from Settings → More → Activity Log."
+      },
+      {
+     "Question": "How far back does the Activity Log go?",
+        "Answer": "Up to 200 of your most recent events are shown by default. A background job automatically removes entries older than 90 days to keep the log manageable. You can filter by event category and date range."
+      },
+    {
+        "Question": "Can I filter the Activity Log?",
+        "Answer": "Yes. Tap Filter in the action bar to choose a category such as Vault Lock/Unlock, Credential Changes, Autofill Activity, Passkeys, Cloud Sync, Security Settings or Vault Data. You can also search by keyword across all visible events."
+    },
+      {
+     "Question": "Can I clear the Activity Log?",
+        "Answer": "Yes. Tap the delete icon in the action bar and confirm. All activity records are permanently deleted from the device. This cannot be undone."
+    }
+    ]
+  },
+  {
+"Category": "Local Logs (Diagnostics)",
+    "IconGlyph": "\uE868",
+    "Items": [
+   {
+        "Question": "What are Local Logs?",
+    "Answer": "Local Logs are low-level diagnostic messages written by the app — errors, warnings and info traces. They are separate from the Activity Log and are intended for troubleshooting. You can view them in Settings → More → Local Logs (visible when Send Diagnostic Logs is on)."
+      },
+      {
+        "Question": "How do I share Local Logs with support?",
+    "Answer": "On the Local Logs screen tap the Share icon to export the log file. Send it to support@fortress-app.com with a description of the issue. Logs may contain app state details but never contain your passwords or encrypted data."
+   },
+      {
+    "Question": "What does 'Send Diagnostic Logs' do?",
+        "Answer": "When enabled, the app records diagnostic traces to a local file and makes the Local Logs screen available. No data is sent automatically — you must explicitly share the file. Disabling this option stops new log entries from being written."
+      }
+    ]
+  },
+  {
+  "Category": "Cloud Backup",
+    "IconGlyph": "\uE2BD",
+    "Items": [
+      {
+        "Question": "Which cloud providers are supported?",
+     "Answer": "FORTRESS supports Google Drive, Dropbox and OneDrive. iCloud is available on iOS. Connect a provider in Settings → Account → Cloud Sync."
+      },
+  {
+        "Question": "How do I restore from a cloud backup?",
+        "Answer": "Go to the cloud provider page (e.g. Google Drive), tap Restore from Drive and confirm. The encrypted backup is downloaded and decrypted on your device using your Master Password. Your current vault data is replaced by the backup."
+      },
+      {
+        "Question": "Can I schedule automatic backups?",
+        "Answer": "Yes. On the Google Drive, Dropbox or OneDrive page you can choose Manual, Hourly, Daily, Weekly or Monthly. The chosen schedule runs a background job that backs up your vault at that interval."
+      }
+    ]
+  },
+  {
+    "Category": "Troubleshooting",
+  "IconGlyph": "\uE8B2",
+    "Items": [
+      {
+        "Question": "I forgot my Master Password — what can I do?",
+      "Answer": "There is no way to recover a forgotten Master Password by design — nobody can decrypt your vault without it. If you have a cloud backup from before you forgot the password, you will need the password that was active at the time of that backup."
+      },
+      {
+        "Question": "The app is not autofilling in my browser",
+        "Answer": "Make sure FORTRESS is set as the default AutoFill provider in your device settings. On Android also check it is enabled in Chrome under Settings → Passwords → AutoFill service. If the standard service does not work in a specific app, try enabling Accessibility AutoFill in Settings as a fallback."
+      },
+    {
+        "Question": "AutoFill suggests wrong credentials",
+        "Answer": "Try adjusting the Auto-Fill Matching threshold in Settings → Auto-Fill → Auto-Fill Matching. If a site keeps matching incorrectly you can block it under Blocked Sites and add the correct credential manually."
+      },
+      {
+        "Question": "Cloud backup fails with an error",
+"Answer": "Check your internet connection first. If the error persists, disconnect the cloud account, sign out, then reconnect. Make sure FORTRESS has permission to access cloud storage in your device Settings → Apps → FORTRESS → Permissions."
+      },
+      {
+        "Question": "The Activity Log shows 'Autofill Warned (Risk)' — should I be worried?",
+        "Answer": "It means the risk engine detected suspicious signals on a fill request you approved. Review the detail text (it names the exact reason, e.g. domain mismatch or punycode). If you did not intentionally fill that site, change the affected password immediately and check the site for legitimacy."
+      },
+      {
+  "Question": "How do I contact support?",
+        "Answer": "You can reach the FORTRESS support team at support@fortress-app.com or visit fortress-app.com/support. Please include your device model, OS version, app version and a description of the issue. Attaching the Local Logs file helps us diagnose problems faster."
+    }
+    ]
+  }
+]

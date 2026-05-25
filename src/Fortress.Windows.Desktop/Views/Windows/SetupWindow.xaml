@@ -1,0 +1,1293 @@
+<ui:FluentWindow
+    x:Class="Fortress.Windows.Desktop.Views.Windows.SetupWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="clr-namespace:Fortress.Windows.Desktop.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:vm="clr-namespace:Fortress.Windows.Desktop.ViewModels.Windows"
+    Title="Fortress - Setup"
+    Width="540"
+    Height="760"
+    d:DataContext="{d:DesignInstance vm:SetupViewModel}"
+    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+    ExtendsContentIntoTitleBar="True"
+    ResizeMode="NoResize"
+    WindowBackdropType="Mica"
+    WindowCornerPreference="Round"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <ui:FluentWindow.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVis" />
+        <conv:InverseBoolToVisibilityConverter x:Key="InvBoolToVis" />
+        <conv:NullOrEmptyToVisibilityConverter x:Key="NullToCollapsed" />
+        <conv:IntToStepVisibilityConverter x:Key="StepToVis" />
+        <FontFamily x:Key="Audiowide">pack://application:,,,/Assets/Fonts/#Audiowide</FontFamily>
+    </ui:FluentWindow.Resources>
+
+    <Grid>
+        <ui:TitleBar Title="Fortress Setup">
+            <ui:TitleBar.Icon>
+                <ui:ImageIcon Source="pack://application:,,,/Assets/applogo.png" />
+            </ui:TitleBar.Icon>
+        </ui:TitleBar>
+
+        <Grid Margin="0,32,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!--  ══ HEADER  ══  -->
+            <Border
+                Grid.Row="0"
+                Padding="24,24,24,28"
+                ClipToBounds="True">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0" Color="#4F46E5" />
+                        <GradientStop Offset="1" Color="#7C3AED" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Border.Effect>
+                    <DropShadowEffect
+                        BlurRadius="24"
+                        Opacity="0.22"
+                        ShadowDepth="4"
+                        Color="#4F46E5" />
+                </Border.Effect>
+                <StackPanel>
+                    <!--  Progress pills  -->
+                    <StackPanel
+                        Margin="0,0,0,20"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Border
+                            Width="{Binding Step0PillWidth}"
+                            Height="8"
+                            Margin="4,0"
+                            Background="White"
+                            CornerRadius="4" />
+                        <Border
+                            Width="{Binding Step1PillWidth}"
+                            Height="8"
+                            Margin="4,0"
+                            Background="White"
+                            CornerRadius="4"
+                            Opacity="{Binding Step1PillOpacity}" />
+                        <Border
+                            Width="{Binding Step2PillWidth}"
+                            Height="8"
+                            Margin="4,0"
+                            Background="White"
+                            CornerRadius="4"
+                            Opacity="{Binding Step2PillOpacity}" />
+                        <Border
+                            Width="{Binding Step3PillWidth}"
+                            Height="8"
+                            Margin="4,0"
+                            Background="White"
+                            CornerRadius="4"
+                            Opacity="{Binding Step3PillOpacity}" />
+                    </StackPanel>
+                    <!--  Step icon + title + subtitle  -->
+                    <StackPanel HorizontalAlignment="Center">
+                        <Border
+                            Width="68"
+                            Height="68"
+                            Margin="0,0,0,14"
+                            HorizontalAlignment="Center"
+                            Background="#30FFFFFF"
+                            CornerRadius="18">
+                            <ui:SymbolIcon
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="34"
+                                Foreground="White"
+                                Symbol="{Binding StepIcon}" />
+                        </Border>
+                        <TextBlock
+                            Margin="0,0,0,6"
+                            HorizontalAlignment="Center"
+                            FontSize="18"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="{Binding StepTitle}" />
+                        <TextBlock
+                            MaxWidth="380"
+                            HorizontalAlignment="Center"
+                            FontSize="13"
+                            Foreground="White"
+                            Opacity="0.88"
+                            Text="{Binding StepSubtitle}"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!--  ══ SCROLLABLE CONTENT ══  -->
+            <ScrollViewer
+                Grid.Row="1"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="24,20,24,8">
+
+                    <!--  ══ STEP 0: MASTER PASSWORD ══  -->
+                    <StackPanel Visibility="{Binding CurrentStep, Converter={StaticResource StepToVis}, ConverterParameter=0}">
+
+                        <Border
+                            Margin="0,0,0,16"
+                            Padding="16"
+                            Background="#1A4F46E5"
+                            CornerRadius="14">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ui:SymbolIcon
+                                    Margin="0,0,12,0"
+                                    VerticalAlignment="Top"
+                                    FontSize="22"
+                                    Foreground="#6366F1"
+                                    Symbol="Info24" />
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock
+                                        Margin="0,0,0,4"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        Foreground="#4F46E5"
+                                        Text="Think of it like a key to a safe" />
+                                    <TextBlock
+                                        FontSize="13"
+                                        Opacity="0.75"
+                                        Text="Your master password encrypts all your stored passwords. Nobody — not even us — can read your data without it. If you forget it, there is no recovery option."
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <Border
+                            Margin="0,0,0,14"
+                            Padding="20"
+                            Background="{DynamicResource ControlFillColorDefaultBrush}"
+                            CornerRadius="16">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="14"
+                                    Opacity="0.06"
+                                    ShadowDepth="0"
+                                    Color="Black" />
+                            </Border.Effect>
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="0,0,0,4"
+                                    FontSize="13"
+                                    FontWeight="SemiBold"
+                                    Text="Choose a master password" />
+                                <TextBlock
+                                    Margin="0,0,0,10"
+                                    FontSize="12"
+                                    Opacity="0.55"
+                                    Text="Use a mix of words, numbers and symbols — something only you know" />
+                                <ui:PasswordBox
+                                    x:Name="PwBox"
+                                    Margin="0,0,0,10"
+                                    PlaceholderText="e.g. Fluffy$Dog2024!" />
+
+                                <!--  Strength bar  -->
+                                <StackPanel Margin="0,0,0,14" Visibility="{Binding MasterPassword, Converter={StaticResource NullToCollapsed}}">
+                                    <Grid Margin="0,0,0,4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            FontSize="12"
+                                            Opacity="0.55"
+                                            Text="Password strength" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            FontSize="12"
+                                            FontWeight="SemiBold"
+                                            Foreground="{Binding StrengthColor}"
+                                            Text="{Binding StrengthLabel}" />
+                                    </Grid>
+                                    <Border
+                                        Height="6"
+                                        Background="{DynamicResource ControlFillColorSecondaryBrush}"
+                                        CornerRadius="3">
+                                        <Border
+                                            Width="{Binding StrengthBarWidth}"
+                                            Height="6"
+                                            HorizontalAlignment="Left"
+                                            Background="{Binding StrengthColor}"
+                                            CornerRadius="3" />
+                                    </Border>
+                                </StackPanel>
+
+                                <TextBlock
+                                    Margin="0,0,0,4"
+                                    FontSize="13"
+                                    FontWeight="SemiBold"
+                                    Text="Type it again to confirm" />
+                                <TextBlock
+                                    Margin="0,0,0,10"
+                                    FontSize="12"
+                                    Opacity="0.55"
+                                    Text="This makes sure you didn't make a typo" />
+                                <ui:PasswordBox x:Name="ConfirmPwBox" PlaceholderText="Repeat your password" />
+                            </StackPanel>
+                        </Border>
+
+                        <!--  Requirements  -->
+                        <Border
+                            Margin="0,0,0,14"
+                            Padding="16"
+                            Background="{DynamicResource ControlFillColorDefaultBrush}"
+                            CornerRadius="14">
+                            <StackPanel>
+                                <TextBlock
+                                    Margin="0,0,0,10"
+                                    FontSize="13"
+                                    FontWeight="SemiBold"
+                                    Text="Your password must include:" />
+                                <StackPanel Margin="0,0,0,8" Orientation="Horizontal">
+                                    <ui:SymbolIcon
+                                        Margin="0,0,10,0"
+                                        FontSize="18"
+                                        Foreground="{Binding Req10CharsColor}"
+                                        Symbol="{Binding Req10Chars}" />
+                                    <StackPanel>
+                                        <TextBlock FontSize="13" Text="At least 10 characters" />
+                                        <TextBlock
+                                            FontSize="11"
+                                            Opacity="0.5"
+                                            Text="Longer = harder to guess" />
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Margin="0,0,0,8" Orientation="Horizontal">
+                                    <ui:SymbolIcon
+                                        Margin="0,0,10,0"
+                                        FontSize="18"
+                                        Foreground="{Binding ReqNumberColor}"
+                                        Symbol="{Binding ReqNumber}" />
+                                    <StackPanel>
+                                        <TextBlock FontSize="13" Text="At least one number (0-9)" />
+                                        <TextBlock
+                                            FontSize="11"
+                                            Opacity="0.5"
+                                            Text="Like &quot;Cat5&quot; instead of just &quot;Cat&quot;" />
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Margin="0,0,0,8" Orientation="Horizontal">
+                                    <ui:SymbolIcon
+                                        Margin="0,0,10,0"
+                                        FontSize="18"
+                                        Foreground="{Binding ReqSymbolColor}"
+                                        Symbol="{Binding ReqSymbol}" />
+                                    <StackPanel>
+                                        <TextBlock FontSize="13" Text="At least one symbol (!@#$%)" />
+                                        <TextBlock
+                                            FontSize="11"
+                                            Opacity="0.5"
+                                            Text="Like &quot;Cat5!&quot; instead of &quot;Cat5&quot;" />
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Margin="0,0,0,8" Orientation="Horizontal">
+                                    <ui:SymbolIcon
+                                        Margin="0,0,10,0"
+                                        FontSize="18"
+                                        Foreground="{Binding ReqLowerColor}"
+                                        Symbol="{Binding ReqLower}" />
+                                    <StackPanel>
+                                        <TextBlock FontSize="13" Text="A lowercase letter (a-z)" />
+                                        <TextBlock
+                                            FontSize="11"
+                                            Opacity="0.5"
+                                            Text="Mix of upper and lower case" />
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <ui:SymbolIcon
+                                        Margin="0,0,10,0"
+                                        FontSize="18"
+                                        Foreground="{Binding ReqUpperColor}"
+                                        Symbol="{Binding ReqUpper}" />
+                                    <StackPanel>
+                                        <TextBlock FontSize="13" Text="An uppercase letter (A-Z)" />
+                                        <TextBlock
+                                            FontSize="11"
+                                            Opacity="0.5"
+                                            Text="Like &quot;Cat&quot; not just &quot;cat&quot;" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!--  Write-it-down warning  -->
+                        <Border
+                            Margin="0,0,0,4"
+                            Padding="14"
+                            Background="#1AF59E0B"
+                            CornerRadius="12">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ui:SymbolIcon
+                                    Margin="0,0,12,0"
+                                    VerticalAlignment="Top"
+                                    FontSize="24"
+                                    Foreground="#D97706"
+                                    Symbol="Warning24" />
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock
+                                        Margin="0,0,0,4"
+                                        FontSize="13"
+                                        FontWeight="SemiBold"
+                                        Foreground="#D97706"
+                                        Text="Write it down somewhere safe" />
+                                    <TextBlock
+                                        FontSize="12"
+                                        Opacity="0.75"
+                                        Text="We cannot reset or recover your password. Write it in a notebook or a trusted safe place before you continue."
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <TextBlock
+                            Margin="0,10,0,0"
+                            FontSize="12"
+                            Foreground="#EF4444"
+                            Text="{Binding MasterPasswordError}"
+                            Visibility="{Binding MasterPasswordError, Converter={StaticResource NullToCollapsed}}" />
+                    </StackPanel>
+
+                    <!--  ══ STEP 1: APP LOCK (PIN + Windows Hello) ══  -->
+                    <StackPanel Visibility="{Binding CurrentStep, Converter={StaticResource StepToVis}, ConverterParameter=1}">
+
+                        <Border
+                            Margin="0,0,0,16"
+                            Padding="16"
+                            Background="#1A4F46E5"
+                            CornerRadius="14">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ui:SymbolIcon
+                                    Margin="0,0,12,0"
+                                    VerticalAlignment="Top"
+                                    FontSize="22"
+                                    Foreground="#6366F1"
+                                    Symbol="Info24" />
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock
+                                        Margin="0,0,0,4"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        Foreground="#4F46E5"
+                                        Text="Quick access, strong protection" />
+                                    <TextBlock
+                                        FontSize="13"
+                                        Opacity="0.75"
+                                        Text="Choose how to quickly unlock Fortress each time you open it. You can change this later in Settings."
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!--  PIN card  -->
+                        <!--
+                            A transparent Button is overlaid on the card via a Grid.
+                            This avoids the "Button swallowed by TextBox child" problem:
+                            the overlay Button sits on top of (Z-order last = topmost) the
+                            card Border, its IsHitTestVisible=True captures the click and
+                            fires SelectPinCommand, while the card content (TextBox, inner
+                            Borders) remains fully interactive underneath when the PIN entry
+                            panel is expanded.
+                        -->
+                        <Grid Margin="0,0,0,12">
+                            <!--  Visual card — pure layout, no interaction  -->
+                            <Border
+                                x:Name="PinCard"
+                                Padding="16"
+                                Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                BorderBrush="{Binding PinCardBorderBrush}"
+                                BorderThickness="{Binding PinCardBorder}"
+                                CornerRadius="16">
+                                <Border.Effect>
+                                    <DropShadowEffect
+                                        BlurRadius="8"
+                                        Opacity="0.05"
+                                        ShadowDepth="2"
+                                        Color="Black" />
+                                </Border.Effect>
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border
+                                            Width="44"
+                                            Height="44"
+                                            Margin="0,0,12,0"
+                                            Background="#DBEAFE"
+                                            CornerRadius="12">
+                                            <ui:SymbolIcon
+                                                FontSize="22"
+                                                Foreground="#2563EB"
+                                                Symbol="Password24" />
+                                        </Border>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock
+                                                FontSize="15"
+                                                FontWeight="SemiBold"
+                                                Text="Use a 4-digit PIN" />
+                                            <TextBlock
+                                                FontSize="12"
+                                                Opacity="0.55"
+                                                Text="Quick numeric code — type it each time you open the app" />
+                                        </StackPanel>
+                                        <Border
+                                            Grid.Column="2"
+                                            Width="24"
+                                            Height="24"
+                                            Padding="4"
+                                            BorderBrush="{Binding PinCardBorderBrush}"
+                                            BorderThickness="2"
+                                            CornerRadius="12">
+                                            <Border
+                                                Background="#4F46E5"
+                                                CornerRadius="8"
+                                                Visibility="{Binding SetupPin, Converter={StaticResource BoolToVis}}" />
+                                        </Border>
+                                    </Grid>
+
+                                    <!--  Inline PIN entry — only visible after card is selected  -->
+                                    <StackPanel Margin="0,16,0,0" Visibility="{Binding IsPinEntryVisible, Converter={StaticResource BoolToVis}}">
+                                        <Separator Margin="0,0,0,16" />
+                                        <TextBlock
+                                            Margin="0,0,0,12"
+                                            HorizontalAlignment="Center"
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Text="{Binding PinPromptText}" />
+                                        <StackPanel
+                                            Margin="0,0,0,16"
+                                            HorizontalAlignment="Center"
+                                            Orientation="Horizontal">
+                                            <Ellipse
+                                                Width="16"
+                                                Height="16"
+                                                Margin="8,0"
+                                                Fill="{Binding PinDot1Brush}" />
+                                            <Ellipse
+                                                Width="16"
+                                                Height="16"
+                                                Margin="8,0"
+                                                Fill="{Binding PinDot2Brush}" />
+                                            <Ellipse
+                                                Width="16"
+                                                Height="16"
+                                                Margin="8,0"
+                                                Fill="{Binding PinDot3Brush}" />
+                                            <Ellipse
+                                                Width="16"
+                                                Height="16"
+                                                Margin="8,0"
+                                                Fill="{Binding PinDot4Brush}" />
+                                        </StackPanel>
+                                        <Border
+                                            Width="200"
+                                            Padding="14,12"
+                                            HorizontalAlignment="Center"
+                                            Background="{DynamicResource ControlFillColorSecondaryBrush}"
+                                            CornerRadius="12">
+                                            <TextBox
+                                                x:Name="PinEntry"
+                                                HorizontalAlignment="Center"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                FontSize="22"
+                                                FontWeight="Bold"
+                                                MaxLength="4"
+                                                Text="{Binding PinEntryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                TextAlignment="Center" />
+                                        </Border>
+                                        <TextBlock
+                                            Margin="0,8,0,0"
+                                            HorizontalAlignment="Center"
+                                            FontSize="13"
+                                            Foreground="#EF4444"
+                                            Text="{Binding PinErrorMessage}"
+                                            Visibility="{Binding HasPinError, Converter={StaticResource BoolToVis}}" />
+                                        <StackPanel
+                                            Margin="0,8,0,0"
+                                            HorizontalAlignment="Center"
+                                            Orientation="Horizontal"
+                                            Visibility="{Binding IsPinSaved, Converter={StaticResource BoolToVis}}">
+                                            <ui:SymbolIcon
+                                                Margin="0,0,8,0"
+                                                FontSize="20"
+                                                Foreground="#22C55E"
+                                                Symbol="CheckmarkCircle24" />
+                                            <TextBlock
+                                                FontSize="14"
+                                                FontWeight="SemiBold"
+                                                Foreground="#22C55E"
+                                                Text="PIN saved!" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <!--
+                                Transparent overlay button — sits on top of the header row only
+                                (height=76 covers the icon + text row without blocking the PIN TextBox).
+                                When PIN entry is NOT visible it covers the whole card.
+                            -->
+                            <Button
+                                x:Name="PinCardToggleButton"
+                                Height="76"
+                                VerticalAlignment="Top"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Command="{Binding SelectPinCommand}"
+                                Cursor="Hand"
+                                Focusable="False"
+                                IsTabStop="False">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="Transparent" CornerRadius="16">
+                                            <ContentPresenter />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </Grid>
+
+                        <!--  Windows Hello card  -->
+                        <Grid Margin="0,0,0,12" Visibility="{Binding IsBiometricAvailable, Converter={StaticResource BoolToVis}}">
+                            <Border
+                                Padding="16"
+                                Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                BorderBrush="{Binding BiometricCardBorderBrush}"
+                                BorderThickness="{Binding BiometricCardBorder}"
+                                CornerRadius="16">
+                                <Border.Effect>
+                                    <DropShadowEffect
+                                        BlurRadius="8"
+                                        Opacity="0.05"
+                                        ShadowDepth="2"
+                                        Color="Black" />
+                                </Border.Effect>
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border
+                                            Width="44"
+                                            Height="44"
+                                            Margin="0,0,12,0"
+                                            Background="#F3E8FF"
+                                            CornerRadius="12">
+                                            <ui:SymbolIcon
+                                                FontSize="22"
+                                                Foreground="#7C3AED"
+                                                Symbol="Fingerprint24" />
+                                        </Border>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock
+                                                FontSize="15"
+                                                FontWeight="SemiBold"
+                                                Text="Use Windows Hello" />
+                                            <TextBlock
+                                                FontSize="12"
+                                                Opacity="0.55"
+                                                Text="Fingerprint, face or PIN — the fastest way to unlock" />
+                                        </StackPanel>
+                                        <Border
+                                            Grid.Column="2"
+                                            Width="24"
+                                            Height="24"
+                                            Padding="4"
+                                            BorderBrush="{Binding BiometricCardBorderBrush}"
+                                            BorderThickness="2"
+                                            CornerRadius="12">
+                                            <Border
+                                                Background="#7C3AED"
+                                                CornerRadius="8"
+                                                Visibility="{Binding SetupBiometric, Converter={StaticResource BoolToVis}}" />
+                                        </Border>
+                                    </Grid>
+                                    <StackPanel
+                                        Margin="0,12,0,0"
+                                        HorizontalAlignment="Center"
+                                        Orientation="Horizontal"
+                                        Visibility="{Binding IsBiometricChecking, Converter={StaticResource BoolToVis}}">
+                                        <ui:ProgressRing
+                                            Width="18"
+                                            Height="18"
+                                            Margin="0,0,8,0"
+                                            IsIndeterminate="True" />
+                                        <TextBlock
+                                            FontSize="13"
+                                            Opacity="0.7"
+                                            Text="Waiting for Windows Hello..." />
+                                    </StackPanel>
+                                    <StackPanel
+                                        Margin="0,10,0,0"
+                                        HorizontalAlignment="Center"
+                                        Orientation="Horizontal"
+                                        Visibility="{Binding IsBiometricSaved, Converter={StaticResource BoolToVis}}">
+                                        <ui:SymbolIcon
+                                            Margin="0,0,8,0"
+                                            FontSize="20"
+                                            Foreground="#22C55E"
+                                            Symbol="CheckmarkCircle24" />
+                                        <TextBlock
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Foreground="#22C55E"
+                                            Text="Windows Hello registered!" />
+                                    </StackPanel>
+                                    <TextBlock
+                                        Margin="0,8,0,0"
+                                        HorizontalAlignment="Center"
+                                        FontSize="13"
+                                        Foreground="#EF4444"
+                                        Text="{Binding BiometricStatusText}"
+                                        Visibility="{Binding BiometricStatusText, Converter={StaticResource NullToCollapsed}}" />
+                                </StackPanel>
+                            </Border>
+                            <!--  Transparent overlay button  -->
+                            <Button
+                                Height="76"
+                                VerticalAlignment="Top"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Command="{Binding SelectBiometricAsyncCommand}"
+                                Cursor="Hand"
+                                Focusable="False"
+                                IsTabStop="False">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="Transparent" CornerRadius="16">
+                                            <ContentPresenter />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </Grid>
+
+                        <TextBlock
+                            Margin="0,4,0,0"
+                            HorizontalAlignment="Center"
+                            FontSize="12"
+                            Opacity="0.5"
+                            Text="You can skip this and set it up later in Settings" />
+                    </StackPanel>
+
+                    <!--  ══ STEP 2: CLOUD SYNC ══  -->
+                    <StackPanel Visibility="{Binding CurrentStep, Converter={StaticResource StepToVis}, ConverterParameter=2}">
+
+                        <Border
+                            Margin="0,0,0,16"
+                            Padding="16"
+                            Background="#1A4F46E5"
+                            CornerRadius="14">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ui:SymbolIcon
+                                    Margin="0,0,12,0"
+                                    VerticalAlignment="Top"
+                                    FontSize="22"
+                                    Foreground="#6366F1"
+                                    Symbol="Info24" />
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock
+                                        Margin="0,0,0,4"
+                                        FontSize="14"
+                                        FontWeight="SemiBold"
+                                        Foreground="#4F46E5"
+                                        Text="Back up your vault to the cloud" />
+                                    <TextBlock
+                                        FontSize="13"
+                                        Opacity="0.75"
+                                        Text="Your data is encrypted on your device before it is uploaded. If you ever lose your PC, you can restore everything."
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!--  Connected state  -->
+                        <Border
+                            Margin="0,0,0,12"
+                            Padding="16"
+                            Background="#F0FDF4"
+                            CornerRadius="16"
+                            Visibility="{Binding IsCloudConnected, Converter={StaticResource BoolToVis}}">
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border
+                                        Width="44"
+                                        Height="44"
+                                        Margin="0,0,12,0"
+                                        Background="#DCFCE7"
+                                        CornerRadius="12">
+                                        <ui:SymbolIcon
+                                            FontSize="22"
+                                            Foreground="#16A34A"
+                                            Symbol="Cloud24" />
+                                    </Border>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Foreground="#15803D"
+                                            Text="{Binding CloudConnectedProviderName, StringFormat='{}{0} Connected'}" />
+                                        <TextBlock
+                                            FontSize="12"
+                                            Foreground="#16A34A"
+                                            Text="{Binding CloudConnectedEmail}"
+                                            Visibility="{Binding CloudConnectedEmail, Converter={StaticResource NullToCollapsed}}" />
+                                    </StackPanel>
+                                    <ui:SymbolIcon
+                                        Grid.Column="2"
+                                        FontSize="22"
+                                        Foreground="#16A34A"
+                                        Symbol="CheckmarkCircle24" />
+                                </Grid>
+                                <Button
+                                    Margin="0,12,0,0"
+                                    Padding="0,10"
+                                    Background="Transparent"
+                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                                    BorderThickness="1"
+                                    Command="{Binding DisconnectCloudCommand}"
+                                    Content="Disconnect and choose a different service"
+                                    FontSize="13" />
+                            </StackPanel>
+                        </Border>
+
+                        <!--  Provider selection  -->
+                        <StackPanel Visibility="{Binding IsCloudConnected, Converter={StaticResource InvBoolToVis}}">
+                            <TextBlock
+                                Margin="0,0,0,12"
+                                FontSize="14"
+                                FontWeight="SemiBold"
+                                Text="Choose where to back up:" />
+
+                            <!--  OneDrive  -->
+                            <Grid Margin="0,0,0,10">
+                                <Border
+                                    Padding="14"
+                                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                    BorderBrush="{Binding OneDriveBorderBrush}"
+                                    BorderThickness="{Binding OneDriveBorder}"
+                                    CornerRadius="14"
+                                    Cursor="Hand">
+                                    <Border.Effect>
+                                        <DropShadowEffect
+                                            BlurRadius="8"
+                                            Opacity="0.04"
+                                            ShadowDepth="2"
+                                            Color="Black" />
+                                    </Border.Effect>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border
+                                            Width="42"
+                                            Height="42"
+                                            Margin="0,0,12,0"
+                                            Background="#EEF2FF"
+                                            CornerRadius="11">
+                                            <ui:SymbolIcon
+                                                FontSize="22"
+                                                Foreground="#4F46E5"
+                                                Symbol="Cloud24" />
+                                        </Border>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock
+                                                FontSize="14"
+                                                FontWeight="SemiBold"
+                                                Text="OneDrive" />
+                                            <TextBlock
+                                                FontSize="12"
+                                                Opacity="0.55"
+                                                Text="Free 5 GB — use any Microsoft account" />
+                                        </StackPanel>
+                                        <Border
+                                            Grid.Column="2"
+                                            Width="24"
+                                            Height="24"
+                                            Padding="4"
+                                            BorderBrush="{Binding OneDriveBorderBrush}"
+                                            BorderThickness="2"
+                                            CornerRadius="12">
+                                            <Border
+                                                Background="#4F46E5"
+                                                CornerRadius="8"
+                                                Visibility="{Binding IsOneDriveSelected, Converter={StaticResource BoolToVis}}" />
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                                <Button
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Command="{Binding SelectProviderCommand}"
+                                    CommandParameter="onedrive"
+                                    Cursor="Hand"
+                                    Focusable="False"
+                                    IsTabStop="False">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="Transparent" CornerRadius="14">
+                                                <ContentPresenter />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </Grid>
+
+                            <!--  Google Drive  -->
+                            <Grid Margin="0,0,0,10">
+                                <Border
+                                    Padding="14"
+                                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                    BorderBrush="{Binding GoogleDriveBorderBrush}"
+                                    BorderThickness="{Binding GoogleDriveBorder}"
+                                    CornerRadius="14"
+                                    Cursor="Hand">
+                                    <Border.Effect>
+                                        <DropShadowEffect
+                                            BlurRadius="8"
+                                            Opacity="0.04"
+                                            ShadowDepth="2"
+                                            Color="Black" />
+                                    </Border.Effect>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border
+                                            Width="42"
+                                            Height="42"
+                                            Margin="0,0,12,0"
+                                            Background="#E8F0FE"
+                                            CornerRadius="11">
+                                            <ui:SymbolIcon
+                                                FontSize="22"
+                                                Foreground="#4285F4"
+                                                Symbol="CloudLink24" />
+                                        </Border>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock
+                                                FontSize="14"
+                                                FontWeight="SemiBold"
+                                                Text="Google Drive" />
+                                            <TextBlock
+                                                FontSize="12"
+                                                Opacity="0.55"
+                                                Text="Free 15 GB — use any Google account" />
+                                        </StackPanel>
+                                        <Border
+                                            Grid.Column="2"
+                                            Width="24"
+                                            Height="24"
+                                            Padding="4"
+                                            BorderBrush="{Binding GoogleDriveBorderBrush}"
+                                            BorderThickness="2"
+                                            CornerRadius="12">
+                                            <Border
+                                                Background="#4285F4"
+                                                CornerRadius="8"
+                                                Visibility="{Binding IsGoogleDriveSelected, Converter={StaticResource BoolToVis}}" />
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                                <Button
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Command="{Binding SelectProviderCommand}"
+                                    CommandParameter="googledrive"
+                                    Cursor="Hand"
+                                    Focusable="False"
+                                    IsTabStop="False">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="Transparent" CornerRadius="14">
+                                                <ContentPresenter />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </Grid>
+
+                            <!--  Dropbox  -->
+                            <Grid Margin="0,0,0,10">
+                                <Border
+                                    Padding="14"
+                                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                    BorderBrush="{Binding DropboxBorderBrush}"
+                                    BorderThickness="{Binding DropboxBorder}"
+                                    CornerRadius="14"
+                                    Cursor="Hand">
+                                    <Border.Effect>
+                                        <DropShadowEffect
+                                            BlurRadius="8"
+                                            Opacity="0.04"
+                                            ShadowDepth="2"
+                                            Color="Black" />
+                                    </Border.Effect>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Border
+                                            Width="42"
+                                            Height="42"
+                                            Margin="0,0,12,0"
+                                            Background="#E8F0FF"
+                                            CornerRadius="11">
+                                            <ui:SymbolIcon
+                                                FontSize="22"
+                                                Foreground="#0061FF"
+                                                Symbol="CloudArrowDown24" />
+                                        </Border>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock
+                                                FontSize="14"
+                                                FontWeight="SemiBold"
+                                                Text="Dropbox" />
+                                            <TextBlock
+                                                FontSize="12"
+                                                Opacity="0.55"
+                                                Text="Free 2 GB — use any Dropbox account" />
+                                        </StackPanel>
+                                        <Border
+                                            Grid.Column="2"
+                                            Width="24"
+                                            Height="24"
+                                            Padding="4"
+                                            BorderBrush="{Binding DropboxBorderBrush}"
+                                            BorderThickness="2"
+                                            CornerRadius="12">
+                                            <Border
+                                                Background="#0061FF"
+                                                CornerRadius="8"
+                                                Visibility="{Binding IsDropboxSelected, Converter={StaticResource BoolToVis}}" />
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                                <Button
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Command="{Binding SelectProviderCommand}"
+                                    CommandParameter="dropbox"
+                                    Cursor="Hand"
+                                    Focusable="False"
+                                    IsTabStop="False">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="Transparent" CornerRadius="14">
+                                                <ContentPresenter />
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </Grid>
+
+                            <!--  Connect button  -->
+                            <!--  Connect button — styled to match the Continue footer button  -->
+                            <Button
+                                Height="52"
+                                Margin="0,8,0,0"
+                                Command="{Binding ConnectCloudCommand}"
+                                Cursor="Hand"
+                                Visibility="{Binding IsProviderSelected, Converter={StaticResource BoolToVis}}">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="ConnectRoot" CornerRadius="14">
+                                            <Border.Background>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                    <GradientStop Offset="0" Color="#4F46E5" />
+                                                    <GradientStop Offset="1" Color="#7C3AED" />
+                                                </LinearGradientBrush>
+                                            </Border.Background>
+                                            <Border.Effect>
+                                                <DropShadowEffect
+                                                    BlurRadius="16"
+                                                    Opacity="0.25"
+                                                    ShadowDepth="4"
+                                                    Color="#6366F1" />
+                                            </Border.Effect>
+                                            <ContentPresenter />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="ConnectRoot" Property="Opacity" Value="0.9" />
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="ConnectRoot" Property="Opacity" Value="0.75" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                                <Grid>
+                                    <StackPanel
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal"
+                                        Visibility="{Binding IsCloudConnecting, Converter={StaticResource InvBoolToVis}}">
+                                        <ui:SymbolIcon
+                                            Margin="0,0,10,0"
+                                            FontSize="18"
+                                            Foreground="White"
+                                            Symbol="CloudArrowUp24" />
+                                        <TextBlock
+                                            FontSize="15"
+                                            FontWeight="Bold"
+                                            Foreground="White"
+                                            Text="{Binding ConnectButtonText}" />
+                                    </StackPanel>
+                                    <StackPanel
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Orientation="Horizontal"
+                                        Visibility="{Binding IsCloudConnecting, Converter={StaticResource BoolToVis}}">
+                                        <ui:ProgressRing
+                                            Width="20"
+                                            Height="20"
+                                            Margin="0,0,10,0"
+                                            IsIndeterminate="True" />
+                                        <TextBlock
+                                            FontSize="15"
+                                            FontWeight="Bold"
+                                            Foreground="White"
+                                            Text="Connecting..." />
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+
+                        </StackPanel>
+
+                    </StackPanel>
+                    <!--  ══ STEP 3: ALL DONE ══  -->
+                    <StackPanel
+                        Margin="0,32,0,0"
+                        HorizontalAlignment="Center"
+                        Visibility="{Binding CurrentStep, Converter={StaticResource StepToVis}, ConverterParameter=3}">
+                        <Border
+                            Width="90"
+                            Height="90"
+                            Margin="0,0,0,24"
+                            HorizontalAlignment="Center"
+                            CornerRadius="45">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Offset="0" Color="#4F46E5" />
+                                    <GradientStop Offset="1" Color="#7C3AED" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="28"
+                                    Opacity="0.35"
+                                    ShadowDepth="0"
+                                    Color="#6366F1" />
+                            </Border.Effect>
+                            <ui:SymbolIcon
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="44"
+                                Foreground="White"
+                                Symbol="CheckmarkCircle24" />
+                        </Border>
+                        <TextBlock
+                            Margin="0,0,0,12"
+                            HorizontalAlignment="Center"
+                            FontSize="22"
+                            FontWeight="Bold"
+                            Text="YOU'RE ALL SET!" />
+                        <TextBlock
+                            MaxWidth="380"
+                            HorizontalAlignment="Center"
+                            Opacity="0.6"
+                            Text="Your vault is ready. Click Open Fortress to get started."
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!--  ══ FOOTER ══  -->
+            <Border
+                Grid.Row="2"
+                Padding="20,14,20,28"
+                Background="{DynamicResource ApplicationBackgroundBrush}"
+                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}"
+                BorderThickness="0,1,0,0">
+                <Border.Effect>
+                    <DropShadowEffect
+                        BlurRadius="14"
+                        Opacity="0.06"
+                        ShadowDepth="-4"
+                        Color="Black" />
+                </Border.Effect>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  Skip — real Button, transparent style  -->
+                    <Button
+                        Grid.Column="0"
+                        Height="52"
+                        Margin="0,0,6,0"
+                        Command="{Binding SkipCommand}"
+                        Cursor="Hand"
+                        Visibility="{Binding ShowSkipButton, Converter={StaticResource BoolToVis}}">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border
+                                    x:Name="SkipRoot"
+                                    Background="{DynamicResource ControlFillColorSecondaryBrush}"
+                                    CornerRadius="14">
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="15"
+                                        FontWeight="SemiBold"
+                                        Opacity="0.6"
+                                        Text="Skip for now" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="SkipRoot" Property="Opacity" Value="0.85" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter TargetName="SkipRoot" Property="Opacity" Value="0.70" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <!--  Continue / Finish — real Button, gradient style  -->
+                    <Button
+                        Grid.Column="{Binding ContinueButtonColumn}"
+                        Grid.ColumnSpan="{Binding ContinueButtonColumnSpan}"
+                        Height="52"
+                        Margin="{Binding ContinueButtonMargin}"
+                        Command="{Binding NextCommand}"
+                        Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CanGoNext}" Value="False">
+                                        <Setter Property="Opacity" Value="0.45" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="ContinueRoot" CornerRadius="14">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                            <GradientStop Offset="0" Color="#4F46E5" />
+                                            <GradientStop Offset="1" Color="#7C3AED" />
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Border.Effect>
+                                        <DropShadowEffect
+                                            BlurRadius="16"
+                                            Opacity="0.22"
+                                            ShadowDepth="4"
+                                            Color="#6366F1" />
+                                    </Border.Effect>
+                                    <ContentPresenter />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="ContinueRoot" Property="Opacity" Value="0.9" />
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter TargetName="ContinueRoot" Property="Opacity" Value="0.75" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Grid>
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal"
+                                Visibility="{Binding IsCreating, Converter={StaticResource InvBoolToVis}}">
+                                <ui:SymbolIcon
+                                    Margin="0,0,8,0"
+                                    FontSize="18"
+                                    Foreground="White"
+                                    Symbol="ArrowRight24" />
+                                <TextBlock
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="{Binding NextButtonText}" />
+                            </StackPanel>
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal"
+                                Visibility="{Binding IsCreating, Converter={StaticResource BoolToVis}}">
+                                <ui:ProgressRing
+                                    Width="20"
+                                    Height="20"
+                                    Margin="0,0,10,0"
+                                    IsIndeterminate="True" />
+                                <TextBlock
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    Foreground="White"
+                                    Text="Setting up..." />
+                            </StackPanel>
+                        </Grid>
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

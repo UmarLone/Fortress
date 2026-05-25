@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="launcher_background">#FFFFFF</color>
+    <color name="colorPrimary">#407cca</color>
+    <color name="colorPrimaryDark">#3569b0</color>
+    <color name="colorPrimaryGradient">#5a9be0</color>
+    <color name="colorAccent">#14B8A6</color>
+	<color name="notificationBar">#fff</color>
+	<color name="border">#E2E8F0</color>
+
+	<!-- Dark System -->
+	<color name="dark_primary">#52bdfb</color>
+	<color name="dark_notificationBar">#191919</color>
+	<color name="dark_border">#666666</color>
+	<color name="dark_navigationBarBackground">#191919</color>
+
+	<!-- Neutral palette -->
+	<color name="white">#FFFFFF</color>
+	<color name="black">#000000</color>
+	<color name="gk_gray_50">#F8FAFC</color>
+	<color name="gk_gray_100">#F1F5F9</color>
+	<color name="gk_gray_200">#E2E8F0</color>
+	<color name="gk_gray_300">#CBD5E1</color>
+	<color name="gk_gray_400">#94A3B8</color>
+	<color name="gk_gray_500">#64748B</color>
+	<color name="gk_gray_600">#475569</color>
+	<color name="gk_gray_700">#334155</color>
+	<color name="gk_gray_800">#1E293B</color>
+	<color name="gk_gray_900">#0F172A</color>
+
+	<!-- Semantic -->
+	<color name="gk_danger">#EF4444</color>
+	<color name="gk_success">#22C55E</color>
+	<color name="gk_warning">#F59E0B</color>
+	<color name="gk_info">#3B82F6</color>
+	<color name="gk_primary_lightest">#E8F1FA</color>
+	<color name="gk_surface">#FFFFFF</color>
+	<color name="gk_bg">#F5F7FA</color>
+
+	<!-- Legacy aliases -->
+	<color name="darkgray">#334155</color>
+	<color name="gray">#64748B</color>
+	<color name="lightgray">#F1F5F9</color>
+	<color name="separator_color">#E2E8F0</color>
+	<color name="blue">#407cca</color>
+</resources>

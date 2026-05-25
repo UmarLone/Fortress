@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentView
+    x:Class="Fortress.Controls.VaultFormField"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Name="This">
+
+    <VerticalStackLayout Spacing="4">
+
+        <!--  Card border — no error styling on border, error only shown below  -->
+        <Border
+            Padding="16,14"
+            BackgroundColor="{DynamicResource CardBackgroundColor}"
+            Stroke="Transparent"
+            StrokeThickness="0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="14" />
+            </Border.StrokeShape>
+            <Border.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.04"
+                    Radius="6"
+                    Offset="0,2" />
+            </Border.Shadow>
+
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+
+                <!--  Icon badge  -->
+                <Border
+                    Grid.Column="0"
+                    Padding="8"
+                    BackgroundColor="{Binding IconBackgroundColor, Source={x:Reference This}}"
+                    HeightRequest="36"
+                    StrokeThickness="0"
+                    WidthRequest="36">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+                    <Label
+                        FontFamily="MaterialIconsRegular"
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Text="{Binding IconGlyph, Source={x:Reference This}}"
+                        TextColor="{Binding IconColor, Source={x:Reference This}}"
+                        VerticalOptions="Center" />
+                </Border>
+
+                <!--  Label + Entry  -->
+                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                    <Label
+                        FontSize="11"
+                        Text="{Binding FieldLabel, Source={x:Reference This}}"
+                        TextColor="{DynamicResource TextTertiaryColor}" />
+                    <Entry
+                        FontSize="15"
+                        IsPassword="{Binding IsPassword, Source={x:Reference This}}"
+                        Keyboard="{Binding Keyboard, Source={x:Reference This}}"
+                        MaxLength="{Binding MaxLength, Source={x:Reference This}}"
+                        Placeholder="{Binding Placeholder, Source={x:Reference This}}"
+                        PlaceholderColor="{DynamicResource TextTertiaryColor}"
+                        Text="{Binding Text, Source={x:Reference This}}"
+                        TextChanged="OnEntryTextChanged"
+                        TextColor="{DynamicResource TextColor}" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+
+        <!--  Inline error message  -->
+        <Label
+            Margin="4,0,0,0"
+            FontSize="12"
+            IsVisible="{Binding HasError, Source={x:Reference This}}"
+            Text="{Binding ErrorMessage, Source={x:Reference This}}"
+            TextColor="#EF4444" />
+
+    </VerticalStackLayout>
+</ContentView>

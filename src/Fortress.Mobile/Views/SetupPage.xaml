@@ -1,0 +1,1968 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.SetupPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:Fortress.Converters"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    prism:ViewModelLocator.AutowireViewModel="Automatic"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converter:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmpty" />
+            <!--  Border highlight converters  -->
+            <converter:BoolToObjectConverter
+                x:Key="SelectedStroke"
+                FalseObject="0"
+                TrueObject="2" />
+            <converter:BoolToObjectConverter
+                x:Key="BiometricStrokeColor"
+                FalseObject="Transparent"
+                TrueObject="{StaticResource PrimaryColor}" />
+            <converter:BoolToObjectConverter
+                x:Key="PinStrokeColor"
+                FalseObject="Transparent"
+                TrueObject="{StaticResource PrimaryColor}" />
+            <converter:BoolToObjectConverter
+                x:Key="RadioStrokeColor"
+                FalseObject="{StaticResource Gray-300}"
+                TrueObject="{StaticResource PrimaryColor}" />
+            <!--  Pin dot fill converters  -->
+            <converter:BoolToObjectConverter
+                x:Key="DotFill"
+                FalseObject="{StaticResource Gray-200}"
+                TrueObject="{StaticResource PrimaryColor}" />
+            <!--  Autofill step gradient  -->
+            <converter:BoolToObjectConverter
+                x:Key="AutofillGradientStart"
+                FalseObject="#2563EB"
+                TrueObject="#16A34A" />
+            <converter:BoolToObjectConverter
+                x:Key="AutofillGradientEnd"
+                FalseObject="#1D4ED8"
+                TrueObject="#15803D" />
+            <!--  Cloud provider  -->
+            <converter:BoolToObjectConverter
+                x:Key="GoogleStroke"
+                FalseObject="0"
+                TrueObject="2" />
+            <converter:BoolToObjectConverter
+                x:Key="GoogleStrokeColor"
+                FalseObject="Transparent"
+                TrueObject="#4285F4" />
+            <converter:BoolToObjectConverter
+                x:Key="GoogleRadioStroke"
+                FalseObject="{StaticResource Gray-300}"
+                TrueObject="#4285F4" />
+            <converter:BoolToObjectConverter
+                x:Key="ICloudStroke"
+                FalseObject="0"
+                TrueObject="2" />
+            <converter:BoolToObjectConverter
+                x:Key="ICloudStrokeColor"
+                FalseObject="Transparent"
+                TrueObject="#147CE5" />
+            <converter:BoolToObjectConverter
+                x:Key="ICloudRadioStroke"
+                FalseObject="{StaticResource Gray-300}"
+                TrueObject="#147CE5" />
+            <converter:BoolToObjectConverter
+                x:Key="DropboxStroke"
+                FalseObject="0"
+                TrueObject="2" />
+            <converter:BoolToObjectConverter
+                x:Key="DropboxStrokeColor"
+                FalseObject="Transparent"
+                TrueObject="#0061FF" />
+            <converter:BoolToObjectConverter
+                x:Key="DropboxRadioStroke"
+                FalseObject="{StaticResource Gray-300}"
+                TrueObject="#0061FF" />
+            <converter:BoolToObjectConverter
+                x:Key="OneDriveStroke"
+                FalseObject="0"
+                TrueObject="2" />
+            <converter:BoolToObjectConverter
+                x:Key="OneDriveStrokeColor"
+                FalseObject="Transparent"
+                TrueObject="#0078D4" />
+            <converter:BoolToObjectConverter
+                x:Key="OneDriveRadioStroke"
+                FalseObject="{StaticResource Gray-300}"
+                TrueObject="#0078D4" />
+            <!--  Footer grid column / span  -->
+            <converter:BoolToObjectConverter
+                x:Key="SkipColIndex"
+                FalseObject="0"
+                TrueObject="1" />
+            <converter:BoolToObjectConverter
+                x:Key="SkipColSpan"
+                FalseObject="2"
+                TrueObject="1" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!--  HEADER  -->
+        <Border
+            Grid.Row="0"
+            Padding="20,50,20,28"
+            BackgroundColor="{DynamicResource PrimaryColor}"
+            StrokeThickness="0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,28,28" />
+            </Border.StrokeShape>
+            <VerticalStackLayout Spacing="18">
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                    <Border
+                        x:Name="step0Indicator"
+                        BackgroundColor="White"
+                        HeightRequest="8"
+                        StrokeThickness="0"
+                        WidthRequest="50">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="4" />
+                        </Border.StrokeShape>
+                    </Border>
+                    <Border
+                        x:Name="step1Indicator"
+                        BackgroundColor="White"
+                        HeightRequest="8"
+                        Opacity="0.4"
+                        StrokeThickness="0"
+                        WidthRequest="40">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="4" />
+                        </Border.StrokeShape>
+                    </Border>
+                    <Border
+                        x:Name="step2Indicator"
+                        BackgroundColor="White"
+                        HeightRequest="8"
+                        Opacity="0.4"
+                        StrokeThickness="0"
+                        WidthRequest="40">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="4" />
+                        </Border.StrokeShape>
+                    </Border>
+                    <Border
+                        x:Name="step3Indicator"
+                        BackgroundColor="White"
+                        HeightRequest="8"
+                        Opacity="0.4"
+                        StrokeThickness="0"
+                        WidthRequest="40">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="4" />
+                        </Border.StrokeShape>
+                    </Border>
+                </HorizontalStackLayout>
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
+                    <Border
+                        Padding="16"
+                        BackgroundColor="#20FFFFFF"
+                        HeightRequest="70"
+                        HorizontalOptions="Center"
+                        StrokeThickness="0"
+                        WidthRequest="70">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="18" />
+                        </Border.StrokeShape>
+                        <mi:MauiIcon
+                            x:Name="stepIcon"
+                            HorizontalOptions="Center"
+                            Icon="{mi:Material Icon=LockOpen}"
+                            IconColor="White"
+                            IconSize="36"
+                            VerticalOptions="Center" />
+                    </Border>
+                    <Label
+                        x:Name="stepTitle"
+                        FontAttributes="Bold"
+                        FontSize="24"
+                        HorizontalTextAlignment="Center"
+                        Text="Create Your Master Password"
+                        TextColor="White" />
+                    <Label
+                        x:Name="stepDescription"
+                        FontSize="14"
+                        HorizontalTextAlignment="Center"
+                        Opacity="0.9"
+                        Text="This is the one password that unlocks everything"
+                        TextColor="White" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+
+        <!--  SCROLLABLE CONTENT  -->
+        <ScrollView Grid.Row="1" Padding="20,16,20,4">
+            <VerticalStackLayout Spacing="16">
+
+                <!--  STEP 0: MASTER PASSWORD  -->
+                <VerticalStackLayout IsVisible="{Binding IsPasswordStepVisible}" Spacing="14">
+                    <Border
+                        Padding="16"
+                        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <mi:MauiIcon
+                                Grid.Column="0"
+                                Icon="{mi:Material Icon=Info}"
+                                IconColor="{DynamicResource PrimaryColor}"
+                                IconSize="22"
+                                VerticalOptions="Start" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Think of it like a key to a safe"
+                                    TextColor="{DynamicResource PrimaryColor}" />
+                                <Label FontSize="13" TextColor="{DynamicResource TextSecondaryColor}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="Your master password " />
+                                            <Span FontAttributes="Bold" Text="encrypts all your stored passwords" />
+                                            <Span Text=". Nobody — not even us — can read your data without it. " />
+                                            <Span FontAttributes="Bold" Text="If you forget it, there is no recovery option." />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <Border
+                        Padding="20"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.06"
+                                Radius="14"
+                                Offset="0,4" />
+                        </Border.Shadow>
+                        <VerticalStackLayout Spacing="16">
+                            <VerticalStackLayout Spacing="6">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    Text="Choose a master password"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="Use a mix of words, numbers and symbols — something only you know"
+                                    TextColor="{DynamicResource TextTertiaryColor}" />
+                                <Border
+                                    Padding="14,12"
+                                    BackgroundColor="{DynamicResource Gray-50}"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                                        <mi:MauiIcon
+                                            Grid.Column="0"
+                                            Icon="{mi:Material Icon=Lock}"
+                                            IconColor="{DynamicResource TextTertiaryColor}"
+                                            IconSize="20"
+                                            VerticalOptions="Center" />
+                                        <Entry
+                                            x:Name="txtPassword"
+                                            Grid.Column="1"
+                                            FontSize="15"
+                                            IsPassword="True"
+                                            Placeholder="e.g. Fluffy$Dog2024!"
+                                            PlaceholderColor="{DynamicResource TextTertiaryColor}"
+                                            Text="{Binding UserPassword.Password}"
+                                            TextChanged="Password_TextChanged"
+                                            TextColor="{DynamicResource TextColor}"
+                                            VerticalOptions="Center" />
+                                        <Border
+                                            Grid.Column="2"
+                                            Padding="4"
+                                            BackgroundColor="Transparent"
+                                            StrokeThickness="0"
+                                            VerticalOptions="Center">
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnTogglePasswordVisibility" />
+                                            </Border.GestureRecognizers>
+                                            <mi:MauiIcon
+                                                x:Name="iconPasswordVisibility"
+                                                Icon="{mi:Material Icon=VisibilityOff}"
+                                                IconColor="{DynamicResource TextTertiaryColor}"
+                                                IconSize="20" />
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout IsVisible="{Binding UserPassword.Password, Converter={StaticResource StringNotNullOrEmpty}}" Spacing="6">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label
+                                        Grid.Column="0"
+                                        FontSize="12"
+                                        Text="Password strength"
+                                        TextColor="{DynamicResource TextTertiaryColor}"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        Grid.Column="1"
+                                        FontAttributes="Bold"
+                                        FontSize="12"
+                                        Text="{Binding StrengthLabel}"
+                                        TextColor="{Binding StrengthColor}"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                                <Border
+                                    BackgroundColor="{DynamicResource Gray-200}"
+                                    HeightRequest="6"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="3" />
+                                    </Border.StrokeShape>
+                                    <Border
+                                        BackgroundColor="{Binding StrengthColor}"
+                                        HeightRequest="6"
+                                        HorizontalOptions="Start"
+                                        StrokeThickness="0"
+                                        WidthRequest="{Binding StrengthWidth}">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="3" />
+                                        </Border.StrokeShape>
+                                    </Border>
+                                </Border>
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Spacing="6">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    Text="Type it again to confirm"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="This makes sure you didn't make a typo"
+                                    TextColor="{DynamicResource TextTertiaryColor}" />
+                                <Border
+                                    Padding="14,12"
+                                    BackgroundColor="{DynamicResource Gray-50}"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                                        <mi:MauiIcon
+                                            Grid.Column="0"
+                                            Icon="{mi:Material Icon=LockReset}"
+                                            IconColor="{DynamicResource TextTertiaryColor}"
+                                            IconSize="20"
+                                            VerticalOptions="Center" />
+                                        <Entry
+                                            x:Name="txtConfirmPassword"
+                                            Grid.Column="1"
+                                            FontSize="15"
+                                            IsPassword="True"
+                                            Placeholder="Repeat your password"
+                                            PlaceholderColor="{DynamicResource TextTertiaryColor}"
+                                            Text="{Binding UserPassword.ConfirmPassword}"
+                                            TextChanged="ConfirmPassword_TextChanged"
+                                            TextColor="{DynamicResource TextColor}"
+                                            VerticalOptions="Center" />
+                                        <Border
+                                            Grid.Column="2"
+                                            Padding="4"
+                                            BackgroundColor="Transparent"
+                                            StrokeThickness="0"
+                                            VerticalOptions="Center">
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnToggleConfirmPasswordVisibility" />
+                                            </Border.GestureRecognizers>
+                                            <mi:MauiIcon
+                                                x:Name="iconConfirmPasswordVisibility"
+                                                Icon="{mi:Material Icon=VisibilityOff}"
+                                                IconColor="{DynamicResource TextTertiaryColor}"
+                                                IconSize="20" />
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border
+                        Padding="16"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <VerticalStackLayout Spacing="10">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="13"
+                                Text="Your password must include:"
+                                TextColor="{DynamicResource TextColor}" />
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                <mi:MauiIcon
+                                    x:Name="icon10Characters"
+                                    Grid.Column="0"
+                                    Icon="{mi:Material Icon=CheckCircle}"
+                                    IconColor="{DynamicResource Gray-300}"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                                <VerticalStackLayout Grid.Column="1">
+                                    <Label
+                                        FontSize="13"
+                                        Text="At least 10 characters"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="11"
+                                        Text="Longer = harder to guess"
+                                        TextColor="{DynamicResource TextTertiaryColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                <mi:MauiIcon
+                                    x:Name="icon1Number"
+                                    Grid.Column="0"
+                                    Icon="{mi:Material Icon=CheckCircle}"
+                                    IconColor="{DynamicResource Gray-300}"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                                <VerticalStackLayout Grid.Column="1">
+                                    <Label
+                                        FontSize="13"
+                                        Text="At least one number (0–9)"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="11"
+                                        Text="Like &quot;Cat5&quot; instead of just &quot;Cat&quot;"
+                                        TextColor="{DynamicResource TextTertiaryColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                <mi:MauiIcon
+                                    x:Name="icon1Symbol"
+                                    Grid.Column="0"
+                                    Icon="{mi:Material Icon=CheckCircle}"
+                                    IconColor="{DynamicResource Gray-300}"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                                <VerticalStackLayout Grid.Column="1">
+                                    <Label
+                                        FontSize="13"
+                                        Text="At least one symbol (!@#$%&amp;)"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="11"
+                                        Text="Like &quot;Cat5!&quot; instead of just &quot;Cat5&quot;"
+                                        TextColor="{DynamicResource TextTertiaryColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                <mi:MauiIcon
+                                    x:Name="iconHasLowercase"
+                                    Grid.Column="0"
+                                    Icon="{mi:Material Icon=CheckCircle}"
+                                    IconColor="{DynamicResource Gray-300}"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                                <VerticalStackLayout Grid.Column="1">
+                                    <Label
+                                        FontSize="13"
+                                        Text="A lowercase letter (a–z)"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="11"
+                                        Text="Mix of upper and lower case"
+                                        TextColor="{DynamicResource TextTertiaryColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                <mi:MauiIcon
+                                    x:Name="iconHasUppercase"
+                                    Grid.Column="0"
+                                    Icon="{mi:Material Icon=CheckCircle}"
+                                    IconColor="{DynamicResource Gray-300}"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                                <VerticalStackLayout Grid.Column="1">
+                                    <Label
+                                        FontSize="13"
+                                        Text="An uppercase letter (A–Z)"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="11"
+                                        Text="Like &quot;Cat&quot; not just &quot;cat&quot;"
+                                        TextColor="{DynamicResource TextTertiaryColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Border
+                        Padding="14"
+                        BackgroundColor="{DynamicResource WarningLightColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                            <mi:MauiIcon
+                                Grid.Column="0"
+                                Icon="{mi:Material Icon=EditNote}"
+                                IconColor="{DynamicResource WarningColor}"
+                                IconSize="24"
+                                VerticalOptions="Start" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    Text="Write it down somewhere safe"
+                                    TextColor="{DynamicResource WarningColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="We cannot reset or recover your password. Write it in a notebook or a trusted password-safe place before you continue."
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!--  STEP 1: APP LOCK  -->
+                <VerticalStackLayout IsVisible="{Binding IsLockStepVisible}" Spacing="14">
+                    <Border
+                        Padding="16"
+                        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <mi:MauiIcon
+                                Grid.Column="0"
+                                Icon="{mi:Material Icon=Info}"
+                                IconColor="{DynamicResource PrimaryColor}"
+                                IconSize="22"
+                                VerticalOptions="Start" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="3">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Quick access, strong protection"
+                                    TextColor="{DynamicResource PrimaryColor}" />
+                                <Label
+                                    FontSize="13"
+                                    Text="Every time you open FORTRESS, you'll confirm it's really you. Choose whichever feels easier — you can change this later in Settings."
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <!--  Biometric option  -->
+                    <Border
+                        Padding="16"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="{Binding SetupBiometric, Converter={StaticResource SelectedStroke}}">
+                        <Border.Stroke>
+                            <SolidColorBrush Color="{Binding SetupBiometric, Converter={StaticResource BiometricStrokeColor}}" />
+                        </Border.Stroke>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.04"
+                                Radius="8"
+                                Offset="0,2" />
+                        </Border.Shadow>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnBiometricOptionTapped" />
+                        </Border.GestureRecognizers>
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                HeightRequest="44"
+                                StrokeThickness="0"
+                                WidthRequest="44">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    Icon="{mi:Material Icon=Fingerprint}"
+                                    IconColor="{DynamicResource PrimaryColor}"
+                                    IconSize="24" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="2"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="15"
+                                    Text="Use your fingerprint or face"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="Unlock instantly — touch the sensor or look at your phone"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                                <Label
+                                    FontSize="11"
+                                    IsVisible="{Binding IsBiometricsAvailable, Converter={StaticResource InverseBoolConverter}}"
+                                    Text="⚠ Not available on this device"
+                                    TextColor="{DynamicResource WarningColor}" />
+                            </VerticalStackLayout>
+                            <Border
+                                Grid.Column="2"
+                                Padding="4"
+                                BackgroundColor="Transparent"
+                                HeightRequest="24"
+                                StrokeThickness="2"
+                                WidthRequest="24">
+                                <Border.Stroke>
+                                    <SolidColorBrush Color="{Binding SetupBiometric, Converter={StaticResource BiometricStrokeColor}}" />
+                                </Border.Stroke>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <Border
+                                    Padding="4"
+                                    IsVisible="{Binding SetupBiometric}"
+                                    StrokeThickness="0">
+                                    <Border.Background>
+                                        <SolidColorBrush Color="{DynamicResource PrimaryColor}" />
+                                    </Border.Background>
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                </Border>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <!--  PIN option  -->
+                    <Border
+                        Padding="16"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="{Binding SetupPin, Converter={StaticResource SelectedStroke}}">
+                        <Border.Stroke>
+                            <SolidColorBrush Color="{Binding SetupPin, Converter={StaticResource PinStrokeColor}}" />
+                        </Border.Stroke>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.04"
+                                Radius="8"
+                                Offset="0,2" />
+                        </Border.Shadow>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnPinOptionTapped" />
+                        </Border.GestureRecognizers>
+                        <VerticalStackLayout Spacing="14">
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="10"
+                                    BackgroundColor="{DynamicResource InfoLightColor}"
+                                    HeightRequest="44"
+                                    StrokeThickness="0"
+                                    WidthRequest="44">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        Icon="{mi:Material Icon=Pin}"
+                                        IconColor="{DynamicResource InfoColor}"
+                                        IconSize="24" />
+                                </Border>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="15"
+                                        Text="Use a 4-digit PIN"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        Text="Like a bank card PIN — type it each time you open the app"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                                <Border
+                                    Grid.Column="2"
+                                    Padding="4"
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="24"
+                                    StrokeThickness="2"
+                                    WidthRequest="24">
+                                    <Border.Stroke>
+                                        <SolidColorBrush Color="{Binding SetupPin, Converter={StaticResource PinStrokeColor}}" />
+                                    </Border.Stroke>
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Border
+                                        Padding="4"
+                                        IsVisible="{Binding SetupPin}"
+                                        StrokeThickness="0">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="{DynamicResource PrimaryColor}" />
+                                        </Border.Background>
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="8" />
+                                        </Border.StrokeShape>
+                                    </Border>
+                                </Border>
+                            </Grid>
+
+                            <VerticalStackLayout IsVisible="{Binding IsPinEntryVisible}" Spacing="16">
+                                <BoxView HeightRequest="1" Color="{DynamicResource Gray-100}" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    HorizontalTextAlignment="Center"
+                                    TextColor="{DynamicResource TextColor}">
+                                    <Label.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding IsConfirmingPin}"
+                                            TargetType="Label"
+                                            Value="False">
+                                            <Setter Property="Text" Value="Enter your 4-digit PIN" />
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Binding="{Binding IsConfirmingPin}"
+                                            TargetType="Label"
+                                            Value="True">
+                                            <Setter Property="Text" Value="Enter it again to confirm" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Grid HorizontalOptions="Center">
+                                    <HorizontalStackLayout
+                                        HorizontalOptions="Center"
+                                        IsVisible="{Binding IsConfirmingPin, Converter={StaticResource InverseBoolConverter}}"
+                                        Spacing="16">
+                                        <Border
+                                            BackgroundColor="{Binding PinDot1, Converter={StaticResource DotFill}}"
+                                            HeightRequest="16"
+                                            StrokeThickness="0"
+                                            WidthRequest="16">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="8" />
+                                            </Border.StrokeShape>
+                                        </Border>
+                                        <Border
+                                            BackgroundColor="{Binding PinDot2, Converter={StaticResource DotFill}}"
+                                            HeightRequest="16"
+                                            StrokeThickness="0"
+                                            WidthRequest="16">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="8" />
+                                            </Border.StrokeShape>
+                                        </Border>
+                                        <Border
+                                            BackgroundColor="{Binding PinDot3, Converter={StaticResource DotFill}}"
+                                            HeightRequest="16"
+                                            StrokeThickness="0"
+                                            WidthRequest="16">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="8" />
+                                            </Border.StrokeShape>
+                                        </Border>
+                                        <Border
+                                            BackgroundColor="{Binding PinDot4, Converter={StaticResource DotFill}}"
+                                            HeightRequest="16"
+                                            StrokeThickness="0"
+                                            WidthRequest="16">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="8" />
+                                            </Border.StrokeShape>
+                                        </Border>
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout
+                                        HorizontalOptions="Center"
+                                        IsVisible="{Binding IsConfirmingPin}"
+                                        Spacing="16">
+                                        <Border
+                                            BackgroundColor="{Binding ConfirmDot1, Converter={StaticResource DotFill}}"
+                                            HeightRequest="16"
+                                            StrokeThickness="0"
+                                            WidthRequest="16">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="8" />
+                                            </Border.StrokeShape>
+                                        </Border>
+                                        <Border
+                                            BackgroundColor="{Binding ConfirmDot2, Converter={StaticResource DotFill}}"
+                                            HeightRequest="16"
+                                            StrokeThickness="0"
+                                            WidthRequest="16">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="8" />
+                                            </Border.StrokeShape>
+                                        </Border>
+                                        <Border
+                                            BackgroundColor="{Binding ConfirmDot3, Converter={StaticResource DotFill}}"
+                                            HeightRequest="16"
+                                            StrokeThickness="0"
+                                            WidthRequest="16">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="8" />
+                                            </Border.StrokeShape>
+                                        </Border>
+                                        <Border
+                                            BackgroundColor="{Binding ConfirmDot4, Converter={StaticResource DotFill}}"
+                                            HeightRequest="16"
+                                            StrokeThickness="0"
+                                            WidthRequest="16">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="8" />
+                                            </Border.StrokeShape>
+                                        </Border>
+                                    </HorizontalStackLayout>
+                                </Grid>
+                                <Border
+                                    Padding="14,12"
+                                    BackgroundColor="{DynamicResource Gray-50}"
+                                    HorizontalOptions="Center"
+                                    StrokeThickness="0"
+                                    WidthRequest="200">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Entry
+                                        x:Name="txtPinEntry"
+                                        FontAttributes="Bold"
+                                        FontSize="22"
+                                        HorizontalOptions="Center"
+                                        HorizontalTextAlignment="Center"
+                                        IsPassword="True"
+                                        Keyboard="Numeric"
+                                        MaxLength="4"
+                                        Placeholder="● ● ● ●"
+                                        PlaceholderColor="{DynamicResource Gray-300}"
+                                        TextChanged="PinEntry_TextChanged"
+                                        TextColor="{DynamicResource TextColor}" />
+                                </Border>
+                                <Label
+                                    FontSize="13"
+                                    HorizontalTextAlignment="Center"
+                                    IsVisible="{Binding HasPinError}"
+                                    Text="{Binding PinErrorMessage}"
+                                    TextColor="#EF4444" />
+                                <HorizontalStackLayout
+                                    HorizontalOptions="Center"
+                                    IsVisible="{Binding IsPinSaved}"
+                                    Spacing="8">
+                                    <mi:MauiIcon
+                                        Icon="{mi:Material Icon=CheckCircle}"
+                                        IconColor="#22C55E"
+                                        IconSize="20"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="PIN saved — you're all set!"
+                                        TextColor="#22C55E"
+                                        VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Label
+                        FontSize="12"
+                        HorizontalTextAlignment="Center"
+                        Text="You can skip this and set it up later in Settings"
+                        TextColor="{DynamicResource TextTertiaryColor}" />
+                </VerticalStackLayout>
+
+                <!--  STEP 2: AUTOFILL  -->
+                <VerticalStackLayout IsVisible="{Binding IsAutofillStepVisible}" Spacing="14">
+                    <Border Padding="18" StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Offset="0" Color="{Binding IsAutofillEnabled, Converter={StaticResource AutofillGradientStart}}" />
+                                <GradientStop Offset="1" Color="{Binding IsAutofillEnabled, Converter={StaticResource AutofillGradientEnd}}" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="12"
+                                BackgroundColor="#25FFFFFF"
+                                HeightRequest="52"
+                                StrokeThickness="0"
+                                WidthRequest="52">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="14" />
+                                </Border.StrokeShape>
+                                <!--  Icon switches between AutoAwesome (off) and CheckCircle (on)  -->
+                                <Label
+                                    FontFamily="MaterialIcons"
+                                    FontSize="26"
+                                    HorizontalOptions="Center"
+                                    Text="{mi:Material Icon=Shield}"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="2"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="17"
+                                    TextColor="White">
+                                    <Label.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding IsAutofillEnabled}"
+                                            TargetType="Label"
+                                            Value="True">
+                                            <Setter Property="Text" Value="AutoFill is On ✓" />
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Binding="{Binding IsAutofillEnabled}"
+                                            TargetType="Label"
+                                            Value="False">
+                                            <Setter Property="Text" Value="AutoFill is Off" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label
+                                    FontSize="13"
+                                    Opacity="0.9"
+                                    TextColor="White">
+                                    <Label.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding IsAutofillEnabled}"
+                                            TargetType="Label"
+                                            Value="True">
+                                            <Setter Property="Text" Value="FORTRESS will suggest passwords, cards and identities in apps and browsers" />
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Binding="{Binding IsAutofillEnabled}"
+                                            TargetType="Label"
+                                            Value="False">
+                                            <Setter Property="Text" Value="Follow the steps below to enable it" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <Border
+                        Padding="16"
+                        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IsVisible="{Binding IsAutofillNotEnabled}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <mi:MauiIcon
+                                Grid.Column="0"
+                                Icon="{mi:Material Icon=Info}"
+                                IconColor="{DynamicResource PrimaryColor}"
+                                IconSize="22"
+                                VerticalOptions="Start" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="3">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="What does AutoFill do?"
+                                    TextColor="{DynamicResource PrimaryColor}" />
+                                <Label
+                                    FontSize="13"
+                                    Text="When you open any app or website that asks for a username and password, FORTRESS pops up and fills it in for you automatically — no typing needed."
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <!--  Android instructions  -->
+                    <VerticalStackLayout IsVisible="{Binding IsAndroid}" Spacing="12">
+                        <Border
+                            Padding="18"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            IsVisible="{Binding IsAutofillNotEnabled}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.05"
+                                    Radius="10"
+                                    Offset="0,3" />
+                            </Border.Shadow>
+                            <VerticalStackLayout Spacing="16">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Enable in 3 taps:"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                    <Border
+                                        Grid.Column="0"
+                                        BackgroundColor="{DynamicResource PrimaryColor}"
+                                        HeightRequest="28"
+                                        StrokeThickness="0"
+                                        WidthRequest="28">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="14" />
+                                        </Border.StrokeShape>
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            HorizontalOptions="Center"
+                                            Text="1"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            Text="Tap the button below"
+                                            TextColor="{DynamicResource TextColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            Text="It opens &quot;Autofill service&quot; in Android Settings"
+                                            TextColor="{DynamicResource TextSecondaryColor}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                    <Border
+                                        Grid.Column="0"
+                                        BackgroundColor="{DynamicResource PrimaryColor}"
+                                        HeightRequest="28"
+                                        StrokeThickness="0"
+                                        WidthRequest="28">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="14" />
+                                        </Border.StrokeShape>
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            HorizontalOptions="Center"
+                                            Text="2"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            Text="Select Fortress from the list"
+                                            TextColor="{DynamicResource TextColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            Text="Look for &quot;Fortress&quot; and tap it"
+                                            TextColor="{DynamicResource TextSecondaryColor}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                    <Border
+                                        Grid.Column="0"
+                                        BackgroundColor="{DynamicResource PrimaryColor}"
+                                        HeightRequest="28"
+                                        StrokeThickness="0"
+                                        WidthRequest="28">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="14" />
+                                        </Border.StrokeShape>
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            HorizontalOptions="Center"
+                                            Text="3"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            Text="Come back here"
+                                            TextColor="{DynamicResource TextColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            Text="The status at the top will turn green automatically"
+                                            TextColor="{DynamicResource TextSecondaryColor}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <!--  Open settings button — solid PrimaryColor  -->
+                                <Border
+                                    Padding="0"
+                                    BackgroundColor="{DynamicResource PrimaryColor}"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Button
+                                        Padding="0,14"
+                                        BackgroundColor="Transparent"
+                                        BorderWidth="0"
+                                        Command="{Binding OpenAutofillSettingsCommand}"
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="Open AutoFill Settings →"
+                                        TextColor="White" />
+                                </Border>
+                            </VerticalStackLayout>
+                        </Border>
+                        <Border
+                            Padding="14"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.04"
+                                    Radius="8"
+                                    Offset="0,2" />
+                            </Border.Shadow>
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="8"
+                                    BackgroundColor="#FEF3C7"
+                                    HeightRequest="38"
+                                    StrokeThickness="0"
+                                    WidthRequest="38">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="10" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=Language}"
+                                        IconColor="#F59E0B"
+                                        IconSize="20"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" Spacing="3">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="13"
+                                        Text="Also enable in Chrome browser"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label FontSize="12" TextColor="{DynamicResource TextSecondaryColor}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Open Chrome → tap the three dots (⋮) → " />
+                                                <Span FontAttributes="Bold" Text="Settings → Passwords → AutoFill service" />
+                                                <Span Text=" → select Fortress." />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!--  iOS instructions  -->
+                    <VerticalStackLayout IsVisible="{Binding IsIOS}" Spacing="12">
+                        <Border
+                            Padding="18"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            IsVisible="{Binding IsAutofillNotEnabled}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.05"
+                                    Radius="10"
+                                    Offset="0,3" />
+                            </Border.Shadow>
+                            <VerticalStackLayout Spacing="16">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Enable in 4 steps:"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                    <Border
+                                        Grid.Column="0"
+                                        BackgroundColor="{DynamicResource PrimaryColor}"
+                                        HeightRequest="28"
+                                        StrokeThickness="0"
+                                        WidthRequest="28">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="14" />
+                                        </Border.StrokeShape>
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            HorizontalOptions="Center"
+                                            Text="1"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            Text="Open your iPhone Settings"
+                                            TextColor="{DynamicResource TextColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            Text="Tap the button below — it opens Settings for you"
+                                            TextColor="{DynamicResource TextSecondaryColor}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                    <Border
+                                        Grid.Column="0"
+                                        BackgroundColor="{DynamicResource PrimaryColor}"
+                                        HeightRequest="28"
+                                        StrokeThickness="0"
+                                        WidthRequest="28">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="14" />
+                                        </Border.StrokeShape>
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            HorizontalOptions="Center"
+                                            Text="2"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            Text="Tap &quot;General&quot;"
+                                            TextColor="{DynamicResource TextColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            Text="Scroll down and tap General"
+                                            TextColor="{DynamicResource TextSecondaryColor}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                    <Border
+                                        Grid.Column="0"
+                                        BackgroundColor="{DynamicResource PrimaryColor}"
+                                        HeightRequest="28"
+                                        StrokeThickness="0"
+                                        WidthRequest="28">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="14" />
+                                        </Border.StrokeShape>
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            HorizontalOptions="Center"
+                                            Text="3"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            Text="Tap &quot;AutoFill &amp; Passwords&quot;"
+                                            TextColor="{DynamicResource TextColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            Text="Then tap AutoFill Passwords and Passkeys"
+                                            TextColor="{DynamicResource TextSecondaryColor}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                    <Border
+                                        Grid.Column="0"
+                                        BackgroundColor="{DynamicResource PrimaryColor}"
+                                        HeightRequest="28"
+                                        StrokeThickness="0"
+                                        WidthRequest="28">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="14" />
+                                        </Border.StrokeShape>
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            HorizontalOptions="Center"
+                                            Text="4"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            Text="Turn on &quot;FORTRESS&quot;"
+                                            TextColor="{DynamicResource TextColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            Text="Find FORTRESS in the list and enable it under &quot;AutoFill From&quot;"
+                                            TextColor="{DynamicResource TextSecondaryColor}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <!--  Open Settings button — solid PrimaryColor  -->
+                                <Border
+                                    Padding="0"
+                                    BackgroundColor="{DynamicResource PrimaryColor}"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Button
+                                        Padding="0,14"
+                                        BackgroundColor="Transparent"
+                                        BorderWidth="0"
+                                        Command="{Binding OpenAutofillSettingsCommand}"
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="Open iPhone Settings →"
+                                        TextColor="White" />
+                                </Border>
+                            </VerticalStackLayout>
+                        </Border>
+                        <Border
+                            Padding="14"
+                            BackgroundColor="{DynamicResource WarningLightColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                <mi:MauiIcon
+                                    Grid.Column="0"
+                                    Icon="{mi:Material Icon=Info}"
+                                    IconColor="{DynamicResource WarningColor}"
+                                    IconSize="20"
+                                    VerticalOptions="Start" />
+                                <Label
+                                    Grid.Column="1"
+                                    FontSize="12"
+                                    Text="Apple doesn't let apps check whether AutoFill is on — please confirm it yourself after following the steps above."
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </Grid>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Label
+                        FontSize="12"
+                        HorizontalTextAlignment="Center"
+                        Text="You can skip this and enable it later in Settings"
+                        TextColor="{DynamicResource TextTertiaryColor}" />
+                </VerticalStackLayout>
+
+                <!--  STEP 3: CLOUD SYNC  -->
+                <VerticalStackLayout IsVisible="{Binding IsCloudSyncStepVisible}" Spacing="14">
+                    <Border
+                        Padding="16"
+                        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <mi:MauiIcon
+                                Grid.Column="0"
+                                Icon="{mi:Material Icon=Info}"
+                                IconColor="{DynamicResource PrimaryColor}"
+                                IconSize="22"
+                                VerticalOptions="Start" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Back up your vault to the cloud or local drive"
+                                    TextColor="{DynamicResource PrimaryColor}" />
+                                <Label
+                                    FontSize="13"
+                                    Text="Your data is encrypted on your device before they are uploaded — even the cloud provider cannot read them. If you ever lose your phone, you can restore everything."
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <!--  Connected state  -->
+                    <Border
+                        Padding="16"
+                        BackgroundColor="#F0FDF4"
+                        IsVisible="{Binding IsCloudConnected}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <VerticalStackLayout Spacing="12">
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="10"
+                                    BackgroundColor="#DCFCE7"
+                                    HeightRequest="44"
+                                    StrokeThickness="0"
+                                    WidthRequest="44">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        Icon="{mi:Material Icon=CloudDone}"
+                                        IconColor="#16A34A"
+                                        IconSize="22" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="{Binding CloudConnectedProviderName, StringFormat='{0} Connected'}"
+                                        TextColor="#15803D" />
+                                    <Label
+                                        FontSize="12"
+                                        IsVisible="{Binding CloudConnectedEmail, Converter={StaticResource StringNotNullOrEmpty}}"
+                                        Text="{Binding CloudConnectedEmail}"
+                                        TextColor="#16A34A" />
+                                </VerticalStackLayout>
+                                <mi:MauiIcon
+                                    Grid.Column="2"
+                                    Icon="{mi:Material Icon=CheckCircle}"
+                                    IconColor="#16A34A"
+                                    IconSize="22"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                            <Button
+                                Padding="0,10"
+                                BackgroundColor="Transparent"
+                                BorderColor="{DynamicResource Gray-300}"
+                                BorderWidth="1"
+                                Command="{Binding DisconnectCloudCommand}"
+                                CornerRadius="10"
+                                FontSize="13"
+                                Text="Disconnect and choose a different service"
+                                TextColor="{DynamicResource TextSecondaryColor}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Provider selection  -->
+                    <VerticalStackLayout IsVisible="{Binding IsCloudNotConnected}" Spacing="12">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            Text="Choose where to back up:"
+                            TextColor="{DynamicResource TextColor}" />
+
+                        <!--  Google Drive  -->
+                        <Border
+                            Padding="14"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="{Binding IsGoogleDriveSelected, Converter={StaticResource GoogleStroke}}">
+                            <Border.Stroke>
+                                <SolidColorBrush Color="{Binding IsGoogleDriveSelected, Converter={StaticResource GoogleStrokeColor}}" />
+                            </Border.Stroke>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.04"
+                                    Radius="8"
+                                    Offset="0,2" />
+                            </Border.Shadow>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectProviderCommand}" CommandParameter="googledrive" />
+                            </Border.GestureRecognizers>
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="9"
+                                    BackgroundColor="#EEF2FF"
+                                    HeightRequest="42"
+                                    StrokeThickness="0"
+                                    WidthRequest="42">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="11" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=CloudUpload}"
+                                        IconColor="#4285F4"
+                                        IconSize="22"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="Google Drive"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        Text="Free 15 GB — use any Google account"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                                <Border
+                                    Grid.Column="2"
+                                    Padding="4"
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="24"
+                                    StrokeThickness="2"
+                                    WidthRequest="24">
+                                    <Border.Stroke>
+                                        <SolidColorBrush Color="{Binding IsGoogleDriveSelected, Converter={StaticResource GoogleRadioStroke}}" />
+                                    </Border.Stroke>
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Border
+                                        Padding="4"
+                                        IsVisible="{Binding IsGoogleDriveSelected}"
+                                        StrokeThickness="0">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="#4285F4" />
+                                        </Border.Background>
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="8" />
+                                        </Border.StrokeShape>
+                                    </Border>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!--  iCloud (iOS only)  -->
+                        <Border
+                            Padding="14"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            IsVisible="{Binding IsIOS}"
+                            StrokeThickness="{Binding IsICloudSelected, Converter={StaticResource ICloudStroke}}">
+                            <Border.Stroke>
+                                <SolidColorBrush Color="{Binding IsICloudSelected, Converter={StaticResource ICloudStrokeColor}}" />
+                            </Border.Stroke>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.04"
+                                    Radius="8"
+                                    Offset="0,2" />
+                            </Border.Shadow>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectProviderCommand}" CommandParameter="icloud" />
+                            </Border.GestureRecognizers>
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="9"
+                                    BackgroundColor="#E8F4FD"
+                                    HeightRequest="42"
+                                    StrokeThickness="0"
+                                    WidthRequest="42">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="11" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=Cloud}"
+                                        IconColor="#147CE5"
+                                        IconSize="22"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="iCloud"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        Text="Seamless on iPhone &amp; iPad — uses your Apple ID"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                                <Border
+                                    Grid.Column="2"
+                                    Padding="4"
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="24"
+                                    StrokeThickness="2"
+                                    WidthRequest="24">
+                                    <Border.Stroke>
+                                        <SolidColorBrush Color="{Binding IsICloudSelected, Converter={StaticResource ICloudRadioStroke}}" />
+                                    </Border.Stroke>
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Border
+                                        Padding="4"
+                                        IsVisible="{Binding IsICloudSelected}"
+                                        StrokeThickness="0">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="#147CE5" />
+                                        </Border.Background>
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="8" />
+                                        </Border.StrokeShape>
+                                    </Border>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!--  OneDrive  -->
+                        <Border
+                            Padding="14"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="{Binding IsOneDriveSelected, Converter={StaticResource OneDriveStroke}}">
+                            <Border.Stroke>
+                                <SolidColorBrush Color="{Binding IsOneDriveSelected, Converter={StaticResource OneDriveStrokeColor}}" />
+                            </Border.Stroke>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.04"
+                                    Radius="8"
+                                    Offset="0,2" />
+                            </Border.Shadow>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectProviderCommand}" CommandParameter="onedrive" />
+                            </Border.GestureRecognizers>
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="9"
+                                    BackgroundColor="#E8F1FB"
+                                    HeightRequest="42"
+                                    StrokeThickness="0"
+                                    WidthRequest="42">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="11" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=CloudSync}"
+                                        IconColor="#0078D4"
+                                        IconSize="22"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="OneDrive"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        Text="5 GB free — use your Microsoft account"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                                <Border
+                                    Grid.Column="2"
+                                    Padding="4"
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="24"
+                                    StrokeThickness="2"
+                                    WidthRequest="24">
+                                    <Border.Stroke>
+                                        <SolidColorBrush Color="{Binding IsOneDriveSelected, Converter={StaticResource OneDriveRadioStroke}}" />
+                                    </Border.Stroke>
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Border
+                                        Padding="4"
+                                        IsVisible="{Binding IsOneDriveSelected}"
+                                        StrokeThickness="0">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="#0078D4" />
+                                        </Border.Background>
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="8" />
+                                        </Border.StrokeShape>
+                                    </Border>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!--  Dropbox  -->
+                        <Border
+                            Padding="14"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="{Binding IsDropboxSelected, Converter={StaticResource DropboxStroke}}">
+                            <Border.Stroke>
+                                <SolidColorBrush Color="{Binding IsDropboxSelected, Converter={StaticResource DropboxStrokeColor}}" />
+                            </Border.Stroke>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.04"
+                                    Radius="8"
+                                    Offset="0,2" />
+                            </Border.Shadow>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SelectProviderCommand}" CommandParameter="dropbox" />
+                            </Border.GestureRecognizers>
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="9"
+                                    BackgroundColor="#E8EEFF"
+                                    HeightRequest="42"
+                                    StrokeThickness="0"
+                                    WidthRequest="42">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="11" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=Folder}"
+                                        IconColor="#0061FF"
+                                        IconSize="22"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="Dropbox"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        Text="2 GB free — works on Android &amp; iOS"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                                <Border
+                                    Grid.Column="2"
+                                    Padding="4"
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="24"
+                                    StrokeThickness="2"
+                                    WidthRequest="24">
+                                    <Border.Stroke>
+                                        <SolidColorBrush Color="{Binding IsDropboxSelected, Converter={StaticResource DropboxRadioStroke}}" />
+                                    </Border.Stroke>
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Border
+                                        Padding="4"
+                                        IsVisible="{Binding IsDropboxSelected}"
+                                        StrokeThickness="0">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="#0061FF" />
+                                        </Border.Background>
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="8" />
+                                        </Border.StrokeShape>
+                                    </Border>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <!--  Connect button — solid PrimaryColor  -->
+                        <Border
+                            Padding="0"
+                            BackgroundColor="{DynamicResource PrimaryColor}"
+                            IsVisible="{Binding IsProviderSelected}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="{DynamicResource PrimaryColor}"
+                                    Opacity="0.2"
+                                    Radius="12"
+                                    Offset="0,4" />
+                            </Border.Shadow>
+                            <Button
+                                Padding="0,16"
+                                BackgroundColor="Transparent"
+                                BorderWidth="0"
+                                Command="{Binding ConnectCloudCommand}"
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                IsEnabled="{Binding IsCloudConnecting, Converter={StaticResource InverseBoolConverter}}"
+                                TextColor="White">
+                                <Button.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding IsCloudConnecting}"
+                                        TargetType="Button"
+                                        Value="False">
+                                        <Setter Property="Text" Value="Connect and Back Up →" />
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding IsCloudConnecting}"
+                                        TargetType="Button"
+                                        Value="True">
+                                        <Setter Property="Text" Value="Connecting…" />
+                                    </DataTrigger>
+                                </Button.Triggers>
+                            </Button>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Label
+                        FontSize="12"
+                        HorizontalTextAlignment="Center"
+                        Text="You can set up backups and sync later in Settings"
+                        TextColor="{DynamicResource TextTertiaryColor}" />
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  FOOTER  -->
+        <Border
+            Grid.Row="2"
+            Padding="20,14,20,32"
+            BackgroundColor="{DynamicResource CardBackgroundColor}"
+            StrokeThickness="0">
+            <Border.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.06"
+                    Radius="14"
+                    Offset="0,-4" />
+            </Border.Shadow>
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+
+                <!--  Skip  -->
+                <Border
+                    Grid.Column="0"
+                    Padding="0"
+                    BackgroundColor="{DynamicResource Gray-100}"
+                    HeightRequest="52"
+                    IsVisible="{Binding ShowSkipButton}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14" />
+                    </Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding SkipCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        Text="Skip for now"
+                        TextColor="{DynamicResource TextSecondaryColor}"
+                        VerticalOptions="Center" />
+                </Border>
+
+                <!--  Continue / Finish — solid PrimaryColor  -->
+                <Border
+                    Grid.Column="{Binding ShowSkipButton, Converter={StaticResource SkipColIndex}}"
+                    Grid.ColumnSpan="{Binding ShowSkipButton, Converter={StaticResource SkipColSpan}}"
+                    Padding="0"
+                    BackgroundColor="{DynamicResource PrimaryColor}"
+                    HeightRequest="52"
+                    IsEnabled="{Binding CanGoNext}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14" />
+                    </Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NextCommand}" />
+                    </Border.GestureRecognizers>
+                    <Border.Triggers>
+                        <DataTrigger
+                            Binding="{Binding CanGoNext}"
+                            TargetType="Border"
+                            Value="False">
+                            <Setter Property="Opacity" Value="0.45" />
+                        </DataTrigger>
+                    </Border.Triggers>
+                    <Grid>
+                        <HorizontalStackLayout
+                            HorizontalOptions="Center"
+                            Spacing="8"
+                            VerticalOptions="Center">
+                            <HorizontalStackLayout.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding IsCreating}"
+                                    TargetType="HorizontalStackLayout"
+                                    Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </HorizontalStackLayout.Triggers>
+                            <mi:MauiIcon
+                                Icon="{mi:Material Icon=ArrowForward}"
+                                IconColor="White"
+                                IconSize="20"
+                                VerticalOptions="Center" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="{Binding NextButtonText}"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout
+                            HorizontalOptions="Center"
+                            IsVisible="{Binding IsCreating}"
+                            Spacing="10"
+                            VerticalOptions="Center">
+                            <ActivityIndicator
+                                HeightRequest="20"
+                                IsRunning="{Binding IsCreating}"
+                                WidthRequest="20"
+                                Color="White" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="Setting up…"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </Grid>
+                </Border>
+
+            </Grid>
+        </Border>
+
+    </Grid>
+</ContentPage>

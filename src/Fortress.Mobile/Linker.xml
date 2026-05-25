@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<linker>
+
+  <!-- ── MAUI UI / Controls ───────────────────────────────────────────── -->
+  <assembly fullname="Fortress.Mobile">
+    <type fullname="Fortress.Controls.SearchableTitleView" preserve="all" />
+
+  <!-- ViewModels resolved by DI / Prism via reflection -->
+    <type fullname="Fortress.ViewModels.AboutPageViewModel" preserve="all" />
+    <type fullname="Fortress.ViewModels.ActivityLogPageViewModel"      preserve="all" />
+    <type fullname="Fortress.ViewModels.AddEditAuthenticatorPageViewModel" preserve="all" />
+    <type fullname="Fortress.ViewModels.AddEditCredentialPageViewModel"   preserve="all" />
+    <type fullname="Fortress.ViewModels.AddEditCreditCardPageViewModel"   preserve="all" />
+    <type fullname="Fortress.ViewModels.AddEditIdentityPageViewModel"     preserve="all" />
+    <type fullname="Fortress.ViewModels.AddEditSecureItemPageViewModel"   preserve="all" />
+    <type fullname="Fortress.ViewModels.AuthenticatorDetailPageViewModel" preserve="all" />
+    <type fullname="Fortress.ViewModels.AuthenticatorsPageViewModel"      preserve="all" />
+    <type fullname="Fortress.ViewModels.CloudSyncPageViewModel"           preserve="all" />
+    <type fullname="Fortress.ViewModels.CredentialDetailPageViewModel"    preserve="all" />
+    <type fullname="Fortress.ViewModels.CredentialsPageViewModel"         preserve="all" />
+    <type fullname="Fortress.ViewModels.CreditCardsPageViewModel"         preserve="all" />
+    <type fullname="Fortress.ViewModels.DropboxSyncPageViewModel"  preserve="all" />
+    <type fullname="Fortress.ViewModels.GoogleDriveSyncPageViewModel" preserve="all" />
+    <type fullname="Fortress.ViewModels.GroupMembersPageViewModel"        preserve="all" />
+    <type fullname="Fortress.ViewModels.GroupsPageViewModel"           preserve="all" />
+    <type fullname="Fortress.ViewModels.HelpPageViewModel"        preserve="all" />
+    <type fullname="Fortress.ViewModels.HomePageViewModel"       preserve="all" />
+    <type fullname="Fortress.ViewModels.IdentitiesPageViewModel"       preserve="all" />
+    <type fullname="Fortress.ViewModels.ImportPageViewModel"              preserve="all" />
+    <type fullname="Fortress.ViewModels.LocalLogsPageViewModel"       preserve="all" />
+    <type fullname="Fortress.ViewModels.MenuPageViewModel"           preserve="all" />
+ <type fullname="Fortress.ViewModels.NotificationDetailPageViewModel"  preserve="all" />
+    <type fullname="Fortress.ViewModels.NotificationPageViewModel" preserve="all" />
+    <type fullname="Fortress.ViewModels.OnboardingPageViewModel"        preserve="all" />
+    <type fullname="Fortress.ViewModels.OneDriveSyncPageViewModel"        preserve="all" />
+    <type fullname="Fortress.ViewModels.PasskeyDetailPageViewModel"       preserve="all" />
+<type fullname="Fortress.ViewModels.PasskeysPageViewModel"  preserve="all" />
+    <type fullname="Fortress.ViewModels.PasswordGeneratorPageViewModel"   preserve="all" />
+    <type fullname="Fortress.ViewModels.QrCodePageViewModel"     preserve="all" />
+  <type fullname="Fortress.ViewModels.ReceiveItemPageViewModel"         preserve="all" />
+    <type fullname="Fortress.ViewModels.SecureItemsPageViewModel"         preserve="all" />
+    <type fullname="Fortress.ViewModels.SecurityInsightsViewModel" preserve="all" />
+    <type fullname="Fortress.ViewModels.SetupPageViewModel"               preserve="all" />
+    <type fullname="Fortress.ViewModels.ShareItemPageViewModel"           preserve="all" />
+    <type fullname="Fortress.ViewModels.UnlockPageViewModel"  preserve="all" />
+    <type fullname="Fortress.ViewModels.UsbExportPageViewModel"    preserve="all" />
+  <type fullname="Fortress.ViewModels.VaultHealthPageViewModel"      preserve="all" />
+    <type fullname="Fortress.ViewModels.ViewModelBase"    preserve="all" />
+
+    <!-- Popup / sheet ViewModels -->
+    <type fullname="Fortress.ViewModels.PopupPagesViewModels.AddMemberSheetViewModel"     preserve="all" />
+    <type fullname="Fortress.ViewModels.PopupPagesViewModels.AlertSheetViewModel"         preserve="all" />
+    <type fullname="Fortress.ViewModels.PopupPagesViewModels.BottomSheetViewModel"     preserve="all" />
+    <type fullname="Fortress.ViewModels.LogFiltersSheetViewModel"  preserve="all" />
+    <type fullname="Fortress.ViewModels.PopupPagesViewModels.ScanQrCodeSheetViewModel"    preserve="all" />
+    <type fullname="Fortress.ViewModels.SetUnlockPINSheetViewModel"            preserve="all" />
+    <type fullname="Fortress.ViewModels.PopupPagesViewModels.SetupInputSheetViewModel"    preserve="all" />
+    <type fullname="Fortress.ViewModels.PopupPagesViewModels.VoiceListeningSheetViewModel" preserve="all" />
+
+    <!-- Auxiliary ViewModel types -->
+    <type fullname="Fortress.ViewModels.SyncScheduleOption"       preserve="all" />
+    <type fullname="Fortress.ViewModels.SecureNoteItemViewModel"  preserve="all" />
+    <type fullname="Fortress.ViewModels.IdentityItemViewModel"    preserve="all" />
+    <type fullname="Fortress.ViewModels.SecureItemViewModel"      preserve="all" />
+
+    <!-- Value converters referenced by XAML -->
+    <type fullname="Fortress.Converters.*" preserve="all" />
+
+    <!-- Pages (XAML code-behind instantiated via reflection by Prism) -->
+    <type fullname="Fortress.Views.*" preserve="all" />
+
+    <!-- Popup pages -->
+    <type fullname="Fortress.Views.PopupPages.*" preserve="all" />
+
+    <!-- Controls used in XAML -->
+    <type fullname="Fortress.Controls.*" preserve="all" />
+  </assembly>
+
+  <!-- ── Core models / services ────────────────────────────────────────── -->
+  <assembly fullname="Fortress.Mobile.Core">
+
+    <!-- Models — SQLite-net / System.Text.Json map via reflection -->
+    <type fullname="Fortress.Mobile.Core.Models.ApplicationState"  preserve="all" />
+<type fullname="Fortress.Mobile.Core.Models.AuditLog" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.Authenticator"  preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.CardAutofillMeta"      preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.IdentityAutofillMeta"  preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.CipherType"    preserve="all" />
+ <type fullname="Fortress.Mobile.Core.Models.CommandResult"           preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.ComputerLoginPasswordView" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.Credential"      preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.CredentialType"          preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.CredentialView" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.CreditCardView"         preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.Device" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.DeviceDto"      preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.DeviceType"    preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.EventLog"          preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.EventLogType"   preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.Group" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.ImportSourceFormat"      preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.DuplicateMergeOption"    preserve="all" />
+<type fullname="Fortress.Mobile.Core.Models.ImportCandidate"         preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.ImportPreview"     preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.ImportResult"          preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.ImportAuditRecord"       preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.AuthenticatorImportFormat" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.AuthenticatorCandidate"  preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.AuthenticatorImportPreview" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.AuthenticatorImportResult" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.InstalledApplication"    preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.LogFilter"       preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.MetaView"         preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.AuthenticationStatus"    preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.StorageLocation"     preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.NotificationType"   preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.PasskeyItem"     preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.PhoneApplicationPasswordView" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.QueryResult"   preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.Response"    preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.SecureNoteView"      preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.SharedItemPayload"  preserve="all" />
+  <type fullname="Fortress.Mobile.Core.Models.TokenTypes"   preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.TokenValidation"         preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.UpdateCredentialDto"   preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.UserNotification"  preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.UserPassword"      preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.UsersGroups"       preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.VaultBackupSnapshot"     preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.VaultGroup"   preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.VaultGroupMembership"    preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.VaultHealthConfig"       preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.VaultHealthResult" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.VaultHealthSnapshot"     preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.LoginItem"         preserve="all" />
+  <type fullname="Fortress.Mobile.Core.Models.LoginType"  preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.CreditCardItem"   preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.IdentityItem" preserve="all" />
+  <type fullname="Fortress.Mobile.Core.Models.SecureNoteItem"       preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.SecureItemType"         preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.SecureItem" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.VerifyIdentityResponse"  preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.View"           preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.VoiceCommandIntent" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.VoiceCommandResult"      preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Models.WebPasswordView"      preserve="all" />
+
+    <!-- HibpModels — HIBP JSON deserialization -->
+    <type fullname="Fortress.Mobile.Core.Models.HibpModels"     preserve="all" />
+
+    <!-- Jobs resolved by Shiny via reflection -->
+    <type fullname="Fortress.Mobile.Core.Services.Jobs.CloudBackupJob"   preserve="all" />
+
+    <!-- Services registered in DI -->
+    <type fullname="Fortress.Mobile.Core.Services.CryptographyService"   preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Services.DataStorageService"    preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Services.EventLogProcessor"     preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Services.CredentialResolver"    preserve="all" />
+ <type fullname="Fortress.Mobile.Core.Services.PreferenceWrapper"  preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Services.CloudSyncScheduler"    preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Services.HaveIBeenPwnedService" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Services.NotificationService"   preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Services.PasswordAnomalyDetector" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Services.VaultHealthCalculator" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Services.VaultShareService"     preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Services.MlNetIntentClassifier" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Services.VoiceCommandParser"    preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Services.ImportHmacProvider"    preserve="all" />
+
+    <!-- Cloud sync services -->
+    <type fullname="Fortress.Mobile.Core.Contracts.GoogleDriveSyncService" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Contracts.DropboxSyncService"     preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Contracts.OneDriveSyncService" preserve="all" />
+
+    <!-- Cloud option models (bound via IOptions) -->
+    <type fullname="Fortress.Mobile.Core.Contracts.GoogleDriveOptions"   preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Contracts.DropboxOptions"    preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Contracts.OneDriveOptions"      preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Contracts.SyncSchedule"         preserve="all" />
+
+    <!-- Intelligence engine types resolved via DI -->
+    <type fullname="Fortress.Mobile.Core.Intelligence.DomainRiskAnalyzer"   preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Intelligence.ItemClassifier"   preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Intelligence.VoiceCommandRouter"        preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Intelligence.AutofillSuggestionEngine"  preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Intelligence.AutofillRiskEngine"        preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Intelligence.PhishingUrlScorer"         preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Intelligence.SemanticIntentFallback" preserve="all" />
+    <type fullname="Fortress.Mobile.Core.Intelligence.SemanticVaultSearch"       preserve="all" />
+  </assembly>
+
+  <!-- ── BCL crypto types used at runtime (not statically traceable) ── -->
+  <assembly fullname="System.Security.Cryptography">
+    <type fullname="System.Security.Cryptography.PasswordDeriveBytes" preserve="all" />
+    <type fullname="System.Security.Cryptography.Rfc2898DeriveBytes"    preserve="all" />
+    <type fullname="System.Security.Cryptography.RandomNumberGenerator" preserve="all" />
+    <type fullname="System.Security.Cryptography.Aes"           preserve="all" />
+    <type fullname="System.Security.Cryptography.AesManaged"  preserve="all" />
+    <type fullname="System.Security.Cryptography.CryptoStream"      preserve="all" />
+    <type fullname="System.Security.Cryptography.ICryptoTransform"      preserve="all" />
+    <type fullname="System.Security.Cryptography.HMACSHA256"      preserve="all" />
+    <type fullname="System.Security.Cryptography.HMACSHA1"     preserve="all" />
+  </assembly>
+
+  <!-- ── Threading primitives ─────────────────────────────────────────── -->
+  <assembly fullname="System.Private.CoreLib">
+    <type fullname="System.Threading.SemaphoreSlim" preserve="all" />
+  </assembly>
+
+  <!-- ── System.Text.Json source-gen fallback ─────────────────────────── -->
+  <assembly fullname="System.Text.Json">
+    <type fullname="System.Text.Json.Serialization.Metadata.*" preserve="all" />
+  </assembly>
+
+  <!-- ── MauiIcons font assemblies (register fonts via reflection) ─────── -->
+  <assembly fullname="AathifMahir.Maui.MauiIcons.Core" preserve="all" />
+  <assembly fullname="AathifMahir.Maui.MauiIcons.Material" preserve="all" />
+  <assembly fullname="AathifMahir.Maui.MauiIcons.FontAwesome" preserve="all" />
+  <assembly fullname="AathifMahir.Maui.MauiIcons.FontAwesome.Brand" preserve="all" />
+  <assembly fullname="AathifMahir.Maui.MauiIcons.FontAwesome.Solid" preserve="all" />
+
+</linker>

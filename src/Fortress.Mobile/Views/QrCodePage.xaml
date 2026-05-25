@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.QrCodePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctrl="clr-namespace:Fortress.Controls"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    xmlns:sfButtons="clr-namespace:Syncfusion.Maui.Toolkit.Buttons;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.Maui.Controls"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!--  ═══ HERO HEADER ═══  -->
+        <ctrl:VaultPageHero
+            Title="{Binding Title, FallbackValue='QR Code'}"
+            Grid.Row="0"
+            BackCommand="{Binding GoBackCommand}"
+            CountText="Scan or copy to import"
+            GradientEnd="{DynamicResource AuthHeroGradientEnd}"
+            GradientStart="{DynamicResource AuthHeroGradientStart}"
+            IconGlyph="&#xE87B;"
+            SearchEnabled="False"
+            Subtitle="AUTHENTICATOR" />
+
+        <!--  ═══ CONTENT ═══  -->
+        <ScrollView Grid.Row="1" Padding="20,16,20,8">
+            <VerticalStackLayout Spacing="20">
+
+                <!--  QR Code Card  -->
+                <Border
+                    Padding="24"
+                    BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    HorizontalOptions="Center"
+                    StrokeThickness="1">
+                    <Border.Stroke>
+                        <SolidColorBrush Color="{DynamicResource BorderColor}" />
+                    </Border.Stroke>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{DynamicResource GrayShadowColor}"
+                            Opacity="0.08"
+                            Radius="16"
+                            Offset="0,4" />
+                    </Border.Shadow>
+
+                    <VerticalStackLayout Spacing="16">
+
+                        <!--  Account label  -->
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="17"
+                            HorizontalOptions="Center"
+                            HorizontalTextAlignment="Center"
+                            Text="{Binding Title, FallbackValue='Account'}"
+                            TextColor="{DynamicResource TextColor}" />
+
+                        <!--  QR Code image  -->
+                        <Border
+                            Padding="12"
+                            BackgroundColor="White"
+                            HorizontalOptions="Center"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <zxing:BarcodeGeneratorView
+                                BackgroundColor="White"
+                                Format="QrCode"
+                                HeightRequest="240"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                WidthRequest="240"
+                                Value="{Binding QrCode, FallbackValue='1'}" />
+                        </Border>
+
+                        <!--  Divider  -->
+                        <BoxView
+                            HeightRequest="1"
+                            HorizontalOptions="Fill"
+                            Opacity="0.6"
+                            Color="{DynamicResource BorderColor}" />
+
+                        <!--  URI preview  -->
+                        <Label
+                            FontSize="11"
+                            HorizontalOptions="Center"
+                            HorizontalTextAlignment="Center"
+                            LineBreakMode="CharacterWrap"
+                            MaxLines="3"
+                            Text="{Binding QrCode}"
+                            TextColor="{DynamicResource TextTertiaryColor}" />
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  Info banner  -->
+                <Border
+                    Padding="14,10"
+                    BackgroundColor="{DynamicResource InfoLightColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Grid
+                        ColumnDefinitions="Auto,*"
+                        ColumnSpacing="10"
+                        VerticalOptions="Center">
+                        <mi:MauiIcon
+                            Grid.Column="0"
+                            Icon="{mi:Material Icon=Info}"
+                            IconColor="{DynamicResource InfoColor}"
+                            IconSize="18"
+                            VerticalOptions="Start" />
+                        <Label
+                            Grid.Column="1"
+                            FontSize="13"
+                            LineBreakMode="WordWrap"
+                            Text="Scan this QR code with an authenticator app, or copy the URI to import the account."
+                            TextColor="{DynamicResource InfoColor}"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  ═══ ACTION BAR ═══  -->
+        <Grid
+            Grid.Row="2"
+            Padding="20,12,20,32"
+            BackgroundColor="{DynamicResource CardBackgroundColor}"
+            ColumnDefinitions="*,12,*"
+            ColumnSpacing="0">
+            <Grid.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.06"
+                    Radius="10"
+                    Offset="0,-3" />
+            </Grid.Shadow>
+
+            <!--  Share button  -->
+            <Border
+                Grid.Column="0"
+                Padding="0"
+                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                HeightRequest="48"
+                HorizontalOptions="Fill"
+                StrokeThickness="0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
+                <!--  Grid fills the Border, Button fills the Grid  -->
+                <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+                    <HorizontalStackLayout
+                        HorizontalOptions="Center"
+                        InputTransparent="True"
+                        Spacing="8"
+                        VerticalOptions="Center">
+                        <mi:MauiIcon
+                            Icon="{mi:Material Icon=Share}"
+                            IconColor="{DynamicResource PrimaryColor}"
+                            IconSize="18"
+                            InputTransparent="True"
+                            VerticalOptions="Center" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            InputTransparent="True"
+                            Text="Share"
+                            TextColor="{DynamicResource PrimaryColor}"
+                            VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    <Button
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding ShareCommand}"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill" />
+                </Grid>
+            </Border>
+
+            <!--  Copy URI button  -->
+            <Border
+                Grid.Column="2"
+                Padding="0"
+                BackgroundColor="{DynamicResource PrimaryColor}"
+                HeightRequest="48"
+                HorizontalOptions="Fill"
+                StrokeThickness="0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="12" />
+                </Border.StrokeShape>
+                <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+                    <HorizontalStackLayout
+                        HorizontalOptions="Center"
+                        InputTransparent="True"
+                        Spacing="8"
+                        VerticalOptions="Center">
+                        <mi:MauiIcon
+                            Icon="{mi:Material Icon=ContentCopy}"
+                            IconColor="White"
+                            IconSize="18"
+                            InputTransparent="True"
+                            VerticalOptions="Center" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            InputTransparent="True"
+                            Text="Copy URI"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    <Button
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding CopyQRCodeToClipCommand}"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill" />
+                </Grid>
+            </Border>
+
+        </Grid>
+
+    </Grid>
+</ContentPage>

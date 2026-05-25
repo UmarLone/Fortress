@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.ActivityLogPage"
+ xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctrl="clr-namespace:Fortress.Controls"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:models="clr-namespace:Fortress.Mobile.Core.Models;assembly=Fortress.Mobile.Core"
+    xmlns:prism="http://prismlibrary.com"
+    prism:ViewModelLocator.AutowireViewModel="Automatic"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto">
+
+    <!-- ??? HERO ??? -->
+        <ctrl:VaultPageHero
+ Grid.Row="0"
+          Title="Activity Log"
+     BackCommand="{Binding GoBackCommand}"
+          CountText="{Binding SubtitleText}"
+            GradientEnd="{DynamicResource PrimaryGradient}"
+            GradientStart="{DynamicResource PrimaryColor}"
+     IconGlyph="&#xe873;"
+    SearchEnabled="False"
+  Subtitle="SECURITY" />
+
+        <!-- ??? ACTION BAR ??? -->
+        <Grid
+            Grid.Row="1"
+    Margin="16,8"
+      ColumnDefinitions="*,Auto,Auto,Auto,Auto">
+
+         <!--  Search toggle  -->
+         <Border
+          Grid.Column="1"
+       Padding="0"
+     BackgroundColor="{DynamicResource PrimaryLightestColor}"
+      HeightRequest="36"
+         StrokeThickness="0"
+          WidthRequest="36">
+        <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+       <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+     <mi:MauiIcon
+              HorizontalOptions="Center"
+ Icon="{mi:Material Icon=Search}"
+          IconColor="{DynamicResource PrimaryColor}"
+              IconSize="18"
+       InputTransparent="True"
+       VerticalOptions="Center" />
+     <Button
+       Padding="0"
+             BackgroundColor="Transparent"
+    BorderWidth="0"
+Command="{Binding ToggleSearchCommand}"
+                HorizontalOptions="Fill"
+ VerticalOptions="Fill" />
+             </Grid>
+  </Border>
+
+     <!-- Refresh -->
+         <Border
+          Grid.Column="2"
+            Margin="8,0,0,0"
+  Padding="0"
+        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+         HeightRequest="36"
+    StrokeThickness="0"
+WidthRequest="36">
+             <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+            <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+        <mi:MauiIcon
+       HorizontalOptions="Center"
+        Icon="{mi:Material Icon=Refresh}"
+   IconColor="{DynamicResource PrimaryColor}"
+      IconSize="18"
+          InputTransparent="True"
+   VerticalOptions="Center" />
+    <Button
+       Padding="0"
+                BackgroundColor="Transparent"
+       BorderWidth="0"
+ Command="{Binding RefreshCommand}"
+   HorizontalOptions="Fill"
+     VerticalOptions="Fill" />
+   </Grid>
+          </Border>
+
+  <!-- Clear all -->
+      <Border
+   Grid.Column="3"
+ Margin="8,0,0,0"
+ Padding="0"
+              BackgroundColor="{DynamicResource DangerLightColor}"
+    HeightRequest="36"
+          StrokeThickness="0"
+        WidthRequest="36">
+   <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+              <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+           <mi:MauiIcon
+        HorizontalOptions="Center"
+               Icon="{mi:Material Icon=Delete}"
+         IconColor="{DynamicResource DangerColor}"
+             IconSize="18"
+          InputTransparent="True"
+ VerticalOptions="Center" />
+              <Button
+    Padding="0"
+   BackgroundColor="Transparent"
+              BorderWidth="0"
+     Command="{Binding ClearLogsCommand}"
+        HorizontalOptions="Fill"
+            VerticalOptions="Fill" />
+     </Grid>
+            </Border>
+
+   <!-- Filter -->
+<Border
+           Grid.Column="4"
+    Margin="8,0,0,0"
+     Padding="10,0"
+        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+     HeightRequest="36"
+        MinimumWidthRequest="76"
+    StrokeThickness="0">
+      <Border.StrokeShape><RoundRectangle CornerRadius="10" /></Border.StrokeShape>
+                <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+           <HorizontalStackLayout
+       HorizontalOptions="Center"
+       InputTransparent="True"
+      Spacing="5"
+    VerticalOptions="Center">
+               <mi:MauiIcon
+       Icon="{mi:Material Icon=FilterList}"
+     IconColor="{DynamicResource PrimaryColor}"
+                    IconSize="16"
+        InputTransparent="True"
+    VerticalOptions="Center" />
+       <Label
+       FontAttributes="Bold"
+      FontSize="12"
+    InputTransparent="True"
+       Text="{Binding FilterLabel}"
+         TextColor="{DynamicResource PrimaryColor}"
+                 VerticalOptions="Center" />
+           </HorizontalStackLayout>
+  <Button
+    Padding="0"
+     BackgroundColor="Transparent"
+            BorderWidth="0"
+              Command="{Binding FilterCommand}"
+             HorizontalOptions="Fill"
+VerticalOptions="Fill" />
+                </Grid>
+            </Border>
+    </Grid>
+
+        <!--═══ SEARCH BAR (collapsible) ═══  -->
+      <Grid
+         Grid.Row="2"
+  Margin="16,0,16,8"
+       ColumnDefinitions="*,Auto"
+            ColumnSpacing="8"
+  IsVisible="{Binding IsSearchVisible}">
+            <Border
+         Grid.Column="0"
+                Padding="10,0"
+    BackgroundColor="{DynamicResource CardBackgroundColor}"
+            HeightRequest="40"
+         StrokeThickness="1">
+         <Border.Stroke>
+          <SolidColorBrush Color="{DynamicResource BorderColor}" />
+           </Border.Stroke>
+         <Border.StrokeShape>
+    <RoundRectangle CornerRadius="10" />
+     </Border.StrokeShape>
+  <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="6">
+        <mi:MauiIcon
+     Grid.Column="0"
+           Icon="{mi:Material Icon=Search}"
+    IconColor="{DynamicResource TextTertiaryColor}"
+             IconSize="16"
+ VerticalOptions="Center" />
+               <Entry
+ Grid.Column="1"
+     BackgroundColor="Transparent"
+      ClearButtonVisibility="Never"
+         FontSize="12"
+      HorizontalOptions="Fill"
+     Placeholder="Search events…"
+  PlaceholderColor="{DynamicResource TextTertiaryColor}"
+       ReturnType="Search"
+ Text="{Binding SearchText}"
+ TextColor="{DynamicResource TextColor}"
+ VerticalOptions="Center" />
+     <Border
+             Grid.Column="2"
+            Padding="0"
+    BackgroundColor="Transparent"
+        HeightRequest="24"
+    IsVisible="{Binding SearchText, Converter={StaticResource StringNotEmptyConverter}}"
+   StrokeThickness="0"
+           WidthRequest="24">
+    <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+    <mi:MauiIcon
+       HorizontalOptions="Center"
+         Icon="{mi:Material Icon=Close}"
+        IconColor="{DynamicResource TextTertiaryColor}"
+      IconSize="14"
+     InputTransparent="True"
+   VerticalOptions="Center" />
+   <Button
+    Padding="0"
+       BackgroundColor="Transparent"
+      BorderWidth="0"
+   Command="{Binding ClearSearchCommand}"
+       HorizontalOptions="Fill"
+     VerticalOptions="Fill" />
+            </Grid>
+    </Border>
+           </Grid>
+   </Border>
+
+   <!--  Match count badge  -->
+<Border
+    Grid.Column="1"
+ Padding="8,0"
+       BackgroundColor="{DynamicResource PrimaryLightestColor}"
+    HeightRequest="40"
+                StrokeThickness="0">
+ <Border.StrokeShape>
+  <RoundRectangle CornerRadius="10" />
+       </Border.StrokeShape>
+                <Label
+       FontAttributes="Bold"
+  FontSize="11"
+  Text="{Binding MatchCount, StringFormat='{0} hits'}"
+   TextColor="{DynamicResource PrimaryColor}"
+         VerticalOptions="Center" />
+            </Border>
+        </Grid>
+
+        <!-- ??? LIST ??? -->
+        <Grid Grid.Row="3">
+
+            <!-- Loading -->
+      <ActivityIndicator
+      HorizontalOptions="Center"
+      IsRunning="{Binding IsLoading}"
+           IsVisible="{Binding IsLoading}"
+     VerticalOptions="Center"
+        Color="{DynamicResource PrimaryColor}" />
+
+    <!-- Empty state -->
+     <VerticalStackLayout
+             HorizontalOptions="Center"
+         IsVisible="{Binding IsEmpty}"
+      Spacing="12"
+VerticalOptions="Center">
+      <mi:MauiIcon
+      HorizontalOptions="Center"
+                    Icon="{mi:Material Icon=EventNote}"
+      IconColor="{DynamicResource TextTertiaryColor}"
+         IconSize="52"
+        VerticalOptions="Center" />
+             <Label
+        FontSize="16"
+        HorizontalOptions="Center"
+         Text="No activity recorded yet"
+  TextColor="{DynamicResource TextSecondaryColor}" />
+    <Label
+        FontSize="13"
+    HorizontalOptions="Center"
+                Text="Events such as fills, logins and changes will appear here."
+          TextColor="{DynamicResource TextTertiaryColor}"
+     HorizontalTextAlignment="Center"
+  Margin="24,0" />
+            </VerticalStackLayout>
+
+            <!-- Log list -->
+       <CollectionView
+       IsVisible="{Binding IsNotEmpty}"
+      ItemsSource="{Binding Logs}"
+      Margin="16,4">
+       <CollectionView.ItemTemplate>
+              <DataTemplate x:DataType="models:AuditLog">
+               <Grid Padding="0,6" ColumnDefinitions="Auto,*" ColumnSpacing="14">
+
+        <!-- Icon badge -->
+         <Border
+     Grid.Column="0"
+            Padding="10"
+               BackgroundColor="{Binding BadgeColor}"
+     HeightRequest="44"
+          StrokeThickness="0"
+ VerticalOptions="Start"
+              WidthRequest="44">
+      <Border.StrokeShape>
+ <RoundRectangle CornerRadius="12" />
+          </Border.StrokeShape>
+         <Label
+        FontFamily="MaterialIcons"
+           FontSize="20"
+      HorizontalOptions="Center"
+         Text="{Binding IconGlyph}"
+            TextColor="{Binding IconColor}"
+      VerticalOptions="Center" />
+            </Border>
+
+      <!-- Text block -->
+ <VerticalStackLayout
+         Grid.Column="1"
+     Spacing="2"
+          VerticalOptions="Center">
+          <Label
+        FontAttributes="Bold"
+                FontSize="14"
+  Text="{Binding EventType}"
+      TextColor="{DynamicResource TextColor}" />
+             <Label
+             FontSize="12"
+          IsVisible="{Binding CredentialLabel, Converter={StaticResource StringNotEmptyConverter}}"
+   Text="{Binding CredentialLabel}"
+                TextColor="{DynamicResource TextSecondaryColor}" />
+         <Label
+       FontSize="11"
+        IsVisible="{Binding Detail, Converter={StaticResource StringNotEmptyConverter}}"
+ Text="{Binding Detail}"
+              TextColor="{DynamicResource TextTertiaryColor}"
+         LineBreakMode="TailTruncation" />
+      <Label
+       FontSize="11"
+         Text="{Binding DateTime}"
+ TextColor="{DynamicResource TextTertiaryColor}" />
+           </VerticalStackLayout>
+
+           </Grid>
+            </DataTemplate>
+       </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+        <!-- ??? FOOTER ??? -->
+        <Grid
+ Grid.Row="4"
+          Padding="16,10"
+            BackgroundColor="{DynamicResource CardBackgroundColor}"
+       ColumnDefinitions="*,Auto">
+            <Grid.Shadow>
+      <Shadow Brush="Black" Opacity="0.05" Radius="10" Offset="0,-3" />
+   </Grid.Shadow>
+       <Label
+            FontSize="12"
+          Text="{Binding LogCountText}"
+   TextColor="{DynamicResource TextSecondaryColor}"
+  VerticalOptions="Center" />
+    <Label
+            Grid.Column="1"
+  FontSize="11"
+  Text="{Binding DateRangeText}"
+         TextColor="{DynamicResource TextTertiaryColor}"
+        VerticalOptions="Center" />
+        </Grid>
+
+    </Grid>
+</ContentPage>

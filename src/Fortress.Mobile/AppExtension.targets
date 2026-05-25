@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	
+	<!-- Copy iOS App Extension to PlugIns folder -->
+	<Target Name="_CopyAppExtensionToBundle" 
+		AfterTargets="Build"
+		Condition="'$(TargetFramework)' == 'net10.0-ios'">
+		
+		<PropertyGroup>
+			<!-- Use wildcard to find the device-builds folder -->
+			<_DeviceBuildsPath>$(MSBuildProjectDirectory)\..\Fortress.iPhone.Autofill\bin\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\device-builds</_DeviceBuildsPath>
+		</PropertyGroup>
+		
+		<Message Text="========================================" Importance="high" />
+		<Message Text="Looking for iOS App Extension" Importance="high" />
+		<Message Text="RuntimeIdentifier: $(RuntimeIdentifier)" Importance="high" />
+		<Message Text="_AppBundlePath: $(_AppBundlePath)" Importance="high" />
+		<Message Text="Searching in: $(_DeviceBuildsPath)" Importance="high" />
+		
+		<!-- Find the .appex file -->
+		<ItemGroup>
+			<_AppExtensionPath Include="$(_DeviceBuildsPath)\**\Fortress.iPhone.Autofill.appex" />
+		</ItemGroup>
+		
+		<PropertyGroup>
+			<_AppExtensionSource>@(_AppExtensionPath)</_AppExtensionSource>
+		</PropertyGroup>
+		
+		<Message Text="Found extension at: $(_AppExtensionSource)" Importance="high" Condition="'$(_AppExtensionSource)' != ''" />
+		<Warning Text="Extension not found in expected location!" Condition="'$(_AppExtensionSource)' == ''" />
+		
+		<!-- Only proceed if we found the extension and have an app bundle path -->
+		<PropertyGroup Condition="'$(_AppExtensionSource)' != '' AND '$(_AppBundlePath)' != ''">
+			<_PlugInsFolder>$(_AppBundlePath)\PlugIns</_PlugInsFolder>
+			<_PlugInsExtensionFolder>$(_PlugInsFolder)\Fortress.iPhone.Autofill.appex</_PlugInsExtensionFolder>
+		</PropertyGroup>
+		
+		<Message Text="Target PlugIns folder: $(_PlugInsFolder)" Importance="high" Condition="'$(_PlugInsFolder)' != ''" />
+		
+		<!-- Create PlugIns folder -->
+		<MakeDir Directories="$(_PlugInsFolder)" Condition="'$(_PlugInsFolder)' != ''" />
+		<MakeDir Directories="$(_PlugInsExtensionFolder)" Condition="'$(_PlugInsExtensionFolder)' != ''" />
+		
+		<!-- Copy all files from .appex to PlugIns folder -->
+		<ItemGroup Condition="'$(_AppExtensionSource)' != ''">
+			<_AppExtensionFiles Include="$(_AppExtensionSource)\**\*" />
+		</ItemGroup>
+		
+		<Copy SourceFiles="@(_AppExtensionFiles)" 
+			  DestinationFiles="@(_AppExtensionFiles->'$(_PlugInsExtensionFolder)\%(RecursiveDir)%(Filename)%(Extension)')" 
+			  SkipUnchangedFiles="true"
+			  Condition="'@(_AppExtensionFiles)' != '' AND '$(_PlugInsExtensionFolder)' != ''" />
+		
+		<Message Text="Successfully copied app extension to PlugIns folder" Importance="high" Condition="'@(_AppExtensionFiles)' != ''" />
+		<Message Text="========================================" Importance="high" />
+		
+	</Target>
+	
+</Project>

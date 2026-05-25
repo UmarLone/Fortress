@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<the49:BottomSheet
+    x:Class="Fortress.Views.LogFiltersSheet"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:prism="http://prismlibrary.com"
+    xmlns:sfButtons="clr-namespace:Syncfusion.Maui.Toolkit.Buttons;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:sfInputs="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:the49="clr-namespace:The49.Maui.BottomSheet;assembly=The49.Maui.BottomSheet"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    HasBackdrop="True"
+    HasHandle="True"
+    IsCancelable="True">
+
+    <the49:BottomSheet.Detents>
+        <the49:ContentDetent />
+    </the49:BottomSheet.Detents>
+    <Grid Padding="20" RowDefinitions="Auto,Auto,Auto">
+        <VerticalStackLayout Grid.Row="0" Spacing="16">
+            <Label
+                Padding="10"
+                HorizontalOptions="Center"
+                Style="{DynamicResource TitleLabelStyle}"
+                Text="Filters"
+                TextColor="{DynamicResource Gray-700}" />
+
+            <!--  Start Date  -->
+            <sfInputs:SfTextInputLayout ContainerType="Outlined" Hint="Start Date">
+                <DatePicker
+                    x:Name="FromDate"
+                    Date="{Binding LogFilter.StartDate}"
+                    Style="{DynamicResource GKFormsDatePickerStyle}" />
+            </sfInputs:SfTextInputLayout>
+
+            <!--  End Date  -->
+            <sfInputs:SfTextInputLayout ContainerType="Outlined" Hint="End Date">
+                <DatePicker
+                    x:Name="ToDate"
+                    Date="{Binding LogFilter.EndDate}"
+                    MinimumDate="{Binding Source={x:Reference FromDate}, Path=Date}"
+                    Style="{DynamicResource GKFormsDatePickerStyle}" />
+            </sfInputs:SfTextInputLayout>
+
+            <!--  Number of Records  -->
+            <sfInputs:SfTextInputLayout
+                ContainerType="Outlined"
+                Hint="Number of Records"
+                IsHintAlwaysFloated="True">
+                <Picker
+                    Title="Select Records"
+                    ItemsSource="{Binding LogFilter.RecordOptions}"
+                    SelectedItem="{Binding LogFilter.RecordCount, Mode=TwoWay}" />
+            </sfInputs:SfTextInputLayout>
+        </VerticalStackLayout>
+
+        <!--  Apply Filter Button  -->
+        <sfButtons:SfButton
+            Grid.Row="2"
+            Margin="0,20,0,0"
+            Command="{Binding ApplyFilterCommand}"
+            HorizontalOptions="Fill"
+            Style="{DynamicResource GKSaveButtonStyle}"
+            Text="Apply Filters"
+            VerticalOptions="End" />
+    </Grid>
+</the49:BottomSheet>

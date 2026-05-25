@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary
+    x:Class="Fortress.Styles.ListViewStyles"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:sfProgress="clr-namespace:Syncfusion.Maui.Toolkit.ProgressBar;assembly=Syncfusion.Maui.Toolkit">
+
+    <!--  Native CollectionView Style (replacing SfListView)  -->
+    <Style x:Key="TransparentSelectionCollectionView" TargetType="CollectionView">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={DynamicResource Gray-Bg}, Dark={DynamicResource Gray-DarkBg}}" />
+        <Setter Property="SelectionMode" Value="Single" />
+        <Setter Property="VerticalOptions" Value="FillAndExpand" />
+    </Style>
+
+    <!--  Authenticator Progress Bar Style  -->
+    <Style x:Key="AuthenticatorProgressBarStyle" TargetType="sfProgress:SfCircularProgressBar">
+        <Setter Property="ProgressFill" Value="{DynamicResource PrimaryColor}" />
+        <Setter Property="TrackFill" Value="{DynamicResource Gray-200}" />
+        <Setter Property="ProgressThickness" Value="4" />
+        <Setter Property="TrackThickness" Value="4" />
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+
+</ResourceDictionary>

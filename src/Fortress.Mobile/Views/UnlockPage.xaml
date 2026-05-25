@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.UnlockPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:buttons="clr-namespace:Syncfusion.Maui.Toolkit.Buttons;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:converter="clr-namespace:Fortress.Converters"
+    xmlns:fontAwesome="clr-namespace:Fortress.Mobile.Resources.Fonts"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    xmlns:sfInputs="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    Loaded="ContentPage_Loaded"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:EmailMaskConverter x:Key="EmailMaskConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!--  HEADER SECTION - Curved Bottom  -->
+        <Border
+            Grid.Row="0"
+            Margin="0,0,0,-40"
+            Padding="0"
+            BackgroundColor="{DynamicResource PrimaryColor}"
+            StrokeThickness="0"
+            ZIndex="0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,40,40" />
+            </Border.StrokeShape>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="{DynamicResource HeroGradientStart}" />
+                    <GradientStop Offset="1.0" Color="{DynamicResource HeroGradientEnd}" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <VerticalStackLayout Padding="30,60,30,80" Spacing="20">
+
+                <!--  Logo  -->
+                <Border
+                    Padding="0"
+                    BackgroundColor="#20FFFFFF"
+                    HeightRequest="100"
+                    HorizontalOptions="Center"
+                    StrokeThickness="0"
+                    WidthRequest="100">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="25" />
+                    </Border.StrokeShape>
+                    <Image
+                        Margin="20"
+                        Aspect="AspectFit"
+                        Source="logowhite.png" />
+                </Border>
+
+                <!--  Title  -->
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="6">
+                    <Label
+                        CharacterSpacing="3"
+                        FontAttributes="Bold"
+                        FontFamily="Audiowide"
+                        FontSize="24"
+                        HorizontalOptions="Center"
+                        Text="FORTRESS"
+                        TextColor="White" />
+                    <Label
+                        FontSize="14"
+                        HorizontalOptions="Center"
+                        Opacity="0.85"
+                        Text="Your vault is locked"
+                        TextColor="White" />
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </Border>
+
+        <!--  MAIN CONTENT - Unlock Card  -->
+        <ScrollView Grid.Row="1" ZIndex="1">
+            <VerticalStackLayout Padding="20,0,20,20" Spacing="20">
+
+                <!--  Unlock Card  -->
+                <Border
+                    Margin="0,20,0,0"
+                    Padding="24"
+                    BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="24" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{DynamicResource GrayShadowColor}"
+                            Opacity="0.1"
+                            Radius="20"
+                            Offset="0,8" />
+                    </Border.Shadow>
+
+                    <Grid>
+                        <!--  Main unlock content  -->
+                        <VerticalStackLayout Spacing="24">
+
+                            <!--  Lock Icon  -->
+                            <Border
+                                Padding="0"
+                                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                HeightRequest="70"
+                                HorizontalOptions="Center"
+                                StrokeThickness="0"
+                                WidthRequest="70">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="20" />
+                                </Border.StrokeShape>
+                                <Grid>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=Fingerprint}"
+                                        IconColor="{DynamicResource PrimaryColor}"
+                                        IconSize="32"
+                                        IsVisible="{Binding CanUseBiometrics}"
+                                        VerticalOptions="Center" />
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=Pin}"
+                                        IconColor="{DynamicResource PrimaryColor}"
+                                        IconSize="32"
+                                        IsVisible="{Binding CanUsePin}"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+
+                            <!--  Unlock Message  -->
+                            <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="20"
+                                    HorizontalOptions="Center"
+                                    Text="Unlock to Continue"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    HorizontalTextAlignment="Center"
+                                    IsVisible="{Binding CanUsePin}"
+                                    Text="Enter your PIN to access your data"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                                <Label
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    HorizontalTextAlignment="Center"
+                                    IsVisible="{Binding CanUseBiometrics}"
+                                    Text="Use biometrics to access your data"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+
+                            <!--  PIN UNLOCK SECTION  -->
+                            <VerticalStackLayout IsVisible="{Binding CanUsePin}" Spacing="16">
+
+                                <!--  PIN Entry  -->
+                                <Border
+                                    Padding="14,12"
+                                    BackgroundColor="{DynamicResource Gray-50}"
+                                    HorizontalOptions="Center"
+                                    StrokeThickness="0"
+                                    WidthRequest="200">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Entry
+                                        x:Name="txtPin"
+                                        FontAttributes="Bold"
+                                        FontSize="22"
+                                        HorizontalOptions="Center"
+                                        HorizontalTextAlignment="Center"
+                                        IsPassword="True"
+                                        Keyboard="Numeric"
+                                        MaxLength="4"
+                                        Placeholder="● ● ● ●"
+                                        PlaceholderColor="{DynamicResource Gray-300}"
+                                        ReturnCommand="{Binding VerifyPinCommand}"
+                                        Text="{Binding Pin}"
+                                        TextChanged="Pin_TextChanged"
+                                        TextColor="{DynamicResource TextColor}"
+                                        VerticalOptions="Center" />
+                                </Border>
+
+                                <!--  Error Message  -->
+                                <HorizontalStackLayout
+                                    HorizontalOptions="Center"
+                                    IsVisible="{Binding HasError}"
+                                    Spacing="6"
+                                    VerticalOptions="Center">
+                                    <mi:MauiIcon
+                                        Icon="{mi:Material Icon=Error}"
+                                        IconColor="{DynamicResource DangerColor}"
+                                        IconSize="16"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        FontSize="13"
+                                        Text="{Binding ErrorMessage}"
+                                        TextColor="{DynamicResource DangerColor}"
+                                        VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+
+                                <!--  Verify PIN Button  -->
+                                <Border
+                                    x:Name="btnVerifyPin"
+                                    Padding="0"
+                                    BackgroundColor="{DynamicResource PrimaryColor}"
+                                    HeightRequest="52"
+                                    IsEnabled="False"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="14" />
+                                    </Border.StrokeShape>
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding VerifyPinCommand}" />
+                                    </Border.GestureRecognizers>
+                                    <Border.Triggers>
+                                        <Trigger TargetType="Border" Property="IsEnabled" Value="False">
+                                            <Setter Property="Opacity" Value="0.5" />
+                                        </Trigger>
+                                    </Border.Triggers>
+                                    <HorizontalStackLayout
+                                        HorizontalOptions="Center"
+                                        InputTransparent="True"
+                                        Spacing="10"
+                                        VerticalOptions="Center">
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Icon=LockOpen}"
+                                            IconColor="White"
+                                            IconSize="20"
+                                            InputTransparent="True"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                            InputTransparent="True"
+                                            Text="UNLOCK"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+
+                            </VerticalStackLayout>
+
+                            <!--  BIOMETRICS UNLOCK SECTION  -->
+                            <VerticalStackLayout IsVisible="{Binding CanUseBiometrics}" Spacing="16">
+
+                                <!--  Error Message for Biometrics  -->
+                                <HorizontalStackLayout
+                                    HorizontalOptions="Center"
+                                    IsVisible="{Binding HasError}"
+                                    Spacing="6"
+                                    VerticalOptions="Center">
+                                    <mi:MauiIcon
+                                        Icon="{mi:Material Icon=Error}"
+                                        IconColor="{DynamicResource DangerColor}"
+                                        IconSize="16"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        FontSize="13"
+                                        Text="{Binding ErrorMessage}"
+                                        TextColor="{DynamicResource DangerColor}"
+                                        VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+
+                                <!--  Biometrics Button  -->
+                                <Border
+                                    Padding="0"
+                                    BackgroundColor="{DynamicResource PrimaryColor}"
+                                    HeightRequest="52"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="14" />
+                                    </Border.StrokeShape>
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding VerifyBiometricsCommand}" />
+                                    </Border.GestureRecognizers>
+                                    <HorizontalStackLayout
+                                        HorizontalOptions="Center"
+                                        InputTransparent="True"
+                                        Spacing="10"
+                                        VerticalOptions="Center">
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Icon=Fingerprint}"
+                                            IconColor="White"
+                                            IconSize="22"
+                                            InputTransparent="True"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                            InputTransparent="True"
+                                            Text="UNLOCK WITH BIOMETRICS"
+                                            TextColor="White"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </Border>
+
+                                <!--  Tap to retry hint  -->
+                                <Label
+                                    FontSize="13"
+                                    HorizontalOptions="Center"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Tap the button above to authenticate"
+                                    TextColor="{DynamicResource TextTertiaryColor}" />
+
+                            </VerticalStackLayout>
+
+                        </VerticalStackLayout>
+
+                        <!--  ═══ Authenticating overlay ═══  -->
+                        <!--  Sits on top of the card content. Shown while IsUnlocking is true.  -->
+                        <Border
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            IsVisible="{Binding IsUnlocking}"
+                            Opacity="0.92"
+                            StrokeThickness="0"
+                            ZIndex="10">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="24" />
+                            </Border.StrokeShape>
+                            <VerticalStackLayout
+                                HorizontalOptions="Center"
+                                Spacing="16"
+                                VerticalOptions="Center">
+                                <ActivityIndicator
+                                    HeightRequest="44"
+                                    HorizontalOptions="Center"
+                                    IsRunning="{Binding IsUnlocking}"
+                                    WidthRequest="44"
+                                    Color="{DynamicResource PrimaryColor}" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    HorizontalOptions="Center"
+                                    Text="Authenticating…"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="13"
+                                    HorizontalOptions="Center"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Please wait"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  FOOTER  -->
+        <VerticalStackLayout
+            Grid.Row="2"
+            Margin="0,0,0,30"
+            HorizontalOptions="Center"
+            Spacing="4">
+            <Label
+                FontSize="12"
+                HorizontalOptions="Center"
+                Text="Secured by Fortress"
+                TextColor="{DynamicResource TextTertiaryColor}" />
+        </VerticalStackLayout>
+
+    </Grid>
+
+</ContentPage>

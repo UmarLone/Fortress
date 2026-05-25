@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Root has NO android:background.
+    The BottomSheetDialog container owns the shape (GKBottomSheetShape, 20dp rounded top).
+    The header gradient drawable also has matching 20dp rounded top corners so the
+    blue fill reaches the very edge of the rounded sheet without a white gap.
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+	<!-- GRADIENT HEADER -->
+	<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    android:orientation="vertical"
+      android:background="@drawable/bg_autofill_header"
+        android:paddingStart="20dp"
+ android:paddingEnd="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="16dp">
+
+		<!-- Row 1: Logo + Title + Action buttons -->
+		<LinearLayout
+			android:id="@+id/headerRow"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal"
+			android:gravity="center_vertical">
+
+			<ImageView
+        android:id="@+id/logo"
+    android:layout_width="44dp"
+       android:layout_height="44dp"
+  android:layout_marginEnd="12dp"
+  android:src="@drawable/logowhite"
+     android:scaleType="fitCenter"
+    android:contentDescription="FORTRESS" />
+
+			<LinearLayout
+          android:id="@+id/titleBlock"
+      android:layout_width="0dp"
+    android:layout_height="wrap_content"
+         android:layout_weight="1"
+          android:orientation="vertical">
+
+				<TextView
+			   android:id="@+id/title"
+						  android:layout_width="wrap_content"
+				   android:layout_height="wrap_content"
+			 android:text="FORTRESS"
+				  android:textSize="22sp"
+				android:textStyle="bold"
+				 android:textColor="@color/white"
+				 android:letterSpacing="0.15" />
+
+				<!-- AI protection indicator -->
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					android:gravity="center_vertical"
+					android:layout_marginTop="2dp">
+
+					<View
+						android:layout_width="6dp"
+						android:layout_height="6dp"
+						android:layout_marginEnd="6dp"
+						android:background="@drawable/bg_green_dot" />
+
+					<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="AI Protection Active"
+						android:textSize="11sp"
+						android:textColor="#A0D4FF"
+						android:includeFontPadding="false" />
+				</LinearLayout>
+
+			</LinearLayout>
+
+			<!-- Search toggle -->
+			<com.google.android.material.card.MaterialCardView
+		   android:id="@+id/searchButtonCard"
+				android:layout_width="40dp"
+		  android:layout_height="40dp"
+				 app:cardCornerRadius="12dp"
+						app:cardElevation="0dp"
+		 app:strokeWidth="0dp"
+			 android:foreground="?attr/selectableItemBackground"
+			 app:cardBackgroundColor="#30FFFFFF">
+				<ImageButton
+					   android:id="@+id/searchButton"
+			   android:layout_width="match_parent"
+		   android:layout_height="match_parent"
+			   android:src="@drawable/ic_search"
+			   android:scaleType="center"
+			  android:tint="@color/white"
+				android:background="@android:color/transparent"
+					  android:contentDescription="Search" />
+			</com.google.android.material.card.MaterialCardView>
+
+			<!-- Add button -->
+			<com.google.android.material.card.MaterialCardView
+				 android:id="@+id/addButtonCard"
+				android:layout_width="40dp"
+						   android:layout_height="40dp"
+				   android:layout_marginStart="8dp"
+			   app:cardCornerRadius="12dp"
+			   app:cardElevation="0dp"
+				   app:strokeWidth="0dp"
+			android:foreground="?attr/selectableItemBackground"
+				   app:cardBackgroundColor="#30FFFFFF">
+				<ImageButton
+			   android:id="@+id/addButton"
+				   android:layout_width="match_parent"
+			 android:layout_height="match_parent"
+					android:src="@android:drawable/ic_input_add"
+			  android:scaleType="center"
+					android:tint="@color/white"
+			android:background="@android:color/transparent"
+		 android:contentDescription="Open Fortress" />
+			</com.google.android.material.card.MaterialCardView>
+
+		</LinearLayout>
+
+		<!-- Row 2: Search field (hidden by default) -->
+		<com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/searchContainer"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+   android:layout_width="match_parent"
+   android:layout_height="52dp"
+  android:layout_marginTop="0dp"
+    android:visibility="gone"
+    app:hintEnabled="false"
+    app:hintAnimationEnabled="false"
+    app:boxBackgroundColor="#40FFFFFF"
+  app:boxStrokeColor="#80FFFFFF"
+    app:boxStrokeWidth="1dp"
+    app:boxStrokeWidthFocused="2dp"
+   app:boxCornerRadiusTopStart="14dp"
+    app:boxCornerRadiusTopEnd="14dp"
+    app:boxCornerRadiusBottomStart="14dp"
+   app:boxCornerRadiusBottomEnd="14dp"
+   app:endIconMode="clear_text"
+      app:endIconTint="@color/white">
+		<com.google.android.material.textfield.TextInputEditText
+			android:id="@+id/searchEditText"
+		   android:layout_width="match_parent"
+		android:layout_height="match_parent"
+			  android:singleLine="true"
+		 android:imeOptions="actionSearch"
+		   android:textSize="15sp"
+			android:textColor="#FFFFFF"
+		   android:textColorHint="#BFDBFF"
+		   android:hint="Search..."
+		   android:background="@android:color/transparent"
+		   android:paddingStart="14dp"
+		   android:paddingEnd="14dp"
+		   android:textCursorDrawable="@null" />
+	</com.google.android.material.textfield.TextInputLayout>
+
+		<!-- Row 3: Subtitle pill -->
+		<com.google.android.material.card.MaterialCardView
+   android:id="@+id/subtitleCard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="20dp"
+      app:cardElevation="0dp"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="#20FFFFFF">
+			<TextView
+      android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+android:paddingStart="12dp"
+      android:paddingEnd="12dp"
+  android:paddingTop="4dp"
+   android:paddingBottom="4dp"
+ android:text="Tap a credential to fill"
+           android:textSize="12sp"
+          android:textColor="#D0E8FF" />
+		</com.google.android.material.card.MaterialCardView>
+
+	</LinearLayout>
+
+	<!-- TAB STRIP -->
+	<RelativeLayout
+        android:id="@+id/tabStrip"
+ android:layout_width="match_parent"
+     android:layout_height="48dp"
+        android:background="@color/gk_bg">
+
+		<TextView
+   android:id="@+id/tabMatches"
+       android:layout_width="0dp"
+          android:layout_height="40dp"
+      android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/tabDivider"
+  android:gravity="center"
+    android:text="Matches"
+            android:textSize="14sp"
+            android:textStyle="bold"
+  android:textColor="@color/colorPrimary"
+  android:background="@android:color/transparent" />
+
+		<View
+            android:id="@+id/tabDivider"
+  android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_centerInParent="true"
+  android:background="#DDDDDD" />
+
+		<TextView
+    android:id="@+id/tabAll"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+         android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+     android:layout_toEndOf="@id/tabDivider"
+ android:gravity="center"
+            android:text="All"
+            android:textSize="14sp"
+    android:textStyle="normal"
+     android:textColor="@color/gk_gray_500"
+            android:background="@android:color/transparent" />
+
+		<View
+            android:id="@+id/tabIndicator"
+          android:layout_width="0dp"
+android:layout_height="3dp"
+ android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+  android:layout_toStartOf="@id/tabDivider"
+            android:background="@color/colorPrimary" />
+
+	</RelativeLayout>
+
+	<!-- Thin separator below tab strip -->
+	<View
+     android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E5E7EB" />
+
+	<!-- CONTENT AREA -->
+	<FrameLayout
+        android:layout_width="match_parent"
+    android:layout_height="0dp"
+   android:layout_weight="1"
+        android:minHeight="200dp"
+   android:background="@color/gk_bg">
+
+		<!-- Loading spinner -->
+		<ProgressBar
+			  android:id="@+id/loadingSpinner"
+			  android:layout_width="48dp"
+			android:layout_height="48dp"
+	   android:layout_gravity="center"
+	android:indeterminate="true"
+	   android:visibility="gone"
+		 android:indeterminateTint="@color/colorPrimary" />
+
+		<!-- Empty state -->
+		<LinearLayout
+   android:id="@+id/emptyView"
+            android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:layout_gravity="center"
+            android:orientation="vertical"
+    android:gravity="center"
+      android:padding="32dp"
+        android:visibility="gone">
+
+			<com.google.android.material.card.MaterialCardView
+				android:layout_width="80dp"
+				android:layout_height="80dp"
+				app:cardCornerRadius="40dp"
+				app:cardElevation="0dp"
+				app:strokeWidth="0dp"
+				app:cardBackgroundColor="@color/gk_primary_lightest"
+				android:layout_gravity="center">
+				<ImageView
+					android:layout_width="40dp"
+					android:layout_height="40dp"
+					android:layout_gravity="center"
+					android:src="@drawable/ic_lock"
+					android:tint="@color/colorPrimary" />
+			</com.google.android.material.card.MaterialCardView>
+
+			<TextView
+				android:id="@+id/emptyTitle"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="16dp"
+				android:text="No items found"
+				android:textSize="17sp"
+				android:textStyle="bold"
+				android:textColor="@color/gk_gray_700"
+				android:gravity="center" />
+
+			<TextView
+				android:id="@+id/emptyMessage"
+				android:layout_width="220dp"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="6dp"
+				android:text="Try a different search term."
+				android:textSize="13sp"
+				android:textColor="@color/gk_gray_500"
+				android:gravity="center" />
+
+		</LinearLayout>
+
+		<!-- Credentials list -->
+		<androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/credentialsList"
+          android:layout_width="match_parent"
+    android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="4dp"
+   android:paddingBottom="16dp" />
+
+	</FrameLayout>
+
+</LinearLayout>

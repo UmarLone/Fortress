@@ -1,0 +1,590 @@
+﻿<Page
+    x:Class="Fortress.Windows.Desktop.Views.Pages.VaultHealthPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="clr-namespace:Fortress.Windows.Desktop.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Fortress.Windows.Desktop.Views.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="Vault Health"
+    Margin="30"
+    d:DataContext="{d:DesignInstance local:VaultHealthPage,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="900"
+    d:DesignWidth="1100"
+    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+    ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVis" />
+        <conv:InverseBoolToVisibilityConverter x:Key="InvBoolToVis" />
+        <conv:HexColorToBrushConverter x:Key="HexToBrush" />
+        <conv:SeverityToColorConverter x:Key="SevColor" />
+    </Page.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="28,16,28,40">
+
+            <!--  Page header  -->
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock
+                        FontSize="26"
+                        FontWeight="SemiBold"
+                        Text="Vault Health" />
+                    <TextBlock
+                        Margin="0,4,0,0"
+                        FontSize="13"
+                        Opacity="0.55"
+                        Text="Security analysis of your vault" />
+                </StackPanel>
+                <ui:Button
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Appearance="Secondary"
+                    Content="Refresh"
+                    Icon="{ui:SymbolIcon Symbol=ArrowSync24}" />
+            </Grid>
+
+            <!--  ?? Hero banner ??  -->
+            <Border Margin="0,0,0,24" Padding="28,22" ClipToBounds="True" CornerRadius="16">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Offset="0" Color="#052E16" />
+                        <GradientStop Offset="0.55" Color="#16A34A" />
+                        <GradientStop Offset="1" Color="#0D9488" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="28" Opacity="0.28" ShadowDepth="0" Color="#16A34A" />
+                </Border.Effect>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border Width="56" Height="56" Margin="0,0,20,0" CornerRadius="14">
+                        <Border.Background>
+                            <SolidColorBrush Color="#30FFFFFF" />
+                        </Border.Background>
+                        <ui:SymbolIcon FontSize="28" Foreground="White" Symbol="HeartPulse24" />
+                    </Border>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock FontSize="18" FontWeight="Bold" Foreground="White" Text="Security Analysis" />
+                        <TextBlock
+                            Margin="0,4,0,0"
+                            FontSize="13"
+                            Foreground="White"
+                            Opacity="0.78"
+                            Text="Fortress scans your vault for weak, reused and breached passwords and calculates a live security score."
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <ui:ProgressRing
+                Width="48"
+                Height="48"
+                HorizontalAlignment="Center"
+                IsIndeterminate="True"
+                Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource BoolToVis}}" />
+
+            <StackPanel Visibility="{Binding ViewModel.IsLoading, Converter={StaticResource InvBoolToVis}}">
+
+                <!--  ── HERO ROW: Score + 6 stat tiles ──────────────────────────────  -->
+                <Grid Margin="0,0,0,24">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  Score card  -->
+                    <Border
+                        Margin="0,0,16,0"
+                        Padding="20"
+                        Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                        CornerRadius="16">
+                        <Border.Effect>
+                            <DropShadowEffect
+                                BlurRadius="14"
+                                Opacity="0.07"
+                                ShadowDepth="2" />
+                        </Border.Effect>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock
+                                Margin="0,0,0,12"
+                                HorizontalAlignment="Center"
+                                FontSize="11"
+                                FontWeight="SemiBold"
+                                Opacity="0.45"
+                                Text="SCORE" />
+                            <!--  Circular border approximation  -->
+                            <Border
+                                Width="120"
+                                Height="120"
+                                HorizontalAlignment="Center"
+                                BorderBrush="{Binding ViewModel.StatusColor, Converter={StaticResource HexToBrush}}"
+                                BorderThickness="10"
+                                CornerRadius="60">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        FontSize="40"
+                                        FontWeight="Bold"
+                                        Foreground="{Binding ViewModel.StatusColor, Converter={StaticResource HexToBrush}}"
+                                        Text="{Binding ViewModel.Score}" />
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        FontSize="12"
+                                        Opacity="0.45"
+                                        Text="/100" />
+                                </StackPanel>
+                            </Border>
+                            <TextBlock
+                                Margin="0,14,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="14"
+                                FontWeight="SemiBold"
+                                Foreground="{Binding ViewModel.StatusColor, Converter={StaticResource HexToBrush}}"
+                                Text="{Binding ViewModel.StatusLabel}" />
+                        </StackPanel>
+                    </Border>
+
+                    <!--  6 stat tiles  -->
+                    <UniformGrid
+                        Grid.Column="1"
+                        Columns="3"
+                        Rows="2">
+
+                        <!--  Weak  -->
+                        <Border
+                            Margin="0,0,10,10"
+                            Padding="16,14"
+                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                            CornerRadius="14">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="10"
+                                    Opacity="0.06"
+                                    ShadowDepth="1" />
+                            </Border.Effect>
+                            <StackPanel>
+                                <StackPanel Margin="0,0,0,6" Orientation="Horizontal">
+                                    <Border
+                                        Width="8"
+                                        Height="8"
+                                        Margin="0,0,8,0"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="4">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="#EF4444" />
+                                        </Border.Background>
+                                    </Border>
+                                    <TextBlock
+                                        FontSize="11"
+                                        Opacity="0.55"
+                                        Text="Weak Passwords" />
+                                </StackPanel>
+                                <TextBlock
+                                    FontSize="30"
+                                    FontWeight="Bold"
+                                    Text="{Binding ViewModel.WeakCount}" />
+                                <ProgressBar
+                                    Height="3"
+                                    Margin="0,6,0,0"
+                                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                    Foreground="#EF4444"
+                                    Maximum="1"
+                                    Minimum="0"
+                                    Value="{Binding ViewModel.WeakPercent, Mode=OneWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!--  Reused  -->
+                        <Border
+                            Margin="0,0,10,10"
+                            Padding="16,14"
+                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                            CornerRadius="14">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="10"
+                                    Opacity="0.06"
+                                    ShadowDepth="1" />
+                            </Border.Effect>
+                            <StackPanel>
+                                <StackPanel Margin="0,0,0,6" Orientation="Horizontal">
+                                    <Border
+                                        Width="8"
+                                        Height="8"
+                                        Margin="0,0,8,0"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="4">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="#F97316" />
+                                        </Border.Background>
+                                    </Border>
+                                    <TextBlock
+                                        FontSize="11"
+                                        Opacity="0.55"
+                                        Text="Reused Passwords" />
+                                </StackPanel>
+                                <TextBlock
+                                    FontSize="30"
+                                    FontWeight="Bold"
+                                    Text="{Binding ViewModel.ReusedCount}" />
+                                <ProgressBar
+                                    Height="3"
+                                    Margin="0,6,0,0"
+                                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                    Foreground="#F97316"
+                                    Maximum="1"
+                                    Minimum="0"
+                                    Value="{Binding ViewModel.ReusedPercent, Mode=OneWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!--  Breached  -->
+                        <Border
+                            Margin="0,0,0,10"
+                            Padding="16,14"
+                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                            CornerRadius="14">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="10"
+                                    Opacity="0.06"
+                                    ShadowDepth="1" />
+                            </Border.Effect>
+                            <StackPanel>
+                                <StackPanel Margin="0,0,0,6" Orientation="Horizontal">
+                                    <Border
+                                        Width="8"
+                                        Height="8"
+                                        Margin="0,0,8,0"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="4">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="#DC2626" />
+                                        </Border.Background>
+                                    </Border>
+                                    <TextBlock
+                                        FontSize="11"
+                                        Opacity="0.55"
+                                        Text="Breached" />
+                                </StackPanel>
+                                <TextBlock
+                                    FontSize="30"
+                                    FontWeight="Bold"
+                                    Text="{Binding ViewModel.BreachedCount}" />
+                                <ProgressBar
+                                    Height="3"
+                                    Margin="0,6,0,0"
+                                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                    Foreground="#DC2626"
+                                    Maximum="1"
+                                    Minimum="0"
+                                    Value="{Binding ViewModel.BreachedPercent, Mode=OneWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!--  No 2FA  -->
+                        <Border
+                            Margin="0,0,10,0"
+                            Padding="16,14"
+                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                            CornerRadius="14">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="10"
+                                    Opacity="0.06"
+                                    ShadowDepth="1" />
+                            </Border.Effect>
+                            <StackPanel>
+                                <StackPanel Margin="0,0,0,6" Orientation="Horizontal">
+                                    <Border
+                                        Width="8"
+                                        Height="8"
+                                        Margin="0,0,8,0"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="4">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="#F59E0B" />
+                                        </Border.Background>
+                                    </Border>
+                                    <TextBlock
+                                        FontSize="11"
+                                        Opacity="0.55"
+                                        Text="Missing 2FA" />
+                                </StackPanel>
+                                <TextBlock
+                                    FontSize="30"
+                                    FontWeight="Bold"
+                                    Text="{Binding ViewModel.Missing2FACount}" />
+                                <ProgressBar
+                                    Height="3"
+                                    Margin="0,6,0,0"
+                                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                    Foreground="#F59E0B"
+                                    Maximum="1"
+                                    Minimum="0"
+                                    Value="{Binding ViewModel.Missing2FAPercent, Mode=OneWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!--  Old passwords  -->
+                        <Border
+                            Margin="0,0,10,0"
+                            Padding="16,14"
+                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                            CornerRadius="14">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="10"
+                                    Opacity="0.06"
+                                    ShadowDepth="1" />
+                            </Border.Effect>
+                            <StackPanel>
+                                <StackPanel Margin="0,0,0,6" Orientation="Horizontal">
+                                    <Border
+                                        Width="8"
+                                        Height="8"
+                                        Margin="0,0,8,0"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="4">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="#8B5CF6" />
+                                        </Border.Background>
+                                    </Border>
+                                    <TextBlock
+                                        FontSize="11"
+                                        Opacity="0.55"
+                                        Text="Old Passwords" />
+                                </StackPanel>
+                                <TextBlock
+                                    FontSize="30"
+                                    FontWeight="Bold"
+                                    Text="{Binding ViewModel.OldCount}" />
+                            </StackPanel>
+                        </Border>
+
+                        <!--  Attack surface  -->
+                        <Border
+                            Padding="16,14"
+                            Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                            CornerRadius="14">
+                            <Border.Effect>
+                                <DropShadowEffect
+                                    BlurRadius="10"
+                                    Opacity="0.06"
+                                    ShadowDepth="1" />
+                            </Border.Effect>
+                            <StackPanel>
+                                <StackPanel Margin="0,0,0,6" Orientation="Horizontal">
+                                    <Border
+                                        Width="8"
+                                        Height="8"
+                                        Margin="0,0,8,0"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="4">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="#3B82F6" />
+                                        </Border.Background>
+                                    </Border>
+                                    <TextBlock
+                                        FontSize="11"
+                                        Opacity="0.55"
+                                        Text="Attack Surface" />
+                                </StackPanel>
+                                <TextBlock
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Text="{Binding ViewModel.AttackSurfaceLabel}" />
+                            </StackPanel>
+                        </Border>
+
+                    </UniformGrid>
+                </Grid>
+
+                <!--  ── SECURITY FINDINGS ──────────────────────────────────────────  -->
+                <TextBlock
+                    Margin="0,0,0,14"
+                    FontSize="18"
+                    FontWeight="SemiBold"
+                    Text="Security Findings" />
+                <ItemsControl ItemsSource="{Binding ViewModel.Findings}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border
+                                Margin="0,0,0,10"
+                                Padding="18,14"
+                                Background="{DynamicResource CardBackgroundFillColorDefaultBrush}"
+                                CornerRadius="12">
+                                <Border.Effect>
+                                    <DropShadowEffect
+                                        BlurRadius="8"
+                                        Opacity="0.05"
+                                        ShadowDepth="1" />
+                                </Border.Effect>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="4" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <!--  Severity accent bar  -->
+                                    <Border
+                                        Grid.Column="0"
+                                        Margin="0,0,14,0"
+                                        Background="{Binding Severity, Converter={StaticResource SevColor}}"
+                                        CornerRadius="2" />
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock
+                                            FontSize="14"
+                                            FontWeight="SemiBold"
+                                            Text="{Binding Title}" />
+                                        <TextBlock
+                                            Margin="0,4,0,6"
+                                            FontSize="12"
+                                            Opacity="0.65"
+                                            Text="{Binding Description}"
+                                            TextWrapping="Wrap" />
+                                        <TextBlock
+                                            FontSize="11"
+                                            FontStyle="Italic"
+                                            Opacity="0.5"
+                                            Text="{Binding Recommendation}"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+                                    <!--  Severity pill  -->
+                                    <Border
+                                        Grid.Column="2"
+                                        Margin="12,0,0,0"
+                                        Padding="10,4"
+                                        VerticalAlignment="Top"
+                                        CornerRadius="20">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="#12000000" />
+                                        </Border.Background>
+                                        <TextBlock
+                                            FontSize="11"
+                                            FontWeight="SemiBold"
+                                            Foreground="{Binding Severity, Converter={StaticResource SevColor}}"
+                                            Text="{Binding Severity}" />
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!--  ── CREDENTIAL DETAIL TABLE ───────────────────────────────────  -->
+                <TextBlock
+                    Margin="0,24,0,14"
+                    FontSize="18"
+                    FontWeight="SemiBold"
+                    Text="Credential Details" />
+                <Border Background="{DynamicResource CardBackgroundFillColorDefaultBrush}" CornerRadius="12">
+                    <Border.Effect>
+                        <DropShadowEffect
+                            BlurRadius="8"
+                            Opacity="0.05"
+                            ShadowDepth="1" />
+                    </Border.Effect>
+                    <ItemsControl ItemsSource="{Binding ViewModel.Details}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="18,10,18,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="70" />
+                                        <ColumnDefinition Width="70" />
+                                        <ColumnDefinition Width="70" />
+                                        <ColumnDefinition Width="60" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Medium"
+                                        Text="{Binding Label}" />
+                                    <Border
+                                        Grid.Column="1"
+                                        Padding="7,2"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="6"
+                                        Visibility="{Binding IsWeak, Converter={StaticResource BoolToVis}}">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="#1FEF4444" />
+                                        </Border.Background>
+                                        <TextBlock
+                                            FontSize="10"
+                                            FontWeight="SemiBold"
+                                            Text="Weak">
+                                            <TextBlock.Foreground>
+                                                <SolidColorBrush Color="#EF4444" />
+                                            </TextBlock.Foreground>
+                                        </TextBlock>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="2"
+                                        Padding="7,2"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="6"
+                                        Visibility="{Binding IsReused, Converter={StaticResource BoolToVis}}">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="#1FF97316" />
+                                        </Border.Background>
+                                        <TextBlock
+                                            FontSize="10"
+                                            FontWeight="SemiBold"
+                                            Text="Reused">
+                                            <TextBlock.Foreground>
+                                                <SolidColorBrush Color="#F97316" />
+                                            </TextBlock.Foreground>
+                                        </TextBlock>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="3"
+                                        Padding="7,2"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="6"
+                                        Visibility="{Binding IsOld, Converter={StaticResource BoolToVis}}">
+                                        <Border.Background>
+                                            <SolidColorBrush Color="#1FF59E0B" />
+                                        </Border.Background>
+                                        <TextBlock
+                                            FontSize="10"
+                                            FontWeight="SemiBold"
+                                            Text="Old">
+                                            <TextBlock.Foreground>
+                                                <SolidColorBrush Color="#F59E0B" />
+                                            </TextBlock.Foreground>
+                                        </TextBlock>
+                                    </Border>
+                                    <TextBlock
+                                        Grid.Column="4"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontSize="12"
+                                        Opacity="0.6"
+                                        Text="{Binding PasswordStrengthScore, StringFormat='{}{0}pts'}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

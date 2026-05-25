@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.GroupMembersPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Fortress.Controls"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:models="clr-namespace:Fortress.Mobile.Core.Models;assembly=Fortress.Mobile.Core"
+    xmlns:prism="http://prismlibrary.com"
+    xmlns:vm="clr-namespace:Fortress.ViewModels"
+    x:DataType="vm:GroupMembersPageViewModel"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!--  ══ HERO HEADER ══  -->
+        <controls:VaultPageHero
+            Title="{Binding GroupName}"
+            Grid.Row="0"
+            BackCommand="{Binding GoBackCommand}"
+            CountText="{Binding Members.Count, StringFormat='{0} passwords'}"
+            GradientEnd="#1a3f6f"
+            GradientStart="#407cca"
+            SearchEnabled="False" />
+
+        <!--  ══ CONTENT ══  -->
+        <Grid Grid.Row="1">
+            <RefreshView Command="{Binding RefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+                <CollectionView ItemsSource="{Binding Members}" SelectionMode="None">
+
+                    <!--  Empty state  -->
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout
+                            Padding="40"
+                            HorizontalOptions="Center"
+                            Spacing="12"
+                            VerticalOptions="Center">
+                            <Border
+                                Padding="26"
+                                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                HeightRequest="92"
+                                HorizontalOptions="Center"
+                                StrokeThickness="0"
+                                WidthRequest="92">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="46" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=PersonAdd}"
+                                    IconColor="{DynamicResource PrimaryColor}"
+                                    IconSize="40"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="17"
+                                HorizontalOptions="Center"
+                                Text="No passwords in this group yet"
+                                TextColor="{DynamicResource TextColor}" />
+                            <Label
+                                FontSize="13"
+                                HorizontalOptions="Center"
+                                HorizontalTextAlignment="Center"
+                                Text="Tap + to assign passwords to this group."
+                                TextColor="{DynamicResource TextSecondaryColor}" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="8" Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.Header>
+                        <BoxView HeightRequest="12" Color="Transparent" />
+                    </CollectionView.Header>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:CredentialView">
+                            <Border
+                                Margin="16,0"
+                                Padding="0"
+                                BackgroundColor="{DynamicResource CardBackgroundColor}"
+                                StrokeThickness="0">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="14" />
+                                </Border.StrokeShape>
+                                <Border.Shadow>
+                                    <Shadow
+                                        Brush="Black"
+                                        Opacity="0.04"
+                                        Radius="6"
+                                        Offset="0,2" />
+                                </Border.Shadow>
+                                <Grid
+                                    Padding="14"
+                                    ColumnDefinitions="Auto,*,Auto"
+                                    ColumnSpacing="12">
+                                    <Border
+                                        Grid.Column="0"
+                                        Padding="9"
+                                        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                        HeightRequest="42"
+                                        StrokeThickness="0"
+                                        WidthRequest="42">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="12" />
+                                        </Border.StrokeShape>
+                                        <mi:MauiIcon
+                                            HorizontalOptions="Center"
+                                            Icon="{mi:Material Icon=Language}"
+                                            IconColor="{DynamicResource PrimaryColor}"
+                                            IconSize="20"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                    <VerticalStackLayout
+                                        Grid.Column="1"
+                                        Spacing="2"
+                                        VerticalOptions="Center">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            LineBreakMode="TailTruncation"
+                                            Text="{Binding Domain}"
+                                            TextColor="{DynamicResource TextColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            LineBreakMode="TailTruncation"
+                                            Text="{Binding Username}"
+                                            TextColor="{DynamicResource TextSecondaryColor}" />
+                                    </VerticalStackLayout>
+
+                                    <!--  Remove button  -->
+                                    <Border
+                                        Grid.Column="2"
+                                        Padding="0"
+                                        BackgroundColor="#FEF2F2"
+                                        HeightRequest="36"
+                                        StrokeThickness="0"
+                                        WidthRequest="36">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+                                        <Button
+                                            Padding="0"
+                                            BackgroundColor="Transparent"
+                                            BorderWidth="0"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:GroupMembersPageViewModel}}, Path=RemoveMemberCommand}"
+                                            CommandParameter="{Binding .}"
+                                            HeightRequest="36"
+                                            WidthRequest="36">
+                                            <Button.ImageSource>
+                                                <FontImageSource
+                                                    FontFamily="MaterialIconsRegular"
+                                                    Glyph="&#xE15B;"
+                                                    Size="18"
+                                                    Color="#EF4444" />
+                                            </Button.ImageSource>
+                                        </Button>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                    <CollectionView.Footer>
+                        <BoxView HeightRequest="96" Color="Transparent" />
+                    </CollectionView.Footer>
+                </CollectionView>
+            </RefreshView>
+            <Border
+                Margin="0,0,20,20"
+                Padding="0"
+                BackgroundColor="{DynamicResource PrimaryColor}"
+                HeightRequest="60"
+                HorizontalOptions="End"
+                StrokeThickness="0"
+                VerticalOptions="End"
+                WidthRequest="60">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="30" />
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow
+                        Brush="{DynamicResource PrimaryColor}"
+                        Opacity="0.4"
+                        Radius="16"
+                        Offset="0,6" />
+                </Border.Shadow>
+                <Button
+                    Padding="0"
+                    BackgroundColor="Transparent"
+                    BorderWidth="0"
+                    Command="{Binding AddMembersCommand}"
+                    HeightRequest="60"
+                    WidthRequest="60">
+                    <Button.ImageSource>
+                        <FontImageSource
+                            FontFamily="MaterialIconsRegular"
+                            Glyph="&#xE145;"
+                            Size="28"
+                            Color="White" />
+                    </Button.ImageSource>
+                </Button>
+            </Border>
+            <!--  FAB: Add password to group  -->
+
+        </Grid>
+
+    </Grid>
+</ContentPage>

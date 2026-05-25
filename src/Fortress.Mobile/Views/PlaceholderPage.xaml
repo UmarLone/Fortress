@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.PlaceholderPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:prism="http://prismlibrary.com"
+    BackgroundColor="{DynamicResource PrimaryColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="*,Auto">
+
+        <!--  Centered Logo Section  -->
+        <VerticalStackLayout
+            Grid.Row="0"
+            HorizontalOptions="Center"
+            Spacing="16"
+            VerticalOptions="Center">
+
+            <!--  Logo  -->
+            <Image
+                HeightRequest="120"
+                HorizontalOptions="Center"
+                Source="logowhite.png"
+                WidthRequest="120" />
+
+            <!--  App Name  -->
+            <Label
+                CharacterSpacing="3"
+                FontAttributes="Bold"
+                FontFamily="Audiowide"
+                FontSize="25"
+                HorizontalOptions="Center"
+                Text="FORTRESS"
+                TextColor="#fff" />
+
+
+
+
+        </VerticalStackLayout>
+
+        <!--  Footer  -->
+        <Label
+            Grid.Row="1"
+            Margin="0,0,0,40"
+            FontSize="12"
+            HorizontalOptions="Center"
+            Opacity="0.6"
+            Text="Securing your digital life"
+            TextColor="White" />
+
+    </Grid>
+
+</ContentPage>

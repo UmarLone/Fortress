@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<the49:BottomSheet
+    x:Class="Fortress.Views.PopupPages.AddMemberSheet"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:Fortress.Converters"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:models="clr-namespace:Fortress.Mobile.Core.Models;assembly=Fortress.Mobile.Core"
+    xmlns:the49="clr-namespace:The49.Maui.BottomSheet;assembly=The49.Maui.BottomSheet"
+    xmlns:vm="clr-namespace:Fortress.ViewModels.PopupPagesViewModels"
+    x:DataType="vm:AddMemberSheetViewModel"
+    BackgroundColor="{DynamicResource CardBackgroundColor}"
+    HasBackdrop="True"
+    HasHandle="True">
+
+    <the49:BottomSheet.Resources>
+        <converter:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmpty" />
+        <converter:InverseBoolConverter x:Key="InvertBool" />
+    </the49:BottomSheet.Resources>
+
+    <!--
+        Use FullscreenDetent so Android measures the sheet at full height immediately
+        rather than measuring every row to compute ContentDetent height – this is the
+        primary cause of the freeze when there are 500+ credentials.
+    -->
+    <the49:BottomSheet.Detents>
+        <the49:FullscreenDetent />
+    </the49:BottomSheet.Detents>
+
+    <Grid BackgroundColor="{DynamicResource CardBackgroundColor}" RowDefinitions="Auto,Auto,Auto,*,Auto">
+
+        <!--  Title  -->
+        <Label
+            Grid.Row="0"
+            Margin="20,20,20,12"
+            FontAttributes="Bold"
+            FontSize="17"
+            Text="{Binding Title}"
+            TextColor="{DynamicResource TextColor}" />
+
+        <!--  Search bar  -->
+        <Border
+            Grid.Row="1"
+            Margin="16,0,16,8"
+            Padding="12,0"
+            BackgroundColor="{DynamicResource CardBackgroundColorAlt}"
+            HeightRequest="44"
+            StrokeThickness="0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="12" />
+            </Border.StrokeShape>
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+                <mi:MauiIcon
+                    Grid.Column="0"
+                    Icon="{mi:Material Icon=Search}"
+                    IconColor="{DynamicResource TextSecondaryColor}"
+                    IconSize="18"
+                    VerticalOptions="Center" />
+                <Entry
+                    Grid.Column="1"
+                    BackgroundColor="Transparent"
+                    FontSize="14"
+                    Placeholder="Search credentials..."
+                    PlaceholderColor="{DynamicResource TextSecondaryColor}"
+                    ReturnType="Search"
+                    Text="{Binding SearchText}"
+                    TextColor="{DynamicResource TextColor}"
+                    VerticalOptions="Center" />
+                <mi:MauiIcon
+                    Grid.Column="2"
+                    Icon="{mi:Material Icon=Close}"
+                    IconColor="{DynamicResource TextSecondaryColor}"
+                    IconSize="16"
+                    IsVisible="{Binding SearchText, Converter={StaticResource StringNotNullOrEmpty}}"
+                    VerticalOptions="Center">
+                    <mi:MauiIcon.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ClearSearchCommand}" />
+                    </mi:MauiIcon.GestureRecognizers>
+                </mi:MauiIcon>
+            </Grid>
+        </Border>
+
+        <!--  "Showing X of Y" capped notice  -->
+        <Label
+            Grid.Row="2"
+            Margin="20,0,20,6"
+            FontSize="12"
+            IsVisible="{Binding IsCapped}"
+            Text="{Binding CappedLabel}"
+            TextColor="{DynamicResource TextSecondaryColor}" />
+
+        <!--  Virtualised results list  -->
+        <CollectionView
+            Grid.Row="3"
+            ItemsSource="{Binding Visible}"
+            SelectionMode="None">
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout
+                    Padding="40"
+                    HorizontalOptions="Center"
+                    Spacing="8"
+                    VerticalOptions="Center">
+                    <ActivityIndicator
+                        IsRunning="{Binding IsFiltering}"
+                        IsVisible="{Binding IsFiltering}"
+                        Color="{DynamicResource PrimaryColor}" />
+                    <Label
+                        FontSize="14"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding IsFiltering, Converter={StaticResource InvertBool}}"
+                        Text="No credentials found"
+                        TextColor="{DynamicResource TextSecondaryColor}" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="4" Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.Header>
+                <BoxView HeightRequest="4" Color="Transparent" />
+            </CollectionView.Header>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:CredentialView">
+                    <Border
+                        Margin="12,0"
+                        Padding="14,12"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type the49:BottomSheet}}, Path=BindingContext.PickCommand}" CommandParameter="{Binding .}" />
+                        </Border.GestureRecognizers>
+
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <!--  Icon badge  -->
+                            <Border
+                                Grid.Column="0"
+                                Padding="9"
+                                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                HeightRequest="40"
+                                StrokeThickness="0"
+                                WidthRequest="40">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=Language}"
+                                    IconColor="{DynamicResource PrimaryColor}"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                            </Border>
+
+                            <!--  Domain / username  -->
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="2"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    LineBreakMode="TailTruncation"
+                                    Text="{Binding Domain}"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    LineBreakMode="TailTruncation"
+                                    Text="{Binding Username}"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <CollectionView.Footer>
+                <BoxView HeightRequest="16" Color="Transparent" />
+            </CollectionView.Footer>
+        </CollectionView>
+
+        <!--  Loading overlay during filter computation  -->
+        <ActivityIndicator
+            Grid.Row="3"
+            HeightRequest="32"
+            HorizontalOptions="Center"
+            IsRunning="{Binding IsFiltering}"
+            IsVisible="{Binding IsFiltering}"
+            VerticalOptions="Center"
+            WidthRequest="32"
+            Color="{DynamicResource PrimaryColor}" />
+
+    </Grid>
+</the49:BottomSheet>

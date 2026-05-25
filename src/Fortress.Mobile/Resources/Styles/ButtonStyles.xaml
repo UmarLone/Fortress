@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary
+    x:Class="Fortress.Styles.ButtonStyles"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:buttons="clr-namespace:Syncfusion.Maui.Toolkit.Buttons;assembly=Syncfusion.Maui.Toolkit">
+
+    <!--  Common style for Gradient buttons  -->
+    <Style x:Key="GradientButtonStyle" TargetType="buttons:SfButton">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Offset="0" Color="{DynamicResource PrimaryColor}" />
+                    <GradientStop Offset="1" Color="{DynamicResource PrimaryGradient}" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="TextColor" Value="{DynamicResource Gray-White}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="HeightRequest" Value="48" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
+    <!--  Common style for Transparent buttons  -->
+    <Style x:Key="TransparentButtonStyle" TargetType="buttons:SfButton">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="TextColor" Value="{DynamicResource HyperlinkColor}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Start" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="Transparent" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  Common style for Icon buttons  -->
+    <Style x:Key="IconButtonStyle" TargetType="buttons:SfButton">
+        <Setter Property="TextColor" Value="{DynamicResource Gray-700}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="FontSize" Value="25" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="WidthRequest" Value="40" />
+        <Setter Property="CornerRadius" Value="20" />
+    </Style>
+
+    <!--  Common style for Simple buttons  -->
+    <Style x:Key="SimpleButtonStyle" TargetType="buttons:SfButton">
+        <Setter Property="Background" Value="{DynamicResource PrimaryColor}" />
+        <Setter Property="WidthRequest" Value="130" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="TextColor" Value="{DynamicResource White}" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{DynamicResource PrimaryColor}" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  Common style for Save Button  -->
+    <Style
+        x:Key="GKSaveButtonStyle"
+        BasedOn="{x:StaticResource SimpleButtonStyle}"
+        TargetType="buttons:SfButton">
+        <Setter Property="Text" Value="Save" />
+        <Setter Property="VerticalOptions" Value="End" />
+        <Setter Property="HorizontalOptions" Value="Fill" />
+    </Style>
+
+
+    <Style x:Key="RadioButtonStyle" TargetType="RadioButton">
+        <!--  Label text  -->
+        <Setter Property="FontSize" Value="17" />
+    </Style>
+
+</ResourceDictionary>

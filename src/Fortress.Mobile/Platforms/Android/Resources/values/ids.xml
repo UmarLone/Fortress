@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+ <item name="tabMatches"     type="id" />
+    <item name="tabAll"         type="id" />
+    <item name="tabIndicator" type="id" />
+ <item name="tabStrip"       type="id" />
+    <item name="tabDivider"     type="id" />
+    <item name="loadingSpinner" type="id" />
+</resources>

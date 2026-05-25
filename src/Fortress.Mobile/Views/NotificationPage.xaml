@@ -1,0 +1,468 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.NotificationPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:Fortress.Converters"
+    xmlns:models="clr-namespace:Fortress.Mobile.Core.Models;assembly=Fortress.Mobile.Core"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    Title="Notifications"
+    prism:ViewModelLocator.AutowireViewModel="Automatic"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <converter:IsPositiveConverter x:Key="IsPositive" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!--  ═══ HERO ═══  -->
+        <Border
+            Grid.Row="0"
+            Padding="20,20,20,28"
+            StrokeThickness="0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Offset="0.0" Color="{DynamicResource HeroGradientStart}" />
+                    <GradientStop Offset="1.0" Color="{DynamicResource HeroGradientEnd}" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,28,28" />
+            </Border.StrokeShape>
+
+            <!--  Single row: [back] [title block *] [clear-all]  -->
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+
+                <!--  Back button  -->
+                <Border
+                    Grid.Column="0"
+                    Padding="0"
+                    BackgroundColor="#20FFFFFF"
+                    HeightRequest="42"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="42">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="13" />
+                    </Border.StrokeShape>
+                    <Grid>
+                        <mi:MauiIcon
+                            HorizontalOptions="Center"
+                            Icon="{mi:Material Icon=ArrowBack}"
+                            IconColor="White"
+                            IconSize="20"
+                            InputTransparent="True"
+                            VerticalOptions="Center" />
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding GoBackCommand}"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+                    </Grid>
+                </Border>
+
+                <!--  Title block  -->
+                <VerticalStackLayout
+                    Grid.Column="1"
+                    Spacing="2"
+                    VerticalOptions="Center">
+                    <Label
+                        FontSize="12"
+                        Opacity="0.75"
+                        Text="VAULT"
+                        TextColor="White" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="26"
+                        Text="Notifications"
+                        TextColor="White" />
+                    <Label
+                        FontSize="13"
+                        Opacity="0.85"
+                        Text="{Binding Notifications.Count, StringFormat='{0} alert(s)'}"
+                        TextColor="White" />
+                </VerticalStackLayout>
+
+                <!--  Clear all button — only visible when there are notifications  -->
+                <Border
+                    Grid.Column="2"
+                    Padding="0"
+                    BackgroundColor="#30FFFFFF"
+                    HeightRequest="48"
+                    IsVisible="{Binding Notifications.Count, Converter={StaticResource IsPositive}}"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="48">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="24" />
+                    </Border.StrokeShape>
+                    <Grid>
+                        <mi:MauiIcon
+                            HorizontalOptions="Center"
+                            Icon="{mi:Material Icon=DeleteSweep}"
+                            IconColor="White"
+                            IconSize="24"
+                            InputTransparent="True"
+                            VerticalOptions="Center" />
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding ClearAllCommand}"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+                    </Grid>
+                </Border>
+
+            </Grid>
+        </Border>
+
+        <!--  ═══ LIST ═══  -->
+        <CollectionView
+            Grid.Row="1"
+            Margin="0,8,0,0"
+            ItemsSource="{Binding Notifications}">
+
+            <!--  Empty state  -->
+            <CollectionView.EmptyView>
+                <VerticalStackLayout
+                    Padding="40"
+                    HorizontalOptions="Center"
+                    Spacing="16"
+                    VerticalOptions="Center">
+                    <Border
+                        Padding="24"
+                        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        HeightRequest="88"
+                        HorizontalOptions="Center"
+                        StrokeThickness="0"
+                        WidthRequest="88">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="44" />
+                        </Border.StrokeShape>
+                        <mi:MauiIcon
+                            HorizontalOptions="Center"
+                            Icon="{mi:Material Icon=NotificationsNone}"
+                            IconColor="{DynamicResource PrimaryColor}"
+                            IconSize="40"
+                            VerticalOptions="Center" />
+                    </Border>
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="20"
+                        HorizontalOptions="Center"
+                        Text="All clear!"
+                        TextColor="{DynamicResource TextColor}" />
+                    <Label
+                        FontSize="14"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Text="No notifications right now. You're up to date."
+                        TextColor="{DynamicResource TextSecondaryColor}" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="0" Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+
+            <!--  ═══ ITEM TEMPLATE ═══  -->
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:UserNotification">
+                    <Grid Padding="16,6,16,0">
+                        <Border
+                            Padding="0"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.05"
+                                    Radius="8"
+                                    Offset="0,3" />
+                            </Border.Shadow>
+
+                            <Grid
+                                Padding="14,14,14,14"
+                                ColumnDefinitions="Auto,*,Auto"
+                                ColumnSpacing="12">
+
+                                <!--  Left: coloured type pill  -->
+                                <Grid
+                                    Grid.Column="0"
+                                    HeightRequest="44"
+                                    WidthRequest="44">
+                                    <!--  Default = Information (blue)  -->
+                                    <Border
+                                        Padding="0"
+                                        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                        HeightRequest="44"
+                                        StrokeThickness="0"
+                                        WidthRequest="44">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="14" />
+                                        </Border.StrokeShape>
+                                        <Border.Triggers>
+                                            <DataTrigger
+                                                Binding="{Binding Type}"
+                                                TargetType="Border"
+                                                Value="{x:Static models:NotificationType.Success}">
+                                                <Setter Property="BackgroundColor" Value="#DCFCE7" />
+                                            </DataTrigger>
+                                            <DataTrigger
+                                                Binding="{Binding Type}"
+                                                TargetType="Border"
+                                                Value="{x:Static models:NotificationType.Warning}">
+                                                <Setter Property="BackgroundColor" Value="#FEF3C7" />
+                                            </DataTrigger>
+                                            <DataTrigger
+                                                Binding="{Binding Type}"
+                                                TargetType="Border"
+                                                Value="{x:Static models:NotificationType.Error}">
+                                                <Setter Property="BackgroundColor" Value="#FEE2E2" />
+                                            </DataTrigger>
+                                            <DataTrigger
+                                                Binding="{Binding Type}"
+                                                TargetType="Border"
+                                                Value="{x:Static models:NotificationType.Critical}">
+                                                <Setter Property="BackgroundColor" Value="#FEE2E2" />
+                                            </DataTrigger>
+
+                                        </Border.Triggers>
+                                        <mi:MauiIcon
+                                            HorizontalOptions="Center"
+                                            Icon="{mi:Material Icon=Info}"
+                                            IconColor="{DynamicResource PrimaryColor}"
+                                            IconSize="22"
+                                            VerticalOptions="Center">
+                                            <mi:MauiIcon.Triggers>
+                                                <DataTrigger
+                                                    Binding="{Binding Type}"
+                                                    TargetType="mi:MauiIcon"
+                                                    Value="{x:Static models:NotificationType.Success}">
+                                                    <Setter Property="Icon" Value="{mi:Material Icon=CheckCircle}" />
+                                                    <Setter Property="IconColor" Value="#16A34A" />
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    Binding="{Binding Type}"
+                                                    TargetType="mi:MauiIcon"
+                                                    Value="{x:Static models:NotificationType.Warning}">
+                                                    <Setter Property="Icon" Value="{mi:Material Icon=Warning}" />
+                                                    <Setter Property="IconColor" Value="#D97706" />
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    Binding="{Binding Type}"
+                                                    TargetType="mi:MauiIcon"
+                                                    Value="{x:Static models:NotificationType.Error}">
+                                                    <Setter Property="Icon" Value="{mi:Material Icon=Error}" />
+                                                    <Setter Property="IconColor" Value="#DC2626" />
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    Binding="{Binding Type}"
+                                                    TargetType="mi:MauiIcon"
+                                                    Value="{x:Static models:NotificationType.Critical}">
+                                                    <Setter Property="Icon" Value="{mi:Material Icon=GppBad}" />
+                                                    <Setter Property="IconColor" Value="#DC2626" />
+                                                </DataTrigger>
+
+                                            </mi:MauiIcon.Triggers>
+                                        </mi:MauiIcon>
+                                    </Border>
+
+
+                                </Grid>
+
+                                <!--  Middle: title + message + time  -->
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="3"
+                                    VerticalOptions="Center">
+                                    <!--  Type badge + title  -->
+                                    <HorizontalStackLayout Spacing="6">
+                                        <Border Padding="7,3" StrokeThickness="0">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="20" />
+                                            </Border.StrokeShape>
+                                            <Border.BackgroundColor>
+                                                <x:Static Member="Colors.Transparent" />
+                                            </Border.BackgroundColor>
+                                            <Border.Triggers>
+                                                <DataTrigger
+                                                    Binding="{Binding Type}"
+                                                    TargetType="Border"
+                                                    Value="{x:Static models:NotificationType.Information}">
+                                                    <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryLightestColor}" />
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    Binding="{Binding Type}"
+                                                    TargetType="Border"
+                                                    Value="{x:Static models:NotificationType.Success}">
+                                                    <Setter Property="BackgroundColor" Value="#DCFCE7" />
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    Binding="{Binding Type}"
+                                                    TargetType="Border"
+                                                    Value="{x:Static models:NotificationType.Warning}">
+                                                    <Setter Property="BackgroundColor" Value="#FEF3C7" />
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    Binding="{Binding Type}"
+                                                    TargetType="Border"
+                                                    Value="{x:Static models:NotificationType.Error}">
+                                                    <Setter Property="BackgroundColor" Value="#FEE2E2" />
+                                                </DataTrigger>
+                                                <DataTrigger
+                                                    Binding="{Binding Type}"
+                                                    TargetType="Border"
+                                                    Value="{x:Static models:NotificationType.Critical}">
+                                                    <Setter Property="BackgroundColor" Value="#FEE2E2" />
+                                                </DataTrigger>
+
+                                            </Border.Triggers>
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="10"
+                                                TextColor="{DynamicResource TextTertiaryColor}">
+                                                <Label.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding Type}"
+                                                        TargetType="Label"
+                                                        Value="{x:Static models:NotificationType.Information}">
+                                                        <Setter Property="Text" Value="INFO" />
+                                                        <Setter Property="TextColor" Value="{DynamicResource PrimaryColor}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding Type}"
+                                                        TargetType="Label"
+                                                        Value="{x:Static models:NotificationType.Success}">
+                                                        <Setter Property="Text" Value="SUCCESS" />
+                                                        <Setter Property="TextColor" Value="#16A34A" />
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding Type}"
+                                                        TargetType="Label"
+                                                        Value="{x:Static models:NotificationType.Warning}">
+                                                        <Setter Property="Text" Value="WARNING" />
+                                                        <Setter Property="TextColor" Value="#D97706" />
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding Type}"
+                                                        TargetType="Label"
+                                                        Value="{x:Static models:NotificationType.Error}">
+                                                        <Setter Property="Text" Value="ERROR" />
+                                                        <Setter Property="TextColor" Value="#DC2626" />
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding Type}"
+                                                        TargetType="Label"
+                                                        Value="{x:Static models:NotificationType.Critical}">
+                                                        <Setter Property="Text" Value="CRITICAL" />
+                                                        <Setter Property="TextColor" Value="#DC2626" />
+                                                    </DataTrigger>
+
+                                                </Label.Triggers>
+                                            </Label>
+                                        </Border>
+                                    </HorizontalStackLayout>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        LineBreakMode="TailTruncation"
+                                        Text="{Binding Title}"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        LineBreakMode="TailTruncation"
+                                        MaxLines="2"
+                                        Text="{Binding Message}"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                    <Label
+                                        FontSize="11"
+                                        Text="{Binding CreationDateTime, StringFormat='{0:MMM d, yyyy}'}"
+                                        TextColor="{DynamicResource TextTertiaryColor}" />
+                                </VerticalStackLayout>
+
+                                <!--  Right: View + Delete  -->
+                                <VerticalStackLayout
+                                    Grid.Column="2"
+                                    Spacing="6"
+                                    VerticalOptions="Center">
+                                    <!--  View  -->
+                                    <Border
+                                        Padding="0"
+                                        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                        HeightRequest="34"
+                                        StrokeThickness="0"
+                                        WidthRequest="34">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+                                        <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+                                            <mi:MauiIcon
+                                                HorizontalOptions="Center"
+                                                Icon="{mi:Material Icon=Visibility}"
+                                                IconColor="{DynamicResource PrimaryColor}"
+                                                IconSize="18"
+                                                InputTransparent="True"
+                                                VerticalOptions="Center" />
+                                            <Button
+                                                Padding="0"
+                                                BackgroundColor="Transparent"
+                                                BorderWidth="0"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ViewCommand}"
+                                                CommandParameter="{Binding .}"
+                                                HorizontalOptions="Fill"
+                                                VerticalOptions="Fill" />
+                                        </Grid>
+                                    </Border>
+                                    <!--  Delete  -->
+                                    <Border
+                                        Padding="0"
+                                        BackgroundColor="{DynamicResource DangerLightColor}"
+                                        HeightRequest="34"
+                                        StrokeThickness="0"
+                                        WidthRequest="34">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+                                        <Grid>
+                                            <mi:MauiIcon
+                                                HorizontalOptions="Center"
+                                                Icon="{mi:Material Icon=DeleteOutline}"
+                                                IconColor="{DynamicResource DangerColor}"
+                                                IconSize="18"
+                                                InputTransparent="True"
+                                                VerticalOptions="Center" />
+                                            <Button
+                                                Padding="0"
+                                                BackgroundColor="Transparent"
+                                                BorderWidth="0"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteCommand}"
+                                                CommandParameter="{Binding .}"
+                                                HorizontalOptions="Fill"
+                                                VerticalOptions="Fill" />
+                                        </Grid>
+                                    </Border>
+                                </VerticalStackLayout>
+
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <CollectionView.Footer>
+                <BoxView HeightRequest="24" Color="Transparent" />
+            </CollectionView.Footer>
+        </CollectionView>
+
+    </Grid>
+</ContentPage>

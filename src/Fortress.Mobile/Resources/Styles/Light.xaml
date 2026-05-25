@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary
+    x:Class="Fortress.Styles.Light"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:styles="clr-namespace:Fortress.Styles">
+    <ResourceDictionary.MergedDictionaries>
+        <styles:ButtonStyles />
+        <styles:LabelStyles />
+        <styles:BorderStyles />
+        <styles:ComboBoxStyles />
+        <styles:ListViewStyles />
+        <styles:BoxViewStyles />
+        <styles:EntryStyles />
+        <styles:FontIcons />
+        <styles:Colors />
+        <styles:CheckBoxStyles />
+        <styles:CustomStyles />
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--  ═══════════════════════════════════════════════════════════════════  -->
+    <!--  THEME - Light Mode (Brand Color: #407cca)  -->
+    <!--  ═══════════════════════════════════════════════════════════════════  -->
+
+    <!--  Text Colors  -->
+    <Color x:Key="TextColor">#1A1D26</Color>
+    <Color x:Key="TextSecondaryColor">#5E6578</Color>
+    <Color x:Key="TextTertiaryColor">#8B93A7</Color>
+
+    <!--  Primary Color Family - Fortress Blue #407cca  -->
+    <Color x:Key="PrimaryColor">#407cca</Color>
+    <Color x:Key="PrimaryDarkColor">#3569b0</Color>
+    <Color x:Key="PrimaryDarkenColor">#2a5691</Color>
+    <Color x:Key="PrimaryLighterColor">#7ba3db</Color>
+    <Color x:Key="PrimaryLightestColor">#E8F1FA</Color>
+    <Color x:Key="PrimaryGradient">#1a3f6f</Color>
+    <Color x:Key="PrimaryLight">#F0F6FC</Color>
+
+    <!--  Secondary - Teal  -->
+    <Color x:Key="SecondaryColor">#14B8A6</Color>
+    <Color x:Key="SecondaryGradient">#06B6D4</Color>
+    <Color x:Key="Secondary">#14B8A6</Color>
+
+    <!--  Accent Colors  -->
+    <Color x:Key="AccentPink">#EC4899</Color>
+    <Color x:Key="AccentOrange">#F97316</Color>
+    <Color x:Key="AccentYellow">#EAB308</Color>
+    <Color x:Key="AccentCyan">#06B6D4</Color>
+
+    <!--  Semantic Colors  -->
+    <Color x:Key="DangerColor">#EF4444</Color>
+    <Color x:Key="DangerLightColor">#FEE2E2</Color>
+    <Color x:Key="SuccessColor">#22C55E</Color>
+    <Color x:Key="SuccessLightColor">#DCFCE7</Color>
+    <Color x:Key="InfoColor">#3B82F6</Color>
+    <Color x:Key="InfoLightColor">#DBEAFE</Color>
+    <Color x:Key="WarningColor">#F59E0B</Color>
+    <Color x:Key="WarningLightColor">#FEF3C7</Color>
+
+    <!--  Surface Colors  -->
+    <Color x:Key="PageBackgroundColor">#F5F7FA</Color>
+    <Color x:Key="CardBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="CardBackgroundColorAlt">#F1F5F9</Color>
+    <Color x:Key="SurfaceColor">#FFFFFF</Color>
+    <Color x:Key="SurfaceElevatedColor">#FFFFFF</Color>
+
+    <!--  UI Elements  -->
+    <Color x:Key="MutedColor">#64748B</Color>
+    <Color x:Key="PasswordNumberColor">#407cca</Color>
+    <Color x:Key="PasswordSpecialColor">#EF4444</Color>
+    <Color x:Key="ButtonColor">#407cca</Color>
+    <Color x:Key="InputPlaceholderColor">#94A3B8</Color>
+    <Color x:Key="DangerPressedColor">#DC2626</Color>
+    <Color x:Key="GradientColor">#407cca</Color>
+    <Color x:Key="BackgroundColor">#F5F7FA</Color>
+    <Color x:Key="SplashBackgroundColor">#407cca</Color>
+    <Color x:Key="BorderColor">#E2E8F0</Color>
+    <Color x:Key="DisabledIconColor">#CBD5E1</Color>
+    <Color x:Key="SeparatorColor">#E2E8F0</Color>
+    <Color x:Key="TouchColor">#CBD5E1</Color>
+    <Color x:Key="SoftBackgroundColor">#F1F5F9</Color>
+
+    <!--  Box Styles  -->
+    <Color x:Key="BoxBorderColor">#E2E8F0</Color>
+    <Color x:Key="BoxHeaderTextColor">#407cca</Color>
+
+    <!--  Title Colors  -->
+    <Color x:Key="TitleTextColor">#FFFFFF</Color>
+    <Color x:Key="TitleEntryTextColor">#FFFFFF</Color>
+    <Color x:Key="TitleEntryPlaceholderColor">#A5B4FC</Color>
+
+    <!--  List Styles  -->
+    <Color x:Key="ListItemBorderColor">#F1F5F9</Color>
+    <Color x:Key="ListSectionBorderColor">#E2E8F0</Color>
+    <Color x:Key="ListSectionBorderBottomColor">#E2E8F0</Color>
+    <Color x:Key="ListHeaderTextColor">#407cca</Color>
+    <Color x:Key="ListHeaderBackgroundColor">#F8FAFC</Color>
+
+    <!--  Slider  -->
+    <Color x:Key="SliderThumbColor">#407cca</Color>
+    <Color x:Key="SliderThumbBorderColor">#7ba3db</Color>
+    <Color x:Key="SliderTrackMinColor">#407cca</Color>
+    <Color x:Key="SliderTrackMaxColor">#E2E8F0</Color>
+
+    <!--  Switch  -->
+    <Color x:Key="SwitchOnColor">#407cca</Color>
+    <Color x:Key="SwitchThumbColor">#FFFFFF</Color>
+
+    <!--  Stepper  -->
+    <Color x:Key="StepperBackgroundColor">#F1F5F9</Color>
+    <Color x:Key="StepperForegroundColor">#1A1D26</Color>
+
+    <!--  Button Styles  -->
+    <Color x:Key="ButtonPrimaryBackgroundColor">#407cca</Color>
+    <Color x:Key="ButtonPrimaryBackgroundColorPressed">#3569b0</Color>
+    <Color x:Key="ButtonPrimaryBackgroundColorDisabled">#CBD5E1</Color>
+    <Color x:Key="ButtonPrimaryTextColor">#FFFFFF</Color>
+    <Color x:Key="ButtonPrimaryTextColorDisabled">#94A3B8</Color>
+
+    <Color x:Key="ButtonBackgroundColor">#F1F5F9</Color>
+    <Color x:Key="ButtonBackgroundColorPressed">#E2E8F0</Color>
+    <Color x:Key="ButtonBackgroundColorDisabled">#F1F5F9</Color>
+    <Color x:Key="ButtonBorderColor">#E2E8F0</Color>
+    <Color x:Key="ButtonTextColor">#1A1D26</Color>
+    <Color x:Key="ButtonTextColorDisabled">#94A3B8</Color>
+    <Color x:Key="ButtonTextColorOpacity">#991A1D26</Color>
+
+    <!--  FAB  -->
+    <Color x:Key="FabColor">#407cca</Color>
+    <Color x:Key="FabPressedColor">#3569b0</Color>
+
+    <!--  Tabs  -->
+    <Color x:Key="TabBarBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="TabBarItemColor">#64748B</Color>
+    <Color x:Key="TabBarSelectedItemColor">#407cca</Color>
+
+    <!--  Navigation Bar  -->
+    <Color x:Key="NavigationBarBackgroundColor">#407cca</Color>
+    <Color x:Key="NavigationBarTextColor">#FFFFFF</Color>
+
+    <!--  Hero Header Gradient (VaultHealthPage, etc.)  -->
+    <Color x:Key="HeroGradientStart">#407cca</Color>
+    <Color x:Key="HeroGradientEnd">#1a3f6f</Color>
+
+    <!--  Section Tile Accent Colours (theme-aware)  -->
+    <!--  Authenticators / Indigo  -->
+    <Color x:Key="AuthTileBackground">#EEF2FF</Color>
+    <Color x:Key="AuthTileIcon">#6366F1</Color>
+    <Color x:Key="AuthHeroGradientStart">#6366F1</Color>
+    <Color x:Key="AuthHeroGradientEnd">#4F46E5</Color>
+    <!--  Identities / Purple  -->
+    <Color x:Key="IdTileBackground">#EDE9FE</Color>
+    <Color x:Key="IdTileIcon">#8B5CF6</Color>
+    <Color x:Key="IdHeroGradientStart">#8B5CF6</Color>
+    <Color x:Key="IdHeroGradientEnd">#7C3AED</Color>
+    <!--  Logs / Neutral slate  -->
+    <Color x:Key="LogsHeroGradientStart">#4B5563</Color>
+    <Color x:Key="LogsHeroGradientEnd">#374151</Color>
+    <!--  Secure Notes / Teal  -->
+    <Color x:Key="NotesTileBackground">#CCFBF1</Color>
+    <Color x:Key="NotesTileIcon">#14B8A6</Color>
+    <Color x:Key="NotesHeroGradientStart">#14B8A6</Color>
+    <Color x:Key="NotesHeroGradientEnd">#0F766E</Color>
+
+    <!--  Category tile backgrounds / icons (theme-aware)  -->
+    <!--  Cards / Amber  -->
+    <Color x:Key="CardsTileBackground">#FEF3C7</Color>
+    <Color x:Key="CardsTileIcon">#F59E0B</Color>
+    <!--  Generator / Pink  -->
+    <Color x:Key="GeneratorTileBackground">#FCE7F3</Color>
+    <Color x:Key="GeneratorTileIcon">#EC4899</Color>
+    <!--  Passkeys / Purple  -->
+    <Color x:Key="PasskeysTileBackground">#EDE9FE</Color>
+    <Color x:Key="PasskeysTileIcon">#7C3AED</Color>
+    <!--  2FA stat / Cyan  -->
+    <Color x:Key="TwoFAStatBackground">#CFFAFE</Color>
+    <Color x:Key="TwoFAStatIcon">#06B6D4</Color>
+
+    <!--  Hyperlinks  -->
+    <Color x:Key="HyperlinkColor">#407cca</Color>
+    <Color x:Key="HyperLink">#407cca</Color>
+
+    <!--  Neutral Palette  -->
+    <Color x:Key="White">#FFFFFF</Color>
+    <Color x:Key="Gray-50">#F8FAFC</Color>
+    <Color x:Key="Gray-100">#F1F5F9</Color>
+    <Color x:Key="Gray-200">#E2E8F0</Color>
+    <Color x:Key="Gray-300">#CBD5E1</Color>
+    <Color x:Key="Gray-400">#94A3B8</Color>
+    <Color x:Key="Gray-500">#64748B</Color>
+    <Color x:Key="Gray-600">#475569</Color>
+    <Color x:Key="Gray-700">#334155</Color>
+    <Color x:Key="Gray-800">#1E293B</Color>
+    <Color x:Key="Gray-900">#0F172A</Color>
+    <Color x:Key="Gray-Black">#020617</Color>
+    <Color x:Key="Gray-White">#FFFFFF</Color>
+    <Color x:Key="Gray-Bg">#F5F7FA</Color>
+
+    <!--  Shadows  -->
+    <Color x:Key="GrayShadowColor">#1E293B</Color>
+    <Color x:Key="GrayShadowBackgroundColor">#F1F5F9</Color>
+
+    <!--  Card Category Colors  -->
+    <Color x:Key="CategoryWebColor">#407cca</Color>
+    <Color x:Key="CategoryAppColor">#22C55E</Color>
+    <Color x:Key="CategoryCardColor">#F59E0B</Color>
+    <Color x:Key="CategoryNoteColor">#8B5CF6</Color>
+    <Color x:Key="CategoryIdentityColor">#EC4899</Color>
+
+</ResourceDictionary>

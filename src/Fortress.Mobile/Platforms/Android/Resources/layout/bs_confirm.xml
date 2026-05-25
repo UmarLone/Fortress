@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fortress – Locked App Confirmation Sheet
+  Beautiful gradient hero + unlock CTA + cancel button
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gk_bg">
+
+    <!-- ═══════════════ GRADIENT HERO ═══════════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+android:orientation="vertical"
+        android:background="@drawable/bg_autofill_header"
+  android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="28dp"
+      android:paddingBottom="32dp"
+     android:gravity="center">
+
+<!-- White logo — increased to 72dp -->
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:src="@drawable/logowhite"
+        android:scaleType="fitCenter"
+ android:contentDescription="FORTRESS" />
+
+        <TextView
+         android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+    android:layout_marginTop="14dp"
+    android:text="FORTRESS"
+     android:textSize="20sp"
+            android:textStyle="bold"
+ android:letterSpacing="0.12"
+  android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+      android:text="Password Manager"
+          android:textSize="13sp"
+        android:textColor="#BFDBFF" />
+
+    <!-- Frosted pill divider -->
+        <View
+ android:layout_width="40dp"
+   android:layout_height="2dp"
+            android:layout_marginTop="16dp"
+     android:background="#40FFFFFF" />
+    </LinearLayout>
+
+    <!-- ═══════════════ LOCK BODY ═══════════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+      android:paddingStart="28dp"
+        android:paddingEnd="28dp"
+ android:paddingTop="28dp"
+        android:paddingBottom="8dp">
+
+        <!-- Lock icon badge -->
+        <com.google.android.material.card.MaterialCardView
+    android:layout_width="72dp"
+            android:layout_height="72dp"
+            app:cardCornerRadius="36dp"
+    app:cardElevation="4dp"
+  app:strokeWidth="0dp"
+  app:cardBackgroundColor="@color/gk_primary_lightest">
+
+            <ImageView
+                android:layout_width="36dp"
+         android:layout_height="36dp"
+       android:layout_gravity="center"
+      android:src="@drawable/ic_lock"
+                android:tint="@color/colorPrimary" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+     android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+  android:text="Vault is Locked"
+            android:textSize="20sp"
+          android:textStyle="bold"
+          android:textColor="@color/gk_gray_800"
+   android:gravity="center" />
+
+    <TextView
+            android:id="@+id/descriptionText"
+        android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+android:text="Your vault is locked. Open FORTRESS to unlock and fill your credentials."
+  android:textSize="14sp"
+    android:textColor="@color/gk_gray_500"
+       android:gravity="center"
+  android:lineSpacingMultiplier="1.4" />
+    </LinearLayout>
+
+    <!-- ═══════════════ BUTTON BAR ═══════════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+  android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+android:paddingTop="20dp"
+        android:paddingBottom="32dp"
+        android:gravity="center">
+
+        <!-- Primary: Unlock CTA -->
+   <com.google.android.material.button.MaterialButton
+            android:id="@+id/okButton"
+          android:layout_width="match_parent"
+  android:layout_height="54dp"
+          android:text="Unlock FORTRESS"
+   android:textSize="16sp"
+            android:textStyle="bold"
+        android:textColor="@color/white"
+         android:letterSpacing="0.02"
+app:backgroundTint="@color/colorPrimary"
+     app:cornerRadius="14dp"
+     app:icon="@drawable/ic_lock"
+            app:iconTint="@color/white"
+ app:iconGravity="textStart"
+ app:iconPadding="10dp" />
+
+        <!-- Secondary: Cancel -->
+        <com.google.android.material.button.MaterialButton
+   android:id="@+id/cancelButton"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+    android:text="Cancel"
+       android:textSize="15sp"
+     android:textColor="@color/gk_gray_600"
+   style="@style/Widget.MaterialComponents.Button.TextButton"
+            app:backgroundTint="@android:color/transparent" />
+    </LinearLayout>
+
+</LinearLayout>

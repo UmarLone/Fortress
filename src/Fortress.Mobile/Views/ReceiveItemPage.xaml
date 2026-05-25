@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.ReceiveItemPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:Fortress.Converters"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    Title="Receive Item"
+    prism:ViewModelLocator.AutowireViewModel="Automatic"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!--  HEADER  -->
+        <Border
+            Grid.Row="0"
+            Padding="20,16,20,24"
+            StrokeThickness="0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="#3B82F6" />
+                    <GradientStop Offset="1.0" Color="#6366F1" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,28,28" />
+            </Border.StrokeShape>
+            <VerticalStackLayout Spacing="14">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                    <Border
+                        Grid.Column="0"
+                        Padding="0"
+                        BackgroundColor="#25FFFFFF"
+                        HeightRequest="40"
+                        StrokeThickness="0"
+                        WidthRequest="40">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding GoBackCommand}"
+                            HeightRequest="40"
+                            WidthRequest="40">
+                            <Button.ImageSource>
+                                <FontImageSource
+                                    FontFamily="MaterialIconsRegular"
+                                    Glyph="&#xE5C4;"
+                                    Size="22"
+                                    Color="White" />
+                            </Button.ImageSource>
+                        </Button>
+                    </Border>
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        Spacing="2"
+                        VerticalOptions="Center">
+                        <Label
+                            FontSize="12"
+                            Opacity="0.75"
+                            Text="VAULT"
+                            TextColor="White" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="Receive Item"
+                            TextColor="White" />
+                    </VerticalStackLayout>
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+
+        <!--  CONTENT  -->
+        <ScrollView Grid.Row="1" Padding="20,16,20,20">
+            <VerticalStackLayout Spacing="16">
+
+                <!--  STEP 1: Pick file  -->
+                <VerticalStackLayout IsVisible="{Binding IsFileNotLoaded}" Spacing="14">
+                    <Border
+                        Padding="16"
+                        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <mi:MauiIcon
+                                Grid.Column="0"
+                                Icon="{mi:Material Icon=Info}"
+                                IconColor="{DynamicResource PrimaryColor}"
+                                IconSize="22"
+                                VerticalOptions="Start" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="How to receive a shared item"
+                                    TextColor="{DynamicResource PrimaryColor}" />
+                                <Label
+                                    FontSize="13"
+                                    Text="Someone shared a .fortress file with you. Tap the button below to select it, then enter the passphrase they gave you."
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <!--  Pick file button  -->
+                    <Border
+                        Padding="0"
+                        BackgroundColor="{DynamicResource PrimaryColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="{DynamicResource PrimaryColor}"
+                                Opacity="0.25"
+                                Radius="12"
+                                Offset="0,4" />
+                        </Border.Shadow>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PickFileCommand}" />
+                        </Border.GestureRecognizers>
+                        <Grid
+                            Padding="18,16"
+                            ColumnDefinitions="Auto,*,Auto"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                BackgroundColor="#25FFFFFF"
+                                HeightRequest="44"
+                                StrokeThickness="0"
+                                WidthRequest="44">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=FileOpen}"
+                                    IconColor="White"
+                                    IconSize="22"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="2"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="15"
+                                    Text="Select .fortress file"
+                                    TextColor="White" />
+                                <Label
+                                    FontSize="12"
+                                    Opacity="0.85"
+                                    Text="Browse your files or downloads"
+                                    TextColor="White" />
+                            </VerticalStackLayout>
+                            <mi:MauiIcon
+                                Grid.Column="2"
+                                Icon="{mi:Material Icon=ChevronRight}"
+                                IconColor="White"
+                                IconSize="22"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!--  STEP 2: Decrypt (file loaded, not yet decrypted)  -->
+                <VerticalStackLayout IsVisible="{Binding IsFileLoaded}" Spacing="14">
+
+                    <!--  File info  -->
+                    <Border
+                        Padding="14"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        IsVisible="{Binding IsNotDecrypted}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.04"
+                                Radius="8"
+                                Offset="0,2" />
+                        </Border.Shadow>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                BackgroundColor="#DBEAFE"
+                                HeightRequest="44"
+                                StrokeThickness="0"
+                                WidthRequest="44">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=InsertDriveFile}"
+                                    IconColor="#3B82F6"
+                                    IconSize="22"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="2"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="{Binding ItemLabel}"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="{Binding ItemTypeDisplay}"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                                <Label
+                                    FontSize="11"
+                                    Text="{Binding FileName}"
+                                    TextColor="{DynamicResource TextTertiaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <!--  Passphrase entry  -->
+                    <Border
+                        Padding="20"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        IsVisible="{Binding IsNotDecrypted}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.06"
+                                Radius="14"
+                                Offset="0,4" />
+                        </Border.Shadow>
+                        <VerticalStackLayout Spacing="12">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="Enter Passphrase"
+                                TextColor="{DynamicResource TextColor}" />
+                            <Label
+                                FontSize="12"
+                                Text="Enter the passphrase the sender gave you"
+                                TextColor="{DynamicResource TextTertiaryColor}" />
+                            <Border
+                                Padding="14,12"
+                                BackgroundColor="{DynamicResource Gray-50}"
+                                StrokeThickness="0">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                    <mi:MauiIcon
+                                        Grid.Column="0"
+                                        Icon="{mi:Material Icon=Key}"
+                                        IconColor="{DynamicResource TextTertiaryColor}"
+                                        IconSize="20"
+                                        VerticalOptions="Center" />
+                                    <Entry
+                                        Grid.Column="1"
+                                        FontSize="15"
+                                        Placeholder="e.g. castle-river-moon-tiger"
+                                        PlaceholderColor="{DynamicResource TextTertiaryColor}"
+                                        Text="{Binding Passphrase}"
+                                        TextColor="{DynamicResource TextColor}"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+
+                            <!--  Error message  -->
+                            <Label
+                                FontSize="13"
+                                IsVisible="{Binding HasError}"
+                                Text="{Binding ErrorMessage}"
+                                TextColor="#EF4444" />
+
+                            <!--  Decrypt button  -->
+                            <Border
+                                Padding="0"
+                                BackgroundColor="{DynamicResource PrimaryColor}"
+                                IsVisible="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+                                StrokeThickness="0">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <Button
+                                    Padding="0,14"
+                                    BackgroundColor="Transparent"
+                                    BorderWidth="0"
+                                    Command="{Binding DecryptCommand}"
+                                    FontAttributes="Bold"
+                                    FontSize="15"
+                                    Text="Decrypt"
+                                    TextColor="White" />
+                            </Border>
+
+                            <!--  Decryption progress  -->
+                            <Border
+                                Padding="16"
+                                BackgroundColor="{DynamicResource Gray-50}"
+                                IsVisible="{Binding IsBusy}"
+                                StrokeThickness="0">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
+                                    <ActivityIndicator
+                                        HeightRequest="28"
+                                        HorizontalOptions="Center"
+                                        IsRunning="{Binding IsBusy}"
+                                        Color="{DynamicResource PrimaryColor}" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        HorizontalTextAlignment="Center"
+                                        Text="{Binding BusyStatus}"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="11"
+                                        HorizontalTextAlignment="Center"
+                                        Opacity="0.6"
+                                        Text="AES-256-GCM decryption with PBKDF2"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  STEP 3: Preview + Save  -->
+                    <Border
+                        Padding="20"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        IsVisible="{Binding IsDecrypted}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.06"
+                                Radius="14"
+                                Offset="0,4" />
+                        </Border.Shadow>
+                        <VerticalStackLayout Spacing="14">
+
+                            <!--  Success header  -->
+                            <HorizontalStackLayout Spacing="8">
+                                <mi:MauiIcon
+                                    Icon="{mi:Material Icon=CheckCircle}"
+                                    IconColor="#22C55E"
+                                    IconSize="22"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    Text="Decrypted successfully!"
+                                    TextColor="#22C55E"
+                                    VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+
+                            <!--  Preview  -->
+                            <Border
+                                Padding="14"
+                                BackgroundColor="{DynamicResource Gray-50}"
+                                StrokeThickness="0">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <VerticalStackLayout Spacing="6">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="13"
+                                        Text="{Binding ItemTypeDisplay}"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                    <Label
+                                        FontSize="14"
+                                        Text="{Binding PreviewText}"
+                                        TextColor="{DynamicResource TextColor}" />
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <!--  Save button  -->
+                            <Border
+                                Padding="0"
+                                BackgroundColor="#22C55E"
+                                IsVisible="{Binding IsSaved, Converter={StaticResource InverseBoolConverter}}"
+                                StrokeThickness="0">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <Border.Shadow>
+                                    <Shadow
+                                        Brush="#22C55E"
+                                        Opacity="0.3"
+                                        Radius="12"
+                                        Offset="0,4" />
+                                </Border.Shadow>
+                                <!--  Hide save when busy  -->
+                                <Button
+                                    Padding="0,14"
+                                    BackgroundColor="Transparent"
+                                    BorderWidth="0"
+                                    Command="{Binding SaveToVaultCommand}"
+                                    FontAttributes="Bold"
+                                    FontSize="15"
+                                    IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBoolConverter}}"
+                                    Text="Save to My Vault"
+                                    TextColor="White" />
+                            </Border>
+
+                            <!--  Saving progress  -->
+                            <Border
+                                Padding="16"
+                                BackgroundColor="{DynamicResource Gray-50}"
+                                IsVisible="{Binding IsBusy}"
+                                StrokeThickness="0">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
+                                    <ActivityIndicator
+                                        HeightRequest="28"
+                                        HorizontalOptions="Center"
+                                        IsRunning="{Binding IsBusy}"
+                                        Color="#22C55E" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        HorizontalTextAlignment="Center"
+                                        Text="{Binding BusyStatus}"
+                                        TextColor="{DynamicResource TextColor}" />
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <!--  Saved confirmation + Go Home  -->
+                            <VerticalStackLayout
+                                IsVisible="{Binding IsSaved}"
+                                Spacing="14">
+                                <HorizontalStackLayout
+                                    HorizontalOptions="Center"
+                                    Spacing="8">
+                                    <mi:MauiIcon
+                                        Icon="{mi:Material Icon=CheckCircle}"
+                                        IconColor="#22C55E"
+                                        IconSize="22"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="15"
+                                        Text="Saved to your vault!"
+                                        TextColor="#22C55E"
+                                        VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+                                <Border
+                                    Padding="0"
+                                    BackgroundColor="{DynamicResource PrimaryColor}"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Border.Shadow>
+                                        <Shadow
+                                            Brush="{DynamicResource PrimaryColor}"
+                                            Opacity="0.25"
+                                            Radius="12"
+                                            Offset="0,4" />
+                                    </Border.Shadow>
+                                    <Button
+                                        Padding="0,14"
+                                        BackgroundColor="Transparent"
+                                        BorderWidth="0"
+                                        Command="{Binding GoHomeCommand}"
+                                        FontAttributes="Bold"
+                                        FontSize="15"
+                                        Text="OK"
+                                        TextColor="White" />
+                                </Border>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

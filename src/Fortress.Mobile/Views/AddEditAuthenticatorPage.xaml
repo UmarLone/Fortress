@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.AddEditAuthenticatorPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:Fortress.Converters"
+    xmlns:ctrl="clr-namespace:Fortress.Controls"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    prism:ViewModelLocator.AutowireViewModel="Automatic"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <converter:InverseBoolConverter x:Key="InvertBool" />
+        <converter:BoolToObjectConverter
+            x:Key="EditModeButtonText"
+            FalseObject="Add Authenticator"
+            TrueObject="Update Authenticator" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!--  Header  -->
+        <Border
+            Grid.Row="0"
+            Padding="20,16,20,24"
+            BackgroundColor="{DynamicResource PrimaryColor}"
+            StrokeThickness="0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,24,24" />
+            </Border.StrokeShape>
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                <!--  Back  -->
+                <Border
+                    Grid.Column="0"
+                    Padding="0"
+                    BackgroundColor="#30FFFFFF"
+                    HeightRequest="40"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="40">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Button
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding GoBackCommand}"
+                        HeightRequest="40"
+                        WidthRequest="40">
+                        <Button.ImageSource>
+                            <FontImageSource
+                                FontFamily="MaterialIconsRegular"
+                                Glyph="&#xE5C4;"
+                                Size="22"
+                                Color="White" />
+                        </Button.ImageSource>
+                    </Button>
+                </Border>
+                <!--  Title  -->
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    Text="{Binding FormTitle}"
+                    TextColor="White"
+                    VerticalOptions="Center" />
+                <!--  Delete button (edit mode only)  -->
+                <Border
+                    Grid.Column="2"
+                    Padding="0"
+                    BackgroundColor="#30FFFFFF"
+                    HeightRequest="40"
+                    IsVisible="{Binding IsEditMode}"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="40">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Button
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding DeleteCommand}"
+                        HeightRequest="40"
+                        WidthRequest="40">
+                        <Button.ImageSource>
+                            <FontImageSource
+                                FontFamily="MaterialIconsRegular"
+                                Glyph="&#xE872;"
+                                Size="22"
+                                Color="White" />
+                        </Button.ImageSource>
+                    </Button>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!--  Body  -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16,16,16,0" Spacing="12">
+
+                <!--  ── Scan QR Code card (hidden in edit mode) ──  -->
+                <Border
+                    Padding="0"
+                    IsVisible="{Binding IsEditMode, Converter={StaticResource InvertBool}}"
+                    StrokeThickness="1.5">
+                    <Border.Stroke>
+                        <SolidColorBrush Color="{DynamicResource PrimaryColor}" />
+                    </Border.Stroke>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0" Color="{DynamicResource PrimaryLightestColor}" />
+                            <GradientStop Offset="1" Color="{DynamicResource PrimaryLight}" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ScanQrCommand}" />
+                    </Border.GestureRecognizers>
+                    <Grid
+                        Padding="20,18"
+                        ColumnDefinitions="Auto,*,Auto"
+                        ColumnSpacing="14">
+                        <!--  Icon badge  -->
+                        <Border
+                            Grid.Column="0"
+                            Padding="10"
+                            BackgroundColor="{DynamicResource PrimaryColor}"
+                            HeightRequest="48"
+                            StrokeThickness="0"
+                            WidthRequest="48">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <mi:MauiIcon
+                                HorizontalOptions="Center"
+                                Icon="{mi:Material Icon=QrCodeScanner}"
+                                IconColor="White"
+                                IconSize="24"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <!--  Text  -->
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="2"
+                            VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                Text="Scan QR Code"
+                                TextColor="{DynamicResource PrimaryDarkenColor}" />
+                            <Label
+                                FontSize="12"
+                                Text="Point your camera at the 2FA QR code"
+                                TextColor="{DynamicResource PrimaryColor}" />
+                        </VerticalStackLayout>
+                        <!--  Chevron  -->
+                        <mi:MauiIcon
+                            Grid.Column="2"
+                            Icon="{mi:Material Icon=ChevronRight}"
+                            IconColor="{DynamicResource PrimaryColor}"
+                            IconSize="22"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <!--  ── OR divider (hidden in edit mode) ──  -->
+                <Grid
+                    ColumnDefinitions="*,Auto,*"
+                    ColumnSpacing="8"
+                    IsVisible="{Binding IsEditMode, Converter={StaticResource InvertBool}}">
+                    <BoxView
+                        Grid.Column="0"
+                        BackgroundColor="{DynamicResource Gray-200}"
+                        HeightRequest="1"
+                        VerticalOptions="Center" />
+                    <Label
+                        Grid.Column="1"
+                        FontSize="11"
+                        Text="OR ENTER MANUALLY"
+                        TextColor="{DynamicResource TextTertiaryColor}"
+                        VerticalOptions="Center" />
+                    <BoxView
+                        Grid.Column="2"
+                        BackgroundColor="{DynamicResource Gray-200}"
+                        HeightRequest="1"
+                        VerticalOptions="Center" />
+                </Grid>
+
+                <!--  ── Manual entry fields ──  -->
+                <ctrl:VaultFormField
+                    x:Name="FieldIssuer"
+                    ErrorMessage="{Binding IssuerError}"
+                    FieldLabel="ISSUER / SERVICE NAME *"
+                    HasError="{Binding HasIssuerError}"
+                    IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    IconColor="{DynamicResource PrimaryColor}"
+                    IconGlyph="&#xEB50;"
+                    Placeholder="e.g. Google, GitHub"
+                    Text="{Binding Issuer}" />
+
+                <ctrl:VaultFormField
+                    x:Name="FieldAccount"
+                    FieldLabel="ACCOUNT / USERNAME (optional)"
+                    IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    IconColor="{DynamicResource PrimaryColor}"
+                    IconGlyph="&#xE7FF;"
+                    Keyboard="Email"
+                    Placeholder="e.g. user@email.com"
+                    Text="{Binding Account}" />
+
+                <ctrl:VaultFormField
+                    x:Name="FieldSecret"
+                    ErrorMessage="{Binding SecretError}"
+                    FieldLabel="SECRET KEY *"
+                    HasError="{Binding HasSecretError}"
+                    IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    IconColor="{DynamicResource PrimaryColor}"
+                    IconGlyph="&#xE73C;"
+                    Placeholder="Base32 secret (A–Z, 2–7)"
+                    Text="{Binding Secret}" />
+
+                <ctrl:VaultFormField
+                    x:Name="FieldPeriod"
+                    ErrorMessage="{Binding PeriodError}"
+                    FieldLabel="PERIOD IN SECONDS (default 30)"
+                    HasError="{Binding HasPeriodError}"
+                    IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    IconColor="{DynamicResource PrimaryColor}"
+                    IconGlyph="&#xE425;"
+                    Keyboard="Numeric"
+                    MaxLength="3"
+                    Placeholder="30"
+                    Text="{Binding Period}" />
+
+                <!--  Info tip  -->
+                <Border
+                    Padding="12,10"
+                    BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <mi:MauiIcon
+                            Grid.Column="0"
+                            Icon="{mi:Material Icon=Info}"
+                            IconColor="{DynamicResource PrimaryColor}"
+                            IconSize="16"
+                            VerticalOptions="Start" />
+                        <Label
+                            Grid.Column="1"
+                            FontSize="12"
+                            Text="The secret key is provided by the service. Look for a 'Can't scan?' or 'Enter manually' link on the 2FA setup page."
+                            TextColor="{DynamicResource PrimaryDarkenColor}" />
+                    </Grid>
+                </Border>
+
+                <BoxView HeightRequest="8" Color="Transparent" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  Footer — Save button (always visible)  -->
+        <Grid
+            Grid.Row="2"
+            Padding="16,12,16,28"
+            BackgroundColor="{DynamicResource CardBackgroundColor}">
+            <Grid.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.06"
+                    Radius="12"
+                    Offset="0,-4" />
+            </Grid.Shadow>
+            <ctrl:VaultGradientButton
+                ColorEnd="{DynamicResource PrimaryDarkColor}"
+                ColorStart="{DynamicResource PrimaryColor}"
+                Command="{Binding SaveCommand}"
+                CornerRadius="14"
+                HeightRequest="52"
+                IsEnabled="{Binding CanSave}"
+                IsLoading="{Binding IsSaving}"
+                Text="{Binding IsEditMode, Converter={StaticResource EditModeButtonText}}" />
+        </Grid>
+
+    </Grid>
+</ContentPage>

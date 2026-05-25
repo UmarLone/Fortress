@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Fortress.NativeMessagingHost</AssemblyName>
+    <RootNamespace>Fortress.NativeMessagingHost</RootNamespace>
+    <!-- Allow single-file publish: dotnet publish -r win-x64 -c Release /p:PublishSingleFile=true -->
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fortress.Core\Fortress.Core.csproj" />
+  </ItemGroup>
+
+</Project>

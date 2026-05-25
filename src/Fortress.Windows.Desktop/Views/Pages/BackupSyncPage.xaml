@@ -1,0 +1,418 @@
+<Page
+    x:Class="Fortress.Windows.Desktop.Views.Pages.BackupSyncPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="clr-namespace:Fortress.Windows.Desktop.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Fortress.Windows.Desktop.Views.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="Backup &amp; Sync"
+    Margin="30"
+    d:DataContext="{d:DesignInstance local:BackupSyncPage, IsDesignTimeCreatable=False}"
+    d:DesignHeight="900"
+    d:DesignWidth="1100"
+    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+    ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <conv:BoolToVisibilityConverter x:Key="BoolToVis" />
+    <conv:InverseBoolToVisibilityConverter x:Key="InvBoolToVis" />
+        <conv:NullOrEmptyToVisibilityConverter x:Key="NullToCollapsed" />
+
+        <!--  Gradient action button  -->
+   <Style x:Key="GradientButton" TargetType="Button">
+      <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="BorderThickness" Value="0" />
+     <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="Button">
+             <Border x:Name="Root" Padding="18,11" CornerRadius="12">
+                <Border.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+     <GradientStop Offset="0" Color="#4F46E5" />
+        <GradientStop Offset="1" Color="#7C3AED" />
+    </LinearGradientBrush>
+       </Border.Background>
+      <Border.Effect>
+       <DropShadowEffect BlurRadius="14" Opacity="0.25" ShadowDepth="3" Color="#6366F1" />
+        </Border.Effect>
+         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+         </Border>
+           <ControlTemplate.Triggers>
+           <Trigger Property="IsMouseOver" Value="True">
+        <Setter TargetName="Root" Property="Opacity" Value="0.88" />
+    </Trigger>
+       <Trigger Property="IsPressed" Value="True">
+          <Setter TargetName="Root" Property="Opacity" Value="0.72" />
+ </Trigger>
+         <Trigger Property="IsEnabled" Value="False">
+      <Setter TargetName="Root" Property="Opacity" Value="0.40" />
+      </Trigger>
+     </ControlTemplate.Triggers>
+      </ControlTemplate>
+          </Setter.Value>
+    </Setter>
+        </Style>
+
+        <Style x:Key="OutlineButton" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ControlStrokeColorDefaultBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+   <Setter Property="Padding" Value="18,11" />
+     <Setter Property="Template">
+                <Setter.Value>
+         <ControlTemplate TargetType="Button">
+      <Border x:Name="Root"
+     Padding="{TemplateBinding Padding}"
+   Background="{TemplateBinding Background}"
+   BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+    CornerRadius="12">
+         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+       </Border>
+       <ControlTemplate.Triggers>
+     <Trigger Property="IsMouseOver" Value="True">
+       <Setter TargetName="Root" Property="Opacity" Value="0.80" />
+        </Trigger>
+                 <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="Root" Property="Opacity" Value="0.60" />
+      </Trigger>
+        <Trigger Property="IsEnabled" Value="False">
+    <Setter TargetName="Root" Property="Opacity" Value="0.35" />
+ </Trigger>
+           </ControlTemplate.Triggers>
+      </ControlTemplate>
+  </Setter.Value>
+     </Setter>
+    </Style>
+    </Page.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="0,0,0,40">
+
+ <!-- Page header -->
+       <TextBlock Margin="0,0,0,4" FontSize="26" FontWeight="SemiBold" Text="Backup &amp; Sync" />
+         <TextBlock Margin="0,0,0,28" FontSize="13" Opacity="0.6"
+          Text="Keep your vault safe and in sync across devices" />
+
+        <!-- Hero banner -->
+     <Border Margin="0,0,0,28" Padding="28,22" ClipToBounds="True" CornerRadius="16">
+          <Border.Background>
+  <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+<GradientStop Offset="0" Color="#0C4A6E" />
+          <GradientStop Offset="0.55" Color="#0369A1" />
+     <GradientStop Offset="1" Color="#06B6D4" />
+ </LinearGradientBrush>
+          </Border.Background>
+        <Border.Effect>
+      <DropShadowEffect BlurRadius="28" Opacity="0.28" ShadowDepth="0" Color="#0369A1" />
+                </Border.Effect>
+<Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+  <ColumnDefinition Width="*" />
+ </Grid.ColumnDefinitions>
+                <Border Width="56" Height="56" Margin="0,0,20,0" Background="#30FFFFFF" CornerRadius="14">
+   <ui:SymbolIcon FontSize="28" Foreground="White" Symbol="CloudArrowUp24" />
+        </Border>
+    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+       <TextBlock FontSize="18" FontWeight="Bold" Foreground="White" Text="Cloud Backup" />
+          <TextBlock Margin="0,4,0,0" FontSize="13" Foreground="White" Opacity="0.78"
+Text="Your vault is encrypted before upload. Only you can decrypt it - zero knowledge."
+      TextWrapping="Wrap" />
+       </StackPanel>
+         </Grid>
+    </Border>
+
+     <!-- Busy indicator -->
+            <Border Margin="0,0,0,16" Padding="14,11" Background="#1A4F46E5" CornerRadius="10"
+       Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BoolToVis}}">
+     <StackPanel Orientation="Horizontal">
+           <ui:ProgressRing Width="18" Height="18" Margin="0,0,12,0" IsIndeterminate="True" />
+          <TextBlock VerticalAlignment="Center" FontSize="13" Text="{Binding ViewModel.BusyMessage}" />
+     </StackPanel>
+            </Border>
+
+         <!-- Connected state -->
+            <StackPanel Visibility="{Binding ViewModel.IsConnected, Converter={StaticResource BoolToVis}}">
+      <TextBlock Margin="0,0,0,10" FontSize="11" FontWeight="SemiBold" Opacity="0.45" Text="CLOUD SYNC STATUS" />
+     <ui:Card Margin="0,0,0,24" Padding="20">
+         <StackPanel>
+     <Grid>
+     <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="Auto" />
+         <ColumnDefinition Width="*" />
+    <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+             <Border Width="48" Height="48" Margin="0,0,14,0" Background="#DCFCE7" CornerRadius="12">
+     <ui:SymbolIcon FontSize="24" Foreground="#16A34A" Symbol="Cloud24" />
+      </Border>
+              <StackPanel Grid.Column="1" VerticalAlignment="Center">
+      <TextBlock FontSize="15" FontWeight="SemiBold" Foreground="#15803D"
+             Text="{Binding ViewModel.ConnectedProviderName, StringFormat='{}{0} - Connected'}" />
+        <TextBlock FontSize="12" Opacity="0.6"
+         Text="{Binding ViewModel.LastSyncText, StringFormat='Last sync: {0}'}" />
+   </StackPanel>
+    <Border Grid.Column="2" Padding="10,5" VerticalAlignment="Center"
+              Background="#1A22C55E" CornerRadius="8">
+         <StackPanel Orientation="Horizontal">
+          <ui:SymbolIcon Margin="0,0,6,0" FontSize="14" Foreground="#22C55E" Symbol="CheckmarkCircle24" />
+       <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="#22C55E" Text="Active" />
+  </StackPanel>
+      </Border>
+       </Grid>
+
+      <Separator Margin="0,16,0,16" />
+
+       <StackPanel Orientation="Horizontal">
+        <Button Margin="0,0,10,0" Command="{Binding ViewModel.BackupNowAsyncCommand}"
+      Style="{StaticResource GradientButton}">
+   <StackPanel Orientation="Horizontal">
+  <ui:ProgressRing Width="16" Height="16" Margin="0,0,8,0" IsIndeterminate="True"
+    Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BoolToVis}}" />
+ <ui:SymbolIcon Margin="0,0,8,0" FontSize="16" Foreground="White" Symbol="CloudArrowUp24"
+Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource InvBoolToVis}}" />
+           <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="White" Text="Backup Now" />
+             </StackPanel>
+       </Button>
+            <Button Margin="0,0,10,0" Command="{Binding ViewModel.RestoreAsyncCommand}"
+      Style="{StaticResource OutlineButton}">
+         <StackPanel Orientation="Horizontal">
+        <ui:SymbolIcon Margin="0,0,8,0" FontSize="16" Symbol="CloudArrowDown24" />
+       <TextBlock FontSize="14" Text="Restore" />
+          </StackPanel>
+</Button>
+      <Button Command="{Binding ViewModel.DisconnectCommand}"
+    Style="{StaticResource OutlineButton}">
+       <StackPanel Orientation="Horizontal">
+      <ui:SymbolIcon Margin="0,0,8,0" FontSize="16" Foreground="#EF4444" Symbol="PlugDisconnected24" />
+               <TextBlock FontSize="14" Foreground="#EF4444" Text="Disconnect" />
+</StackPanel>
+       </Button>
+              </StackPanel>
+         </StackPanel>
+     </ui:Card>
+    </StackPanel>
+
+      <!-- Provider selection (not connected) -->
+            <StackPanel Visibility="{Binding ViewModel.IsConnected, Converter={StaticResource InvBoolToVis}}">
+   <TextBlock Margin="0,0,0,10" FontSize="11" FontWeight="SemiBold" Opacity="0.45" Text="CHOOSE CLOUD PROVIDER" />
+
+   <Border Margin="0,0,0,16" Padding="16" Background="#1A4F46E5" CornerRadius="14">
+       <Grid>
+     <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+         <ColumnDefinition Width="*" />
+       </Grid.ColumnDefinitions>
+       <ui:SymbolIcon Margin="0,0,12,0" VerticalAlignment="Top" FontSize="20" Foreground="#6366F1" Symbol="Info24" />
+         <TextBlock Grid.Column="1" FontSize="13" Opacity="0.8" TextWrapping="Wrap"
+       Text="Your vault is encrypted with AES-256 before leaving your device. The cloud provider never sees your plaintext data." />
+             </Grid>
+    </Border>
+
+  <!-- OneDrive card -->
+                <Border Margin="0,0,0,10" Padding="16"
+           Background="{DynamicResource ControlFillColorDefaultBrush}"
+       BorderBrush="{Binding ViewModel.OneDriveBorderBrush}"
+     BorderThickness="{Binding ViewModel.OneDriveBorder}"
+                  CornerRadius="14" Cursor="Hand"
+       MouseLeftButtonUp="OnOneDriveClicked">
+        <Border.Effect>
+     <DropShadowEffect BlurRadius="8" Opacity="0.04" ShadowDepth="2" Color="Black" />
+                    </Border.Effect>
+     <Grid>
+      <Grid.ColumnDefinitions>
+  <ColumnDefinition Width="Auto" />
+     <ColumnDefinition Width="*" />
+<ColumnDefinition Width="Auto" />
+   </Grid.ColumnDefinitions>
+  <Border Width="44" Height="44" Margin="0,0,14,0" Background="#EEF2FF" CornerRadius="12">
+    <ui:SymbolIcon FontSize="22" Foreground="#4F46E5" Symbol="Cloud24" />
+      </Border>
+    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+        <TextBlock FontSize="14" FontWeight="SemiBold" Text="OneDrive" />
+     <TextBlock FontSize="12" Opacity="0.55" Text="Free 5 GB - Microsoft account" />
+       </StackPanel>
+           <Border Grid.Column="2" Width="24" Height="24" Padding="4"
+            BorderBrush="{Binding ViewModel.OneDriveBorderBrush}"
+               BorderThickness="2" CornerRadius="12">
+             <Border Background="#4F46E5" CornerRadius="8"
+             Visibility="{Binding ViewModel.IsOneDriveSelected, Converter={StaticResource BoolToVis}}" />
+          </Border>
+           </Grid>
+    </Border>
+
+      <!-- Google Drive card -->
+     <Border Margin="0,0,0,10" Padding="16"
+    Background="{DynamicResource ControlFillColorDefaultBrush}"
+      BorderBrush="{Binding ViewModel.GoogleDriveBorderBrush}"
+     BorderThickness="{Binding ViewModel.GoogleDriveBorder}"
+  CornerRadius="14" Cursor="Hand"
+ MouseLeftButtonUp="OnGoogleDriveClicked">
+          <Border.Effect>
+      <DropShadowEffect BlurRadius="8" Opacity="0.04" ShadowDepth="2" Color="Black" />
+          </Border.Effect>
+           <Grid>
+  <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+                 <ColumnDefinition Width="Auto" />
+         </Grid.ColumnDefinitions>
+  <Border Width="44" Height="44" Margin="0,0,14,0" Background="#E8F0FE" CornerRadius="12">
+          <ui:SymbolIcon FontSize="22" Foreground="#4285F4" Symbol="CloudLink24" />
+             </Border>
+<StackPanel Grid.Column="1" VerticalAlignment="Center">
+       <TextBlock FontSize="14" FontWeight="SemiBold" Text="Google Drive" />
+     <TextBlock FontSize="12" Opacity="0.55" Text="Free 15 GB - Google account" />
+         </StackPanel>
+                     <Border Grid.Column="2" Width="24" Height="24" Padding="4"
+   BorderBrush="{Binding ViewModel.GoogleDriveBorderBrush}"
+       BorderThickness="2" CornerRadius="12">
+          <Border Background="#4285F4" CornerRadius="8"
+        Visibility="{Binding ViewModel.IsGoogleDriveSelected, Converter={StaticResource BoolToVis}}" />
+    </Border>
+        </Grid>
+  </Border>
+
+      <!-- Dropbox card -->
+                <Border Margin="0,0,0,16" Padding="16"
+      Background="{DynamicResource ControlFillColorDefaultBrush}"
+         BorderBrush="{Binding ViewModel.DropboxBorderBrush}"
+         BorderThickness="{Binding ViewModel.DropboxBorder}"
+    CornerRadius="14" Cursor="Hand"
+       MouseLeftButtonUp="OnDropboxClicked">
+      <Border.Effect>
+       <DropShadowEffect BlurRadius="8" Opacity="0.04" ShadowDepth="2" Color="Black" />
+       </Border.Effect>
+  <Grid>
+     <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+    <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+     <Border Width="44" Height="44" Margin="0,0,14,0" Background="#E8F0FF" CornerRadius="12">
+   <ui:SymbolIcon FontSize="22" Foreground="#0061FF" Symbol="CloudArrowDown24" />
+               </Border>
+         <StackPanel Grid.Column="1" VerticalAlignment="Center">
+   <TextBlock FontSize="14" FontWeight="SemiBold" Text="Dropbox" />
+        <TextBlock FontSize="12" Opacity="0.55" Text="Free 2 GB - Dropbox account" />
+         </StackPanel>
+          <Border Grid.Column="2" Width="24" Height="24" Padding="4"
+       BorderBrush="{Binding ViewModel.DropboxBorderBrush}"
+       BorderThickness="2" CornerRadius="12">
+      <Border Background="#0061FF" CornerRadius="8"
+ Visibility="{Binding ViewModel.IsDropboxSelected, Converter={StaticResource BoolToVis}}" />
+     </Border>
+     </Grid>
+    </Border>
+
+           <!-- Connect button -->
+    <Button Command="{Binding ViewModel.ConnectAsyncCommand}"
+       IsEnabled="{Binding ViewModel.IsProviderSelected}"
+             Style="{StaticResource GradientButton}"
+  Visibility="{Binding ViewModel.IsProviderSelected, Converter={StaticResource BoolToVis}}">
+        <Grid>
+       <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"
+ Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource InvBoolToVis}}">
+                   <ui:SymbolIcon Margin="0,0,10,0" FontSize="18" Foreground="White" Symbol="CloudArrowUp24" />
+      <TextBlock FontSize="15" FontWeight="Bold" Foreground="White" Text="Connect &amp; Enable Sync" />
+            </StackPanel>
+         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal"
+   Visibility="{Binding ViewModel.IsBusy, Converter={StaticResource BoolToVis}}">
+          <ui:ProgressRing Width="18" Height="18" Margin="0,0,10,0" IsIndeterminate="True" />
+       <TextBlock FontSize="15" FontWeight="Bold" Foreground="White" Text="Connecting..." />
+   </StackPanel>
+  </Grid>
+    </Button>
+        </StackPanel>
+
+  <!-- Local backup -->
+            <TextBlock Margin="0,28,0,10" FontSize="11" FontWeight="SemiBold" Opacity="0.45" Text="LOCAL BACKUP" />
+            <ui:Card Margin="0,0,0,24" Padding="20">
+<StackPanel>
+         <Grid>
+        <Grid.ColumnDefinitions>
+       <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+  </Grid.ColumnDefinitions>
+             <Border Width="48" Height="48" Margin="0,0,14,0" Background="#FEF3C7" CornerRadius="12">
+           <ui:SymbolIcon FontSize="24" Foreground="#D97706" Symbol="SaveArrowRight24" />
+         </Border>
+        <StackPanel VerticalAlignment="Center">
+     <TextBlock FontSize="15" FontWeight="SemiBold" Text="Export Encrypted Backup" />
+       <TextBlock FontSize="12" Opacity="0.6"
+     Text="Save a .fvault file encrypted with your master password to any location" />
+      </StackPanel>
+          </Grid>
+<Separator Margin="0,16,0,16" />
+         <StackPanel Orientation="Horizontal">
+      <Button Command="{Binding ViewModel.ExportLocalBackupAsyncCommand}"
+         IsEnabled="{Binding ViewModel.IsExporting, Converter={StaticResource InvBoolToVis}}"
+   Style="{StaticResource GradientButton}">
+     <StackPanel Orientation="Horizontal">
+            <ui:ProgressRing Width="16" Height="16" Margin="0,0,8,0" IsIndeterminate="True"
+        Visibility="{Binding ViewModel.IsExporting, Converter={StaticResource BoolToVis}}" />
+        <ui:SymbolIcon Margin="0,0,8,0" FontSize="16" Foreground="White" Symbol="SaveArrowRight24"
+  Visibility="{Binding ViewModel.IsExporting, Converter={StaticResource InvBoolToVis}}" />
+        <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="White" Text="Export Backup" />
+      </StackPanel>
+            </Button>
+       </StackPanel>
+ <TextBlock Margin="0,10,0,0" FontSize="12" Opacity="0.55"
+           Text="{Binding ViewModel.LastExportPath, StringFormat='Last export: {0}'}"
+         Visibility="{Binding ViewModel.LastExportPath, Converter={StaticResource NullToCollapsed}}" />
+             </StackPanel>
+      </ui:Card>
+
+    <!-- How it works -->
+      <TextBlock Margin="0,0,0,10" FontSize="11" FontWeight="SemiBold" Opacity="0.45" Text="HOW IT WORKS" />
+         <ui:Card Padding="20">
+ <StackPanel>
+           <Grid Margin="0,0,0,14">
+   <Grid.ColumnDefinitions>
+       <ColumnDefinition Width="32" />
+         <ColumnDefinition Width="*" />
+           </Grid.ColumnDefinitions>
+       <ui:SymbolIcon Margin="0,2,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#4F46E5" Symbol="LockClosed24" />
+         <StackPanel Grid.Column="1" Margin="12,0,0,0">
+       <TextBlock Margin="0,0,0,2" FontWeight="SemiBold" Text="Encrypted before upload" />
+           <TextBlock FontSize="12" Opacity="0.65" TextWrapping="Wrap"
+        Text="Your vault is encrypted with AES-256 using a key derived from your master password before any data leaves your device." />
+            </StackPanel>
+</Grid>
+           <Separator Margin="0,0,0,14" />
+         <Grid Margin="0,0,0,14">
+                 <Grid.ColumnDefinitions>
+               <ColumnDefinition Width="32" />
+          <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+                 <ui:SymbolIcon Margin="0,2,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#10B981" Symbol="Eye24" />
+         <StackPanel Grid.Column="1" Margin="12,0,0,0">
+     <TextBlock Margin="0,0,0,2" FontWeight="SemiBold" Text="Zero knowledge" />
+   <TextBlock FontSize="12" Opacity="0.65" TextWrapping="Wrap"
+Text="The cloud provider only ever receives ciphertext - they cannot read your passwords." />
+ </StackPanel>
+   </Grid>
+                <Separator Margin="0,0,0,14" />
+    <Grid>
+         <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="32" />
+          <ColumnDefinition Width="*" />
+  </Grid.ColumnDefinitions>
+   <ui:SymbolIcon Margin="0,2,0,0" VerticalAlignment="Top" FontSize="18" Foreground="#F59E0B" Symbol="ArrowSync24" />
+          <StackPanel Grid.Column="1" Margin="12,0,0,0">
+     <TextBlock Margin="0,0,0,2" FontWeight="SemiBold" Text="Automatic sync" />
+              <TextBlock FontSize="12" Opacity="0.65" TextWrapping="Wrap"
+  Text="Once connected, your vault is synced automatically each time you save a change." />
+            </StackPanel>
+        </Grid>
+                </StackPanel>
+            </ui:Card>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

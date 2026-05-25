@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.UsbExportPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+ xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctrl="clr-namespace:Fortress.Controls"
+xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    prism:ViewModelLocator.AutowireViewModel="Automatic"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!--  ??? HERO HEADER ???  -->
+        <ctrl:VaultPageHero
+            Title="USB / External Storage"
+     Grid.Row="0"
+            BackCommand="{Binding GoBackCommand}"
+CountText="Export your encrypted vault to a file"
+          GradientEnd="#44403C"
+  GradientStart="#78716C"
+            IconGlyph="&#xE1BC;"
+   SearchEnabled="False"
+   Subtitle="BACKUP" />
+
+        <!--  ??? BUSY OVERLAY ???  -->
+        <Grid
+ Grid.Row="1"
+        BackgroundColor="{DynamicResource PageBackgroundColor}"
+            IsVisible="{Binding IsBusy}"
+            ZIndex="10">
+            <VerticalStackLayout
+          HorizontalOptions="Center"
+        Spacing="16"
+   VerticalOptions="Center">
+        <ActivityIndicator
+        HeightRequest="48"
+           IsRunning="{Binding IsBusy}"
+    WidthRequest="48"
+   Color="{DynamicResource PrimaryColor}" />
+                <Label
+       FontSize="15"
+       HorizontalTextAlignment="Center"
+             Text="{Binding BusyMessage}"
+    TextColor="{DynamicResource TextSecondaryColor}" />
+         </VerticalStackLayout>
+        </Grid>
+
+        <!--  ??? CONTENT ???  -->
+ <ScrollView Grid.Row="1" IsVisible="{Binding IsBusy, Converter={x:StaticResource InverseBoolConverter}}">
+   <VerticalStackLayout Padding="16,20,16,32" Spacing="16">
+
+     <!--  How it works banner  -->
+   <Border
+          Padding="16"
+ BackgroundColor="{DynamicResource InfoLightColor}"
+          StrokeThickness="0">
+          <Border.StrokeShape>
+       <RoundRectangle CornerRadius="14" />
+ </Border.StrokeShape>
+          <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+            <Label
+   Grid.Column="0"
+        FontFamily="MaterialIconsRegular"
+           FontSize="22"
+  Text="&#xE1BC;"
+       TextColor="{DynamicResource InfoColor}"
+      VerticalOptions="Start" />
+                  <VerticalStackLayout Grid.Column="1" Spacing="4">
+           <Label
+  FontAttributes="Bold"
+           FontSize="14"
+        Text="How USB backup works"
+               TextColor="{DynamicResource InfoColor}" />
+         <Label
+      FontSize="13"
+   LineBreakMode="WordWrap"
+          Text="Your vault is encrypted with your master password and saved as a single file (.fvb). Copy it to a USB thumb drive, SD card or any folder you choose. To restore, import the same file from any device running FORTRESS."
+       TextColor="{DynamicResource TextSecondaryColor}" />
+   </VerticalStackLayout>
+         </Grid>
+    </Border>
+
+     <!--  Export section  -->
+      <Label
+          Margin="4,4,0,0"
+         FontAttributes="Bold"
+           FontSize="13"
+             Opacity="0.55"
+       Text="EXPORT"
+TextColor="{DynamicResource TextSecondaryColor}" />
+
+  <Border
+         Padding="20"
+    BackgroundColor="{DynamicResource CardBackgroundColor}"
+ StrokeThickness="0">
+         <Border.StrokeShape>
+              <RoundRectangle CornerRadius="16" />
+            </Border.StrokeShape>
+           <Border.Shadow>
+   <Shadow
+           Brush="{DynamicResource GrayShadowColor}"
+           Opacity="0.06"
+     Radius="12"
+                 Offset="0,4" />
+     </Border.Shadow>
+     <VerticalStackLayout Spacing="14">
+ <HorizontalStackLayout Spacing="12">
+        <Border
+      Padding="12"
+      HeightRequest="50"
+      StrokeThickness="0"
+        WidthRequest="50">
+        <Border.Background>
+<LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+   <GradientStop Offset="0.0" Color="#78716C" />
+      <GradientStop Offset="1.0" Color="#44403C" />
+  </LinearGradientBrush>
+            </Border.Background>
+      <Border.StrokeShape>
+            <RoundRectangle CornerRadius="12" />
+    </Border.StrokeShape>
+      <!--  save / download icon  -->
+    <Label
+         FontFamily="MaterialIconsRegular"
+      FontSize="24"
+         HorizontalOptions="Center"
+    Text="&#xE2C4;"
+ TextColor="White"
+      VerticalOptions="Center" />
+          </Border>
+        <VerticalStackLayout Spacing="3" VerticalOptions="Center">
+           <Label
+          FontAttributes="Bold"
+           FontSize="16"
+             Text="Save Backup File"
+  TextColor="{DynamicResource TextColor}" />
+     <Label
+   FontSize="13"
+     Text="Encrypted .fvb file — choose any folder or drive"
+                  TextColor="{DynamicResource TextSecondaryColor}" />
+      </VerticalStackLayout>
+      </HorizontalStackLayout>
+
+            <!--  Export button  -->
+ <Border
+    Padding="0"
+   HeightRequest="50"
+    StrokeThickness="0">
+     <Border.StrokeShape>
+        <RoundRectangle CornerRadius="13" />
+  </Border.StrokeShape>
+        <Border.Background>
+             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+     <GradientStop Offset="0.0" Color="#78716C" />
+<GradientStop Offset="1.0" Color="#44403C" />
+         </LinearGradientBrush>
+      </Border.Background>
+              <Grid>
+     <HorizontalStackLayout
+         HorizontalOptions="Center"
+        InputTransparent="True"
+               Spacing="10"
+         VerticalOptions="Center">
+          <Label
+               FontFamily="MaterialIconsRegular"
+          FontSize="20"
+      InputTransparent="True"
+       Text="&#xE2C4;"
+   TextColor="White"
+         VerticalOptions="Center" />
+        <Label
+               FontAttributes="Bold"
+    FontSize="15"
+     InputTransparent="True"
+            Text="Export Encrypted Backup"
+         TextColor="White"
+        VerticalOptions="Center" />
+</HorizontalStackLayout>
+       <Button
+      Padding="0"
+      BackgroundColor="Transparent"
+        BorderWidth="0"
+           Command="{Binding ExportCommand}"
+        HorizontalOptions="Fill"
+           VerticalOptions="Fill" />
+       </Grid>
+              </Border>
+   </VerticalStackLayout>
+   </Border>
+
+   <!--  Import / Restore section  -->
+      <Label
+        Margin="4,4,0,0"
+           FontAttributes="Bold"
+        FontSize="13"
+       Opacity="0.55"
+       Text="RESTORE"
+      TextColor="{DynamicResource TextSecondaryColor}" />
+
+  <Border
+  Padding="20"
+           BackgroundColor="{DynamicResource CardBackgroundColor}"
+        StrokeThickness="0">
+           <Border.StrokeShape>
+      <RoundRectangle CornerRadius="16" />
+       </Border.StrokeShape>
+          <Border.Shadow>
+   <Shadow
+    Brush="{DynamicResource GrayShadowColor}"
+        Opacity="0.06"
+   Radius="12"
+         Offset="0,4" />
+           </Border.Shadow>
+    <VerticalStackLayout Spacing="14">
+     <HorizontalStackLayout Spacing="12">
+   <Border
+           Padding="12"
+         BackgroundColor="{DynamicResource PrimaryLightestColor}"
+           HeightRequest="50"
+   StrokeThickness="0"
+                 WidthRequest="50">
+   <Border.StrokeShape>
+           <RoundRectangle CornerRadius="12" />
+       </Border.StrokeShape>
+      <!--  upload / restore icon  -->
+      <Label
+       FontFamily="MaterialIconsRegular"
+        FontSize="24"
+         HorizontalOptions="Center"
+Text="&#xE2C6;"
+                 TextColor="{DynamicResource PrimaryColor}"
+    VerticalOptions="Center" />
+        </Border>
+           <VerticalStackLayout Spacing="3" VerticalOptions="Center">
+          <Label
+            FontAttributes="Bold"
+        FontSize="16"
+       Text="Restore from File"
+     TextColor="{DynamicResource TextColor}" />
+        <Label
+        FontSize="13"
+        Text="Pick a .fvb backup file to restore your vault"
+                TextColor="{DynamicResource TextSecondaryColor}" />
+            </VerticalStackLayout>
+      </HorizontalStackLayout>
+
+               <!--  Import button  -->
+              <Border
+    Padding="0"
+            BackgroundColor="{DynamicResource Gray-100}"
+         HeightRequest="50"
+        StrokeThickness="1">
+      <Border.Stroke>
+      <SolidColorBrush Color="{DynamicResource Gray-200}" />
+       </Border.Stroke>
+           <Border.StrokeShape>
+             <RoundRectangle CornerRadius="13" />
+       </Border.StrokeShape>
+       <Grid>
+      <HorizontalStackLayout
+        HorizontalOptions="Center"
+      InputTransparent="True"
+       Spacing="10"
+     VerticalOptions="Center">
+    <Label
+       FontFamily="MaterialIconsRegular"
+            FontSize="20"
+  InputTransparent="True"
+     Text="&#xE2C6;"
+          TextColor="{DynamicResource TextColor}"
+    VerticalOptions="Center" />
+      <Label
+    FontAttributes="Bold"
+  FontSize="15"
+    InputTransparent="True"
+          Text="Import Backup File"
+    TextColor="{DynamicResource TextColor}"
+           VerticalOptions="Center" />
+     </HorizontalStackLayout>
+                  <Button
+         Padding="0"
+    BackgroundColor="Transparent"
+               BorderWidth="0"
+         Command="{Binding ImportCommand}"
+  HorizontalOptions="Fill"
+         VerticalOptions="Fill" />
+        </Grid>
+            </Border>
+  </VerticalStackLayout>
+     </Border>
+
+           <!--  Security note  -->
+<Border
+        Margin="0,4,0,0"
+   Padding="16"
+        BackgroundColor="{DynamicResource WarningLightColor}"
+           StrokeThickness="0">
+ <Border.StrokeShape>
+       <RoundRectangle CornerRadius="12" />
+      </Border.StrokeShape>
+     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+         <mi:MauiIcon
+              Grid.Column="0"
+    Icon="{mi:Material Icon=Warning}"
+    IconColor="{DynamicResource WarningColor}"
+             IconSize="22"
+         VerticalOptions="Start" />
+   <VerticalStackLayout Grid.Column="1" Spacing="4">
+          <Label
+        FontAttributes="Bold"
+     FontSize="14"
+           Text="Keep your backup safe"
+           TextColor="{DynamicResource WarningColor}" />
+  <Label
+     FontSize="13"
+     Text="The backup file is encrypted, but anyone who has it and knows your master password can restore your vault. Store it in a physically secure location."
+       TextColor="{DynamicResource TextSecondaryColor}" />
+          </VerticalStackLayout>
+         </Grid>
+    </Border>
+
+       </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+
+</ContentPage>

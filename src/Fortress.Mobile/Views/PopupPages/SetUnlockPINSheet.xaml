@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<the49:BottomSheet
+    x:Class="Fortress.Views.PopupPages.SetUnlockPINSheet"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:Fortress.Converters"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    xmlns:sfButtons="clr-namespace:Syncfusion.Maui.Toolkit.Buttons;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:sfInput="clr-namespace:Syncfusion.Maui.Toolkit.TextInputLayout;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:the49="clr-namespace:The49.Maui.BottomSheet;assembly=The49.Maui.BottomSheet"
+    x:Name="CV"
+    HasBackdrop="True"
+    HasHandle="True">
+
+    <the49:BottomSheet.Detents>
+        <the49:ContentDetent />
+    </the49:BottomSheet.Detents>
+
+    <the49:BottomSheet.Resources>
+        <ResourceDictionary>
+            <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converter:BoolToColorConverter x:Key="BoolToColorConverter" />
+        </ResourceDictionary>
+    </the49:BottomSheet.Resources>
+
+    <VerticalStackLayout
+        Padding="24,20,24,30"
+        BackgroundColor="{DynamicResource CardBackgroundColor}"
+        Spacing="24">
+
+        <!--  HEADER  -->
+        <VerticalStackLayout HorizontalOptions="Center" Spacing="12">
+            <Border
+                Padding="12"
+                BackgroundColor="{DynamicResource InfoLightColor}"
+                HeightRequest="60"
+                HorizontalOptions="Center"
+                StrokeThickness="0"
+                WidthRequest="60">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16" />
+                </Border.StrokeShape>
+                <mi:MauiIcon
+                    Icon="{mi:Material Icon=Pin}"
+                    IconColor="{DynamicResource InfoColor}"
+                    IconSize="32" />
+            </Border>
+
+            <Label
+                FontAttributes="Bold"
+                FontSize="20"
+                HorizontalTextAlignment="Center"
+                Text="Setup PIN"
+                TextColor="{DynamicResource TextColor}" />
+
+            <Label
+                FontSize="14"
+                HorizontalTextAlignment="Center"
+                Text="Create a 4 digit PIN to quickly unlock FORTRESS"
+                TextColor="{DynamicResource TextSecondaryColor}" />
+        </VerticalStackLayout>
+
+        <!--  PIN INPUTS  -->
+        <VerticalStackLayout Spacing="16">
+
+            <!--  PIN Input  -->
+            <VerticalStackLayout Spacing="8">
+                <Label
+                    FontSize="13"
+                    Text="ENTER PIN"
+                    TextColor="{DynamicResource TextTertiaryColor}" />
+                <Border
+                    Padding="16,12"
+                    BackgroundColor="{DynamicResource Gray-50}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <mi:MauiIcon
+                            Grid.Column="0"
+                            Icon="{mi:Material Icon=Dialpad}"
+                            IconColor="{DynamicResource TextTertiaryColor}"
+                            IconSize="22"
+                            VerticalOptions="Center" />
+                        <Entry
+                            x:Name="txtPin"
+                            Grid.Column="1"
+                            FontSize="16"
+                            HorizontalTextAlignment="Center"
+                            IsPassword="True"
+                            Keyboard="Numeric"
+                            MaxLength="4"
+                            Placeholder="Enter 4 digit PIN"
+                            PlaceholderColor="{DynamicResource TextTertiaryColor}"
+                            Text="{Binding Pin, Mode=TwoWay}"
+                            TextChanged="Pin_TextChanged"
+                            TextColor="{DynamicResource TextColor}"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <!--  PIN Error Message  -->
+                <Label
+                    x:Name="txtPinError"
+                    FontSize="12"
+                    IsVisible="False"
+                    Text="PIN must be 4 digits"
+                    TextColor="{DynamicResource DangerColor}" />
+            </VerticalStackLayout>
+
+            <!--  CONFIRM PIN Input  -->
+            <VerticalStackLayout Spacing="8">
+                <Label
+                    FontSize="13"
+                    Text="CONFIRM PIN"
+                    TextColor="{DynamicResource TextTertiaryColor}" />
+                <Border
+                    Padding="16,12"
+                    BackgroundColor="{DynamicResource Gray-50}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <mi:MauiIcon
+                            Grid.Column="0"
+                            Icon="{mi:Material Icon=LockReset}"
+                            IconColor="{DynamicResource TextTertiaryColor}"
+                            IconSize="22"
+                            VerticalOptions="Center" />
+                        <Entry
+                            x:Name="txtConfirmPin"
+                            Grid.Column="1"
+                            FontSize="16"
+                            HorizontalTextAlignment="Center"
+                            IsPassword="True"
+                            Keyboard="Numeric"
+                            MaxLength="4"
+                            Placeholder="Confirm PIN"
+                            PlaceholderColor="{DynamicResource TextTertiaryColor}"
+                            Text="{Binding ConfirmPin, Mode=TwoWay}"
+                            TextChanged="ConfirmPin_TextChanged"
+                            TextColor="{DynamicResource TextColor}"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <!--  Confirm PIN Error Message  -->
+                <Label
+                    x:Name="txtConfirmPinError"
+                    FontSize="12"
+                    IsVisible="False"
+                    Text="PINs do not match"
+                    TextColor="{DynamicResource DangerColor}" />
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+
+        <!--  INFO BANNER  -->
+        <Border
+            Padding="12"
+            BackgroundColor="{DynamicResource InfoLightColor}"
+            StrokeThickness="0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10" />
+            </Border.StrokeShape>
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                <mi:MauiIcon
+                    Grid.Column="0"
+                    Icon="{mi:Material Icon=Info}"
+                    IconColor="{DynamicResource InfoColor}"
+                    IconSize="20"
+                    VerticalOptions="Start" />
+                <Label
+                    Grid.Column="1"
+                    FontSize="12"
+                    Text="Your PIN will be used along with biometric authentication for secure access"
+                    TextColor="{DynamicResource TextSecondaryColor}" />
+            </Grid>
+        </Border>
+
+        <!--  CONFIRM BUTTON  -->
+        <Border
+            Padding="0"
+            HeightRequest="52"
+            IsEnabled="{Binding CanExecute}"
+            StrokeThickness="0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="{DynamicResource InfoColor}" />
+                    <GradientStop Offset="1.0" Color="{DynamicResource PrimaryColor}" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="14" />
+            </Border.StrokeShape>
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding SaveCommand}" />
+            </Border.GestureRecognizers>
+            <Border.Triggers>
+                <DataTrigger
+                    Binding="{Binding CanExecute}"
+                    TargetType="Border"
+                    Value="False">
+                    <Setter Property="Opacity" Value="0.5" />
+                </DataTrigger>
+            </Border.Triggers>
+
+            <HorizontalStackLayout
+                HorizontalOptions="Center"
+                Spacing="8"
+                VerticalOptions="Center">
+                <mi:MauiIcon
+                    Icon="{mi:Material Icon=Check}"
+                    IconColor="White"
+                    IconSize="20" />
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    Text="Confirm PIN"
+                    TextColor="White" />
+            </HorizontalStackLayout>
+        </Border>
+
+    </VerticalStackLayout>
+</the49:BottomSheet>

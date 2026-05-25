@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Fortress.Controls.VaultPageHero"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    x:Name="This">
+
+    <Border Padding="20,16,20,24" StrokeThickness="0">
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Offset="0.0" Color="{Binding GradientStart, Source={x:Reference This}}" />
+                <GradientStop Offset="1.0" Color="{Binding GradientEnd, Source={x:Reference This}}" />
+            </LinearGradientBrush>
+        </Border.Background>
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="0,0,28,28" />
+        </Border.StrokeShape>
+
+        <!--  Single fixed-height slot — title and search overlay each other  -->
+        <Grid>
+
+            <!--  ══ TITLE ROW ══  -->
+            <Grid
+                x:Name="TitleRow"
+                ColumnDefinitions="Auto,*,Auto"
+                ColumnSpacing="12">
+
+                <!--  Back button  -->
+                <Border
+                    Grid.Column="0"
+                    Padding="0"
+                    BackgroundColor="#28FFFFFF"
+                    HeightRequest="42"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="42">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="13" />
+                    </Border.StrokeShape>
+                    <Button
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding BackCommand, Source={x:Reference This}}"
+                        HeightRequest="42"
+                        WidthRequest="42">
+                        <Button.ImageSource>
+                            <FontImageSource
+                                FontFamily="MaterialIconsRegular"
+                                Glyph="&#xE5C4;"
+                                Size="22"
+                                Color="White" />
+                        </Button.ImageSource>
+                    </Button>
+                </Border>
+
+                <!--  Title labels  -->
+                <VerticalStackLayout
+                    Grid.Column="1"
+                    Spacing="2"
+                    VerticalOptions="Center">
+                    
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="26"
+                        Text="{Binding Title, Source={x:Reference This}}"
+                        TextColor="White" />
+                    <Label
+                        FontSize="13"
+                        Opacity="0.80"
+                        Text="{Binding CountText, Source={x:Reference This}}"
+                        TextColor="White" />
+                </VerticalStackLayout>
+
+                <!--  Search trigger — round icon button, hidden when SearchEnabled=False  -->
+                <Border
+                    x:Name="SearchTriggerBorder"
+                    Grid.Column="2"
+                    Padding="0"
+                    BackgroundColor="#28FFFFFF"
+                    HeightRequest="42"
+                    IsVisible="{Binding SearchEnabled, Source={x:Reference This}}"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="42">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="21" />
+                    </Border.StrokeShape>
+                    <Grid>
+                        <mi:MauiIcon
+                            HorizontalOptions="Center"
+                            Icon="{mi:Material Icon=Search}"
+                            IconColor="White"
+                            IconSize="22"
+                            InputTransparent="True"
+                            VerticalOptions="Center" />
+                        <Button
+                            x:Name="SearchTriggerButton"
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Clicked="OnSearchButtonClicked"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!--  ══ SEARCH ROW — overlays the title row, slides in from top ══  -->
+            <Grid
+                x:Name="SearchRow"
+                ColumnDefinitions="Auto,*,Auto"
+                ColumnSpacing="10"
+                IsVisible="False"
+                Opacity="0"
+                TranslationY="-12"
+                VerticalOptions="Center">
+
+                <!--  Back-to-title button  -->
+                <Border
+                    Grid.Column="0"
+                    Padding="0"
+                    BackgroundColor="#28FFFFFF"
+                    HeightRequest="44"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="44">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="22" />
+                    </Border.StrokeShape>
+                    <Grid>
+                        <mi:MauiIcon
+                            HorizontalOptions="Center"
+                            Icon="{mi:Material Icon=ArrowBack}"
+                            IconColor="White"
+                            IconSize="20"
+                            InputTransparent="True"
+                            VerticalOptions="Center" />
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Clicked="OnCloseSearchClicked"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+                    </Grid>
+                </Border>
+
+                <!--  White pill Entry  -->
+                <Border
+                    Grid.Column="1"
+                    Padding="12,0"
+                    BackgroundColor="White"
+                    HeightRequest="44"
+                    StrokeThickness="0"
+                    VerticalOptions="Center">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="22" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.14"
+                            Radius="10"
+                            Offset="0,3" />
+                    </Border.Shadow>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <mi:MauiIcon
+                            Grid.Column="0"
+                            Icon="{mi:Material Icon=Search}"
+                            IconColor="#999"
+                            IconSize="17"
+                            VerticalOptions="Center" />
+                        <Entry
+                            x:Name="SearchEntry"
+                            Grid.Column="1"
+                            FontSize="15"
+                            Placeholder="Search..."
+                            PlaceholderColor="#BBBBBB"
+                            ReturnType="Search"
+                            TextChanged="OnSearchTextChanged"
+                            TextColor="#111111"
+                            VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <!--  Clear button — only shown when there is text  -->
+                <Border
+                    x:Name="ClearButton"
+                    Grid.Column="2"
+                    Padding="0"
+                    BackgroundColor="#28FFFFFF"
+                    HeightRequest="44"
+                    IsVisible="False"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="44">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="22" />
+                    </Border.StrokeShape>
+                    <Grid>
+                        <mi:MauiIcon
+                            HorizontalOptions="Center"
+                            Icon="{mi:Material Icon=Close}"
+                            IconColor="White"
+                            IconSize="20"
+                            InputTransparent="True"
+                            VerticalOptions="Center" />
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Clicked="OnClearSearchClicked"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+                    </Grid>
+                </Border>
+            </Grid>
+
+        </Grid>
+    </Border>
+</ContentView>

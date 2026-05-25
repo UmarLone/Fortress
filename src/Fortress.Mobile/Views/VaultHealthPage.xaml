@@ -1,0 +1,1030 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.VaultHealthPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:Fortress.Converters"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:models="clr-namespace:Fortress.Mobile.Core.Models;assembly=Fortress.Mobile.Core"
+    xmlns:prism="http://prismlibrary.com"
+    prism:ViewModelLocator.AutowireViewModel="Automatic"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <converter:InverseBoolConverter x:Key="InverseBool" />
+        <converter:IsPositiveConverter x:Key="IntToBool" />
+        <converter:BoolToOpacityConverter x:Key="BoolToOpacity" />
+        <converter:IntToProgressConverter x:Key="DivBy100" />
+        <converter:ScoreToBarHeightConverter x:Key="ScoreToBarHeight" />
+    </ContentPage.Resources>
+
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Spacing="0">
+
+                <!--  ── HERO HEADER — always visible, no IsVisible gate ──  -->
+                <Border Padding="20,48,20,28" StrokeThickness="0">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Offset="0.0" Color="{DynamicResource HeroGradientStart}" />
+                            <GradientStop Offset="1.0" Color="{DynamicResource HeroGradientEnd}" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="0,0,32,32" />
+                    </Border.StrokeShape>
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="0">
+
+                        <!--  Back + title + refresh  -->
+                        <Grid
+                            Grid.Row="0"
+                            Margin="0,0,0,20"
+                            ColumnDefinitions="Auto,*,Auto">
+                            <Border
+                                Grid.Column="0"
+                                Padding="0"
+                                BackgroundColor="#20FFFFFF"
+                                HeightRequest="40"
+                                StrokeThickness="0"
+                                WidthRequest="40">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <Button
+                                    Padding="0"
+                                    BackgroundColor="Transparent"
+                                    BorderWidth="0"
+                                    Command="{Binding GoBackCommand}"
+                                    HeightRequest="40"
+                                    WidthRequest="40">
+                                    <Button.ImageSource>
+                                        <FontImageSource
+                                            FontFamily="MaterialIconsRegular"
+                                            Glyph="&#xE5C4;"
+                                            Size="22"
+                                            Color="White" />
+                                    </Button.ImageSource>
+                                </Button>
+                            </Border>
+                            <Label
+                                Grid.Column="1"
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                HorizontalOptions="Center"
+                                Text="Vault Health"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                            <Border
+                                Grid.Column="2"
+                                Padding="0"
+                                BackgroundColor="#20FFFFFF"
+                                HeightRequest="40"
+                                StrokeThickness="0"
+                                WidthRequest="40">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <Button
+                                    Padding="0"
+                                    BackgroundColor="Transparent"
+                                    BorderWidth="0"
+                                    Command="{Binding RefreshCommand}"
+                                    HeightRequest="40"
+                                    WidthRequest="40">
+                                    <Button.ImageSource>
+                                        <FontImageSource
+                                            FontFamily="MaterialIconsRegular"
+                                            Glyph="&#xE5D5;"
+                                            Size="20"
+                                            Color="White" />
+                                    </Button.ImageSource>
+                                </Button>
+                            </Border>
+                        </Grid>
+
+                        <!--  Score ring — spinner while loading, score when done  -->
+                        <Border
+                            Grid.Row="1"
+                            Padding="0"
+                            BackgroundColor="#20FFFFFF"
+                            HeightRequest="130"
+                            HorizontalOptions="Center"
+                            StrokeThickness="3"
+                            WidthRequest="130">
+                            <Border.Stroke>
+                                <SolidColorBrush Color="#40FFFFFF" />
+                            </Border.Stroke>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="65" />
+                            </Border.StrokeShape>
+                            <Grid>
+                                <ActivityIndicator
+                                    HorizontalOptions="Center"
+                                    IsRunning="{Binding IsLoading}"
+                                    IsVisible="{Binding IsLoading}"
+                                    VerticalOptions="Center"
+                                    Color="White" />
+                                <VerticalStackLayout
+                                    HorizontalOptions="Center"
+                                    IsVisible="{Binding IsNotLoading}"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="50"
+                                        HorizontalOptions="Center"
+                                        LineHeight="1"
+                                        Text="{Binding Score}"
+                                        TextColor="White" />
+                                    <Label
+                                        FontSize="11"
+                                        HorizontalOptions="Center"
+                                        Opacity="0.7"
+                                        Text="/ 100"
+                                        TextColor="White" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+
+                        <!--  Status badge — "Analysing…" while loading, real status after  -->
+                        <Border
+                            Grid.Row="2"
+                            Margin="0,14,0,0"
+                            Padding="16,7"
+                            BackgroundColor="#25FFFFFF"
+                            HorizontalOptions="Center"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="20" />
+                            </Border.StrokeShape>
+                            <Grid>
+                                <HorizontalStackLayout IsVisible="{Binding IsLoading}" Spacing="8">
+                                    <BoxView
+                                        CornerRadius="5"
+                                        HeightRequest="10"
+                                        VerticalOptions="Center"
+                                        WidthRequest="10"
+                                        Color="#94A3B8" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="Analysing your vault…"
+                                        TextColor="White"
+                                        VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout IsVisible="{Binding IsNotLoading}" Spacing="8">
+                                    <BoxView
+                                        CornerRadius="5"
+                                        HeightRequest="10"
+                                        VerticalOptions="Center"
+                                        WidthRequest="10"
+                                        Color="{Binding StatusColor}" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="{Binding StatusLabel}"
+                                        TextColor="White"
+                                        VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </Border>
+
+                        <!--  Last checked  -->
+                        <Label
+                            Grid.Row="3"
+                            Margin="0,7,0,0"
+                            FontSize="11"
+                            HorizontalOptions="Center"
+                            Opacity="0.6"
+                            Text="{Binding CalculatedAt}"
+                            TextColor="White" />
+                    </Grid>
+                </Border>
+
+                <!--  ── BODY — revealed when analysis completes ──  -->
+                <VerticalStackLayout IsVisible="{Binding IsNotLoading}" Spacing="0">
+
+                    <!--  ── ACHIEVEMENT BADGES ──  -->
+                    <Grid
+                        Margin="16,18,16,0"
+                        ColumnDefinitions="*,*,*"
+                        ColumnSpacing="10">
+                        <Border
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.05"
+                                    Radius="6"
+                                    Offset="0,2" />
+                            </Border.Shadow>
+                            <VerticalStackLayout
+                                Padding="10,12"
+                                HorizontalOptions="Center"
+                                Spacing="6">
+                                <Border
+                                    Padding="7"
+                                    BackgroundColor="{DynamicResource SuccessLightColor}"
+                                    HeightRequest="36"
+                                    HorizontalOptions="Center"
+                                    StrokeThickness="0"
+                                    WidthRequest="36">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="10" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=Lock}"
+                                        IconColor="{DynamicResource SuccessColor}"
+                                        IconSize="18"
+                                        Opacity="{Binding AllStrong, Converter={StaticResource BoolToOpacity}}"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <Label
+                                    FontSize="10"
+                                    HorizontalOptions="Center"
+                                    HorizontalTextAlignment="Center"
+                                    Text="All Strong"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Border>
+                        <Border
+                            Grid.Column="1"
+                            Padding="0"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.05"
+                                    Radius="6"
+                                    Offset="0,2" />
+                            </Border.Shadow>
+                            <VerticalStackLayout
+                                Padding="10,12"
+                                HorizontalOptions="Center"
+                                Spacing="6">
+                                <Border
+                                    Padding="7"
+                                    BackgroundColor="{DynamicResource InfoLightColor}"
+                                    HeightRequest="36"
+                                    HorizontalOptions="Center"
+                                    StrokeThickness="0"
+                                    WidthRequest="36">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="10" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=QrCodeScanner}"
+                                        IconColor="{DynamicResource InfoColor}"
+                                        IconSize="18"
+                                        Opacity="{Binding Full2FA, Converter={StaticResource BoolToOpacity}}"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <Label
+                                    FontSize="10"
+                                    HorizontalOptions="Center"
+                                    HorizontalTextAlignment="Center"
+                                    Text="Full 2FA"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Border>
+                        <Border
+                            Grid.Column="2"
+                            Padding="0"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.05"
+                                    Radius="6"
+                                    Offset="0,2" />
+                            </Border.Shadow>
+                            <VerticalStackLayout
+                                Padding="10,12"
+                                HorizontalOptions="Center"
+                                Spacing="6">
+                                <Border
+                                    Padding="7"
+                                    BackgroundColor="{DynamicResource WarningLightColor}"
+                                    HeightRequest="36"
+                                    HorizontalOptions="Center"
+                                    StrokeThickness="0"
+                                    WidthRequest="36">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="10" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=VerifiedUser}"
+                                        IconColor="{DynamicResource AccentOrange}"
+                                        IconSize="18"
+                                        Opacity="{Binding NoBreaches, Converter={StaticResource BoolToOpacity}}"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <Label
+                                    FontSize="10"
+                                    HorizontalOptions="Center"
+                                    HorizontalTextAlignment="Center"
+                                    Text="No Breaches"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </Grid>
+
+                    <!--  ── STAT BARS ──  -->
+                    <Border
+                        Margin="16,14,16,0"
+                        Padding="18,16"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.05"
+                                Radius="8"
+                                Offset="0,3" />
+                        </Border.Shadow>
+                        <VerticalStackLayout Spacing="16">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                Text="Breakdown"
+                                TextColor="{DynamicResource TextColor}" />
+                            <VerticalStackLayout Spacing="6">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <HorizontalStackLayout Grid.Column="0" Spacing="6">
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Icon=Warning}"
+                                            IconColor="{DynamicResource CardsTileIcon}"
+                                            IconSize="14"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            FontSize="13"
+                                            Text="Weak passwords"
+                                            TextColor="{DynamicResource TextColor}"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                    <Label
+                                        Grid.Column="1"
+                                        FontAttributes="Bold"
+                                        FontSize="13"
+                                        Text="{Binding WeakCount}"
+                                        TextColor="{DynamicResource CardsTileIcon}"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                                <ProgressBar
+                                    HeightRequest="6"
+                                    Progress="{Binding WeakPercent}"
+                                    ProgressColor="{DynamicResource CardsTileIcon}" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Spacing="6">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <HorizontalStackLayout Grid.Column="0" Spacing="6">
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Icon=ContentCopy}"
+                                            IconColor="{DynamicResource DangerColor}"
+                                            IconSize="14"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            FontSize="13"
+                                            Text="Reused passwords"
+                                            TextColor="{DynamicResource TextColor}"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                    <Label
+                                        Grid.Column="1"
+                                        FontAttributes="Bold"
+                                        FontSize="13"
+                                        Text="{Binding ReusedCount}"
+                                        TextColor="{DynamicResource DangerColor}"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                                <ProgressBar
+                                    HeightRequest="6"
+                                    Progress="{Binding ReusedPercent}"
+                                    ProgressColor="{DynamicResource DangerColor}" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Spacing="6">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <HorizontalStackLayout Grid.Column="0" Spacing="6">
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Icon=GppBad}"
+                                            IconColor="{DynamicResource PasskeysTileIcon}"
+                                            IconSize="14"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            FontSize="13"
+                                            Text="Breached accounts"
+                                            TextColor="{DynamicResource TextColor}"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                    <Label
+                                        Grid.Column="1"
+                                        FontAttributes="Bold"
+                                        FontSize="13"
+                                        Text="{Binding BreachedCount}"
+                                        TextColor="{DynamicResource PasskeysTileIcon}"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                                <ProgressBar
+                                    HeightRequest="6"
+                                    Progress="{Binding BreachedPercent}"
+                                    ProgressColor="{DynamicResource PasskeysTileIcon}" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Spacing="6">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <HorizontalStackLayout Grid.Column="0" Spacing="6">
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Icon=PhonelinkLock}"
+                                            IconColor="{DynamicResource TwoFAStatIcon}"
+                                            IconSize="14"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            FontSize="13"
+                                            Text="Missing 2FA"
+                                            TextColor="{DynamicResource TextColor}"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                    <Label
+                                        Grid.Column="1"
+                                        FontAttributes="Bold"
+                                        FontSize="13"
+                                        Text="{Binding Missing2FACount}"
+                                        TextColor="{DynamicResource TwoFAStatIcon}"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                                <ProgressBar
+                                    HeightRequest="6"
+                                    Progress="{Binding Missing2FAPercent}"
+                                    ProgressColor="{DynamicResource TwoFAStatIcon}" />
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  ── ATTACK SURFACE CARD ──  -->
+                    <Border
+                        Margin="16,14,16,0"
+                        Padding="18,16"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.05"
+                                Radius="8"
+                                Offset="0,3" />
+                        </Border.Shadow>
+                        <VerticalStackLayout Spacing="12">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="15"
+                                        Text="Attack Surface"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        Text="Blast-radius if one account is breached"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                                <Border
+                                    Grid.Column="1"
+                                    Padding="12,6"
+                                    BackgroundColor="{DynamicResource Gray-100}"
+                                    StrokeThickness="0"
+                                    VerticalOptions="Center">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="10" />
+                                    </Border.StrokeShape>
+                                    <VerticalStackLayout HorizontalOptions="Center" Spacing="0">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="22"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding AttackSurfaceScore}"
+                                            TextColor="{Binding AttackSurfaceColor}" />
+                                        <Label
+                                            FontSize="11"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding AttackSurfaceLabel}"
+                                            TextColor="{Binding AttackSurfaceColor}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Grid>
+                            <ProgressBar
+                                HeightRequest="8"
+                                Progress="{Binding AttackSurfaceScore, Converter={StaticResource DivBy100}}"
+                                ProgressColor="{Binding AttackSurfaceColor}" />
+                            <Label
+                                FontSize="12"
+                                Text="{Binding TrendLabel}"
+                                TextColor="{DynamicResource TextSecondaryColor}" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  ── HEALTH SCORE HISTORY ──  -->
+                    <Border
+                        Margin="16,14,16,0"
+                        Padding="18,16"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        IsVisible="{Binding HasHealthHistory}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.05"
+                                Radius="8"
+                                Offset="0,3" />
+                        </Border.Shadow>
+                        <VerticalStackLayout Spacing="12">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="15"
+                                        Text="Score History"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        Text="{Binding TrendLabel}"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                                <Border
+                                    Grid.Column="1"
+                                    Padding="10,5"
+                                    BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                    StrokeThickness="0"
+                                    VerticalOptions="Center">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="12"
+                                        Text="{Binding Score, StringFormat='{0}/100 now'}"
+                                        TextColor="{DynamicResource PrimaryColor}" />
+                                </Border>
+                            </Grid>
+                            <ScrollView
+                                HeightRequest="72"
+                                HorizontalScrollBarVisibility="Never"
+                                Orientation="Horizontal">
+                                <HorizontalStackLayout
+                                    Padding="0,4"
+                                    BindableLayout.ItemsSource="{Binding HealthHistory}"
+                                    Spacing="4"
+                                    VerticalOptions="End">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="models:VaultHealthSnapshot">
+                                            <VerticalStackLayout
+                                                Spacing="3"
+                                                VerticalOptions="End"
+                                                WidthRequest="28">
+                                                <Border
+                                                    BackgroundColor="{DynamicResource PrimaryColor}"
+                                                    HeightRequest="{Binding Score, Converter={StaticResource DivBy100}}"
+                                                    HorizontalOptions="Center"
+                                                    MinimumHeightRequest="4"
+                                                    StrokeThickness="0"
+                                                    WidthRequest="14">
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="4" />
+                                                    </Border.StrokeShape>
+                                                </Border>
+                                                <Label
+                                                    FontSize="9"
+                                                    HorizontalOptions="Center"
+                                                    Text="{Binding Score}"
+                                                    TextColor="{DynamicResource TextTertiaryColor}" />
+                                            </VerticalStackLayout>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </HorizontalStackLayout>
+                            </ScrollView>
+                            <Grid ColumnDefinitions="*,*">
+                                <Label
+                                    Grid.Column="0"
+                                    FontSize="10"
+                                    Text="{Binding HealthHistory[0].RecordedDate, StringFormat='{0:MMM d}'}"
+                                    TextColor="{DynamicResource TextTertiaryColor}" />
+                                <Label
+                                    Grid.Column="1"
+                                    FontSize="10"
+                                    HorizontalOptions="End"
+                                    Text="Today"
+                                    TextColor="{DynamicResource TextTertiaryColor}" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  ── COMPROMISE CHAINS ──  -->
+                    <VerticalStackLayout
+                        Margin="16,18,16,0"
+                        IsVisible="{Binding HasClusters}"
+                        Spacing="10">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="17"
+                            Text="Compromise Chains"
+                            TextColor="{DynamicResource TextColor}" />
+                        <Label
+                            FontSize="13"
+                            Text="These accounts share a password. If one falls, all fall."
+                            TextColor="{DynamicResource TextSecondaryColor}" />
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Clusters}" Spacing="10">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="models:CredentialCluster">
+                                    <Border
+                                        Padding="16"
+                                        BackgroundColor="{DynamicResource WarningLightColor}"
+                                        StrokeThickness="1">
+                                        <Border.Stroke>
+                                            <SolidColorBrush Color="{DynamicResource AccentOrange}" />
+                                        </Border.Stroke>
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="14" />
+                                        </Border.StrokeShape>
+                                        <VerticalStackLayout Spacing="8">
+                                            <HorizontalStackLayout Spacing="8">
+                                                <mi:MauiIcon
+                                                    Icon="{mi:Material Icon=Link}"
+                                                    IconColor="{DynamicResource AccentOrange}"
+                                                    IconSize="18"
+                                                    VerticalOptions="Center" />
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="14"
+                                                    Text="{Binding Members.Count, StringFormat='{0} accounts linked'}"
+                                                    TextColor="{DynamicResource AccentOrange}"
+                                                    VerticalOptions="Center" />
+                                            </HorizontalStackLayout>
+                                            <Label
+                                                FontSize="12"
+                                                LineBreakMode="WordWrap"
+                                                Text="{Binding RiskNarrative}"
+                                                TextColor="{DynamicResource TextColor}" />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+
+                    <!--  ── HAVE I BEEN PWNED — EMAIL CHECK ──  -->
+                    <Border
+                        Margin="16,18,16,0"
+                        Padding="18,16"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.05"
+                                Radius="8"
+                                Offset="0,3" />
+                        </Border.Shadow>
+                        <VerticalStackLayout Spacing="14">
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="10"
+                                    BackgroundColor="{DynamicResource DangerLightColor}"
+                                    HeightRequest="44"
+                                    StrokeThickness="0"
+                                    VerticalOptions="Center"
+                                    WidthRequest="44">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=ManageSearch}"
+                                        IconColor="{DynamicResource DangerColor}"
+                                        IconSize="22"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="15"
+                                        Text="Email Breach Check"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        Text="Checks your emails against HaveIBeenPwned (requires internet)"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                            <Grid>
+                                <Button
+                                    BackgroundColor="{DynamicResource DangerColor}"
+                                    Command="{Binding CheckEmailsCommand}"
+                                    CornerRadius="12"
+                                    FontAttributes="Bold"
+                                    HeightRequest="46"
+                                    IsVisible="{Binding IsHibpChecking, Converter={StaticResource InverseBool}}"
+                                    Text="Check My Emails"
+                                    TextColor="White" />
+                                <VerticalStackLayout IsVisible="{Binding IsHibpChecking}" Spacing="8">
+                                    <Label
+                                        FontSize="13"
+                                        HorizontalOptions="Center"
+                                        Text="{Binding HibpProgress, StringFormat='Checking {0} of …'}"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                    <ProgressBar
+                                        HeightRequest="6"
+                                        Progress="{Binding HibpProgress, Converter={StaticResource DivBy100}}"
+                                        ProgressColor="{DynamicResource DangerColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                            <VerticalStackLayout IsVisible="{Binding HasHibpBreaches}" Spacing="8">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="{Binding HibpBreachedCount, StringFormat='{0} email(s) found in breaches'}"
+                                    TextColor="{DynamicResource DangerColor}" />
+                                <VerticalStackLayout BindableLayout.ItemsSource="{Binding HibpResults}" Spacing="6">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="models:HibpEmailResult">
+                                            <Border
+                                                Padding="12,10"
+                                                BackgroundColor="{DynamicResource DangerLightColor}"
+                                                IsVisible="{Binding IsBreached}"
+                                                StrokeThickness="0">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="10" />
+                                                </Border.StrokeShape>
+                                                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                                    <mi:MauiIcon
+                                                        Grid.Column="0"
+                                                        Icon="{mi:Material Icon=Warning}"
+                                                        IconColor="{DynamicResource DangerColor}"
+                                                        IconSize="18"
+                                                        VerticalOptions="Center" />
+                                                    <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                                        <Label
+                                                            FontAttributes="Bold"
+                                                            FontSize="13"
+                                                            Text="{Binding Email}"
+                                                            TextColor="{DynamicResource DangerColor}" />
+                                                        <Label
+                                                            FontSize="11"
+                                                            Text="{Binding BreachCount, StringFormat='Found in {0} breach(es)'}"
+                                                            TextColor="{DynamicResource TextSecondaryColor}" />
+                                                    </VerticalStackLayout>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                            <HorizontalStackLayout
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding HasHibpBreaches, Converter={StaticResource InverseBool}}"
+                                Spacing="8">
+                                <mi:MauiIcon
+                                    Icon="{mi:Material Icon=CheckCircle}"
+                                    IconColor="{DynamicResource SuccessColor}"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    FontSize="13"
+                                    Text="No email breaches detected"
+                                    TextColor="{DynamicResource SuccessColor}"
+                                    VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  ── AT-RISK CREDENTIALS ──  -->
+                    <VerticalStackLayout
+                        Margin="16,18,16,0"
+                        IsVisible="{Binding Details.Count, Converter={StaticResource IntToBool}}"
+                        Spacing="10">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label
+                                Grid.Column="0"
+                                FontAttributes="Bold"
+                                FontSize="17"
+                                Text="Accounts Needing Attention"
+                                TextColor="{DynamicResource TextColor}"
+                                VerticalOptions="Center" />
+                            <Border
+                                Grid.Column="1"
+                                Padding="8,4"
+                                BackgroundColor="{DynamicResource Gray-100}"
+                                StrokeThickness="0"
+                                VerticalOptions="Center">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="12"
+                                    Text="{Binding TotalIssuesCount}"
+                                    TextColor="{DynamicResource TextColor}" />
+                            </Border>
+                        </Grid>
+                        <CollectionView ItemsSource="{Binding Details}" SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:CredentialHealthDetail">
+                                    <Border
+                                        Margin="0,0,0,8"
+                                        Padding="14,12"
+                                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                                        StrokeThickness="0">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="12" />
+                                        </Border.StrokeShape>
+                                        <Border.Shadow>
+                                            <Shadow
+                                                Brush="Black"
+                                                Opacity="0.04"
+                                                Radius="6"
+                                                Offset="0,2" />
+                                        </Border.Shadow>
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                            <Border
+                                                Grid.Column="0"
+                                                Padding="8"
+                                                BackgroundColor="{DynamicResource Gray-100}"
+                                                HeightRequest="40"
+                                                StrokeThickness="0"
+                                                VerticalOptions="Center"
+                                                WidthRequest="40">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="10" />
+                                                </Border.StrokeShape>
+                                                <mi:MauiIcon
+                                                    HorizontalOptions="Center"
+                                                    Icon="{mi:Material Icon=Key}"
+                                                    IconColor="{DynamicResource PrimaryColor}"
+                                                    IconSize="20"
+                                                    VerticalOptions="Center" />
+                                            </Border>
+                                            <VerticalStackLayout
+                                                Grid.Column="1"
+                                                Spacing="3"
+                                                VerticalOptions="Center">
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="13"
+                                                    LineBreakMode="TailTruncation"
+                                                    Text="{Binding Label}"
+                                                    TextColor="{DynamicResource TextColor}" />
+                                                <HorizontalStackLayout Spacing="6">
+                                                    <Border
+                                                        Padding="6,2"
+                                                        BackgroundColor="{DynamicResource WarningLightColor}"
+                                                        IsVisible="{Binding IsWeak}"
+                                                        StrokeThickness="0">
+                                                        <Border.StrokeShape>
+                                                            <RoundRectangle CornerRadius="6" />
+                                                        </Border.StrokeShape>
+                                                        <Label
+                                                            FontSize="10"
+                                                            Text="Weak"
+                                                            TextColor="{DynamicResource CardsTileIcon}" />
+                                                    </Border>
+                                                    <Border
+                                                        Padding="6,2"
+                                                        BackgroundColor="{DynamicResource DangerLightColor}"
+                                                        IsVisible="{Binding IsReused}"
+                                                        StrokeThickness="0">
+                                                        <Border.StrokeShape>
+                                                            <RoundRectangle CornerRadius="6" />
+                                                        </Border.StrokeShape>
+                                                        <Label
+                                                            FontSize="10"
+                                                            Text="Reused"
+                                                            TextColor="{DynamicResource DangerColor}" />
+                                                    </Border>
+                                                    <Border
+                                                        Padding="6,2"
+                                                        BackgroundColor="{DynamicResource InfoLightColor}"
+                                                        IsVisible="{Binding HasTwoFactor, Converter={StaticResource InverseBool}}"
+                                                        StrokeThickness="0">
+                                                        <Border.StrokeShape>
+                                                            <RoundRectangle CornerRadius="6" />
+                                                        </Border.StrokeShape>
+                                                        <Label
+                                                            FontSize="10"
+                                                            Text="No 2FA"
+                                                            TextColor="{DynamicResource TwoFAStatIcon}" />
+                                                    </Border>
+                                                </HorizontalStackLayout>
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <Border
+                            Margin="0,4,0,0"
+                            Padding="12,8"
+                            BackgroundColor="{DynamicResource Gray-100}"
+                            IsVisible="{Binding IssuesCapped}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="10" />
+                            </Border.StrokeShape>
+                            <Label
+                                FontSize="12"
+                                HorizontalOptions="Center"
+                                Text="{Binding IssuesCappedLabel}"
+                                TextColor="{DynamicResource TextSecondaryColor}" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!--  ── ALL CLEAR STATE ──  -->
+                    <VerticalStackLayout
+                        Margin="16,24,16,0"
+                        IsVisible="{Binding HasNoIssues}"
+                        Spacing="12">
+                        <Border
+                            Padding="24"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.05"
+                                    Radius="8"
+                                    Offset="0,3" />
+                            </Border.Shadow>
+                            <VerticalStackLayout HorizontalOptions="Center" Spacing="12">
+                                <Border
+                                    Padding="16"
+                                    BackgroundColor="{DynamicResource SuccessLightColor}"
+                                    HorizontalOptions="Center"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="24" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=Shield}"
+                                        IconColor="{DynamicResource SuccessColor}"
+                                        IconSize="36"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="17"
+                                    HorizontalOptions="Center"
+                                    Text="Your vault looks great!"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="13"
+                                    HorizontalOptions="Center"
+                                    HorizontalTextAlignment="Center"
+                                    Text="No weak, reused, or at-risk credentials were found."
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <BoxView HeightRequest="32" Color="Transparent" />
+
+                </VerticalStackLayout>
+                <!--  end IsNotLoading body  -->
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

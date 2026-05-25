@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.LocalLogsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctrl="clr-namespace:Fortress.Controls"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*,Auto">
+
+        <!--  ═══ HERO HEADER ═══  -->
+        <ctrl:VaultPageHero
+            Title="Local Logs"
+            Grid.Row="0"
+            BackCommand="{Binding GoBackCommand}"
+            CountText="{Binding LogFileInfo}"
+            GradientEnd="{DynamicResource HeroGradientEnd}"
+            GradientStart="{DynamicResource HeroGradientStart}"
+            IconGlyph="&#xE873;"
+            SearchEnabled="False"
+            Subtitle="DIAGNOSTICS" />
+
+        <!--  ═══ ACTION BAR ═══  -->
+        <Grid
+            Grid.Row="1"
+            Margin="16,8"
+            ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto">
+
+            <!--  Search toggle  -->
+            <Border
+                Grid.Column="1"
+                Padding="0"
+                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                HeightRequest="36"
+                StrokeThickness="0"
+                WidthRequest="36">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10" />
+                </Border.StrokeShape>
+                <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+                    <mi:MauiIcon
+                        HorizontalOptions="Center"
+                        Icon="{mi:Material Icon=Search}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconSize="18"
+                        InputTransparent="True"
+                        VerticalOptions="Center" />
+                    <Button
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding ToggleSearchCommand}"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill" />
+                </Grid>
+            </Border>
+
+            <!--  Refresh  -->
+            <Border
+                Grid.Column="2"
+                Margin="8,0,0,0"
+                Padding="0"
+                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                HeightRequest="36"
+                StrokeThickness="0"
+                WidthRequest="36">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10" />
+                </Border.StrokeShape>
+                <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+                    <mi:MauiIcon
+                        HorizontalOptions="Center"
+                        Icon="{mi:Material Icon=Refresh}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconSize="18"
+                        InputTransparent="True"
+                        VerticalOptions="Center" />
+                    <Button
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding RefreshCommand}"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill" />
+                </Grid>
+            </Border>
+
+            <!--  Share  -->
+            <Border
+                Grid.Column="3"
+                Margin="8,0,0,0"
+                Padding="0"
+                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                HeightRequest="36"
+                StrokeThickness="0"
+                WidthRequest="36">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10" />
+                </Border.StrokeShape>
+                <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+                    <mi:MauiIcon
+                        HorizontalOptions="Center"
+                        Icon="{mi:Material Icon=Share}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconSize="18"
+                        InputTransparent="True"
+                        VerticalOptions="Center" />
+                    <Button
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding ShareCommand}"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill" />
+                </Grid>
+            </Border>
+
+            <!--  Clear  -->
+            <Border
+                Grid.Column="4"
+                Margin="8,0,0,0"
+                Padding="0"
+                BackgroundColor="{DynamicResource DangerLightColor}"
+                HeightRequest="36"
+                StrokeThickness="0"
+                WidthRequest="36">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10" />
+                </Border.StrokeShape>
+                <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+                    <mi:MauiIcon
+                        HorizontalOptions="Center"
+                        Icon="{mi:Material Icon=Delete}"
+                        IconColor="{DynamicResource DangerColor}"
+                        IconSize="18"
+                        InputTransparent="True"
+                        VerticalOptions="Center" />
+                    <Button
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding ClearLogsCommand}"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill" />
+                </Grid>
+            </Border>
+
+            <!--  Filter  -->
+            <Border
+                Grid.Column="5"
+                Margin="8,0,0,0"
+                Padding="10,0"
+                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                HeightRequest="36"
+                MinimumWidthRequest="76"
+                StrokeThickness="0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10" />
+                </Border.StrokeShape>
+                <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+                    <HorizontalStackLayout
+                        HorizontalOptions="Center"
+                        InputTransparent="True"
+                        Spacing="5"
+                        VerticalOptions="Center">
+                        <mi:MauiIcon
+                            Icon="{mi:Material Icon=FilterList}"
+                            IconColor="{DynamicResource PrimaryColor}"
+                            IconSize="16"
+                            InputTransparent="True"
+                            VerticalOptions="Center" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="12"
+                            InputTransparent="True"
+                            Text="{Binding FilterLabel}"
+                            TextColor="{DynamicResource PrimaryColor}"
+                            VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                    <Button
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding ShowFilterCommand}"
+                        HorizontalOptions="Fill"
+                        VerticalOptions="Fill" />
+                </Grid>
+            </Border>
+
+        </Grid>
+
+        <!--  ═══ SEARCH BAR (collapsible) ═══  -->
+        <Grid
+            Grid.Row="2"
+            Margin="16,0,16,8"
+            ColumnDefinitions="*,Auto"
+            ColumnSpacing="8"
+            IsVisible="{Binding IsSearchVisible}">
+            <Border
+                Grid.Column="0"
+                Padding="10,0"
+                BackgroundColor="{DynamicResource CardBackgroundColor}"
+                HeightRequest="40"
+                StrokeThickness="1">
+                <Border.Stroke>
+                    <SolidColorBrush Color="{DynamicResource BorderColor}" />
+                </Border.Stroke>
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10" />
+                </Border.StrokeShape>
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="6">
+                    <mi:MauiIcon
+                        Grid.Column="0"
+                        Icon="{mi:Material Icon=Search}"
+                        IconColor="{DynamicResource TextTertiaryColor}"
+                        IconSize="16"
+                        VerticalOptions="Center" />
+                    <Entry
+                        Grid.Column="1"
+                        BackgroundColor="Transparent"
+                        ClearButtonVisibility="Never"
+                        FontSize="12"
+                        HorizontalOptions="Fill"
+                        Placeholder="Search in logs…"
+                        PlaceholderColor="{DynamicResource TextTertiaryColor}"
+                        ReturnType="Search"
+                        Text="{Binding SearchText}"
+                        TextColor="{DynamicResource TextColor}"
+                        VerticalOptions="Center" />
+                    <!--  Clear ×  -->
+                    <Border
+                        Grid.Column="2"
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        HeightRequest="24"
+                        IsVisible="{Binding SearchText, Converter={StaticResource StringNotEmptyConverter}}"
+                        StrokeThickness="0"
+                        WidthRequest="24">
+                        <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+                            <mi:MauiIcon
+                                HorizontalOptions="Center"
+                                Icon="{mi:Material Icon=Close}"
+                                IconColor="{DynamicResource TextTertiaryColor}"
+                                IconSize="14"
+                                InputTransparent="True"
+                                VerticalOptions="Center" />
+                            <Button
+                                Padding="0"
+                                BackgroundColor="Transparent"
+                                BorderWidth="0"
+                                Command="{Binding ClearSearchCommand}"
+                                HorizontalOptions="Fill"
+                                VerticalOptions="Fill" />
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!--  Match count badge  -->
+            <Border
+                Grid.Column="1"
+                Padding="8,0"
+                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                HeightRequest="40"
+                StrokeThickness="0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="10" />
+                </Border.StrokeShape>
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="11"
+                    Text="{Binding MatchCount, StringFormat='{0} hits'}"
+                    TextColor="{DynamicResource PrimaryColor}"
+                    VerticalOptions="Center" />
+            </Border>
+        </Grid>
+
+        <!--  ═══ LOG CONTENT ═══  -->
+        <ScrollView Grid.Row="3" Padding="12">
+            <Grid>
+                <Editor
+                    x:Name="LogEditor"
+                    AutoSize="TextChanges"
+                    BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    FontSize="11"
+                    HorizontalOptions="FillAndExpand"
+                    IsReadOnly="True"
+                    Text="{Binding LogContent}"
+                    TextColor="{DynamicResource TextColor}"
+                    VerticalOptions="FillAndExpand" />
+                <ActivityIndicator
+                    HorizontalOptions="Center"
+                    IsRunning="{Binding IsLoading}"
+                    IsVisible="{Binding IsLoading}"
+                    VerticalOptions="Center"
+                    Color="{DynamicResource PrimaryColor}" />
+                <VerticalStackLayout
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding IsEmpty}"
+                    Spacing="12"
+                    VerticalOptions="Center">
+                    <mi:MauiIcon
+                        HorizontalOptions="Center"
+                        Icon="{mi:Material Icon=Description}"
+                        IconColor="{DynamicResource TextTertiaryColor}"
+                        IconSize="52"
+                        VerticalOptions="Center" />
+                    <Label
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        Text="No logs available"
+                        TextColor="{DynamicResource TextSecondaryColor}" />
+                    <Label
+                        Margin="24,0"
+                        FontSize="13"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Text="Diagnostic events will appear here once the app logs activity."
+                        TextColor="{DynamicResource TextTertiaryColor}" />
+                </VerticalStackLayout>
+            </Grid>
+        </ScrollView>
+
+        <!--  ═══ FOOTER ═══  -->
+        <Grid
+            Grid.Row="4"
+            Padding="16,10"
+            BackgroundColor="{DynamicResource CardBackgroundColor}"
+            ColumnDefinitions="*,Auto">
+            <Grid.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.05"
+                    Radius="10"
+                    Offset="0,-3" />
+            </Grid.Shadow>
+            <Label
+                FontSize="12"
+                Text="{Binding LineCount, StringFormat='{0} lines'}"
+                TextColor="{DynamicResource TextSecondaryColor}"
+                VerticalOptions="Center" />
+
+        </Grid>
+
+    </Grid>
+</ContentPage>

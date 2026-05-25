@@ -1,0 +1,1322 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Fortress &mdash; Settings</title>
+  <script src="theme-init.js"></script>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-logo">
+        <img src="../assets/icons/icon128.png" alt="Fortress">
+      </div>
+      <span class="brand-name">FORTRESS</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="snav-section-label">Overview</div>
+      <button class="snav-btn active" data-page="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Dashboard
+      </button>
+
+      <div class="snav-section-label">Vault</div>
+      <button class="snav-btn" data-page="logins" data-vault-filter="Login">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Logins
+      </button>
+      <button class="snav-btn" data-page="authenticators" data-vault-filter="Authenticator">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 7h6M9 11h4"/></svg>
+        Authenticators
+      </button>
+      <button class="snav-btn" data-page="cards" data-vault-filter="CreditCard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Cards
+      </button>
+      <button class="snav-btn" data-page="secure-items">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
+        Secure Items
+      </button>
+      <button class="snav-btn" data-page="ai-insights">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M12 2a4 4 0 0 1 4 4 4 4 0 0 1-1.16 2.77L21 15h-4v4l-2-1-2 1v-4H9v-3.23A4 4 0 0 1 8 6a4 4 0 0 1 4-4z"/><circle cx="12" cy="6" r="1.5" fill="currentColor" stroke="none"/></svg>
+        AI Security
+      </button>
+
+      <div class="snav-section-label">Tools</div>
+      <button class="snav-btn" data-page="autofill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        Autofill
+      </button>
+      <button class="snav-btn" data-page="generator">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+        Generator
+      </button>
+
+      <div class="snav-section-label">Account</div>
+      <button class="snav-btn" data-page="security">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+        Settings
+      </button>
+      <button class="snav-btn" data-page="notifications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        Notifications
+      </button>
+      <button class="snav-btn" data-page="appearance">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        Appearance
+      </button>
+      <button class="snav-btn" data-page="data">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        Data &amp; Privacy
+      </button>
+      <button class="snav-btn" data-page="about">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        About
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <span class="sidebar-version">v 1.1.0</span>
+      <span class="sidebar-status-dot" id="sidebar-status-dot"></span>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+
+    <!-- Dashboard -->
+    <section id="page-dashboard" class="page active">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div class="page-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          </div>
+          <h1>Dashboard</h1>
+        </div>
+        <p>Your security at a glance.</p>
+      </div>
+
+      <div class="dash-stats-grid">
+        <div class="dash-stat-card" id="dash-card-logins" tabindex="0" role="button" aria-label="View Logins">
+          <div class="dash-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div class="dash-stat-value" id="dash-stat-logins">&mdash;</div>
+          <div class="dash-stat-label">Logins</div>
+        </div>
+        <div class="dash-stat-card" id="dash-card-auths" tabindex="0" role="button" aria-label="View Authenticators">
+          <div class="dash-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 7h6M9 11h4"/></svg>
+          </div>
+          <div class="dash-stat-value" id="dash-stat-auths">&mdash;</div>
+          <div class="dash-stat-label">Authenticators</div>
+        </div>
+        <div class="dash-stat-card" id="dash-card-cards" tabindex="0" role="button" aria-label="View Cards">
+          <div class="dash-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <div class="dash-stat-value" id="dash-stat-cards">&mdash;</div>
+          <div class="dash-stat-label">Cards</div>
+        </div>
+        <div class="dash-stat-card" id="dash-card-secure" tabindex="0" role="button" aria-label="View Secure Items">
+          <div class="dash-stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
+          </div>
+          <div class="dash-stat-value" id="dash-stat-secure">&mdash;</div>
+          <div class="dash-stat-label">Secure Items</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
+          Security Health
+        </div>
+        <div class="dash-health-grid">
+          <div class="dash-health-item">
+            <div class="dash-health-icon dash-health-danger">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div class="dash-health-info">
+              <div class="dash-health-value" id="dash-health-breach-val">&mdash;</div>
+              <div class="dash-health-label">Breached accounts</div>
+            </div>
+          </div>
+          <div class="dash-health-item">
+            <div class="dash-health-icon dash-health-warn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="dash-health-info">
+              <div class="dash-health-value" id="dash-health-weak-val">&mdash;</div>
+              <div class="dash-health-label">Weak passwords</div>
+            </div>
+          </div>
+          <div class="dash-health-item">
+            <div class="dash-health-icon dash-health-info-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 7h6M9 11h4"/></svg>
+            </div>
+            <div class="dash-health-info">
+              <div class="dash-health-value" id="dash-health-2fa-val">&mdash;</div>
+              <div class="dash-health-label">Logins with 2FA</div>
+            </div>
+          </div>
+          <div class="dash-health-item">
+            <div class="dash-health-icon dash-health-success">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="dash-health-info">
+              <div class="dash-health-value" id="dash-health-total-val">&mdash;</div>
+              <div class="dash-health-label">Total protected</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+          Quick Add
+        </div>
+        <div class="dash-quick-grid">
+          <button class="dash-quick-btn" id="dash-add-login">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            New Login
+          </button>
+          <button class="dash-quick-btn" id="dash-add-auth">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 7h6M9 11h4"/></svg>
+            New 2FA
+          </button>
+          <button class="dash-quick-btn" id="dash-add-card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            New Card
+          </button>
+          <button class="dash-quick-btn" id="dash-add-secure">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
+            New Secure Item
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vault (shared list for Logins / Authenticators / Cards) -->
+    <section id="page-vault" class="page">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div class="page-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <h1>Vault</h1>
+        </div>
+        <p>Your saved logins, cards, identities, and secure notes.</p>
+      </div>
+
+      <div class="vault-toolbar">
+        <div class="vault-search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="vault-search" type="search" class="vault-search-input" placeholder="Search vault&hellip;" autocomplete="off">
+        </div>
+        <button class="btn-add-item" id="btn-vault-add">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add item
+        </button>
+      </div>
+
+      <div class="opt-filter-row">
+        <div class="opt-filter-chips">
+          <button class="opt-chip active" data-filter="all">All</button>
+          <button class="opt-chip" data-filter="Login">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Logins
+          </button>
+          <button class="opt-chip" data-filter="CreditCard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Cards
+          </button>
+          <button class="opt-chip" data-filter="Authenticator">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            2FA
+          </button>
+          <button class="opt-chip" data-filter="Favorites">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Favorites
+          </button>
+        </div>
+        <div class="vault-sort-wrap">
+          <select id="vault-sort-opt" class="select-input">
+            <option value="az">A &mdash; Z</option>
+            <option value="za">Z &mdash; A</option>
+            <option value="recent">Recently used</option>
+          </select>
+          <span id="vault-item-count" class="vault-item-count"></span>
+        </div>
+      </div>
+
+      <div id="opt-vault-list" class="opt-vault-list">
+        <div class="opt-list-loading"><div class="opt-spinner"></div></div>
+      </div>
+    </section>
+
+    <!-- Security -->
+    <section id="page-security" class="page">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div class="page-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h1>Security</h1>
+        </div>
+        <p>Manage how and when your vault locks, plus authentication options.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+          Auto-lock
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Lock vault after inactivity</div>
+            <div class="setting-sub">Vault will lock automatically after the selected period</div>
+          </div>
+          <select id="opt-autolock" class="select-input">
+            <option value="60">1 minute</option>
+            <option value="300" selected>5 minutes</option>
+            <option value="900">15 minutes</option>
+            <option value="1800">30 minutes</option>
+            <option value="3600">1 hour</option>
+            <option value="14400">4 hours</option>
+            <option value="0">Never</option>
+          </select>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Lock on browser close</div>
+            <div class="setting-sub">Automatically lock when the browser is closed</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="opt-lock-on-close" checked>
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Lock on screen lock / sleep</div>
+            <div class="setting-sub">Lock vault when the system screen locks</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="opt-lock-on-sleep" checked>
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></span>
+          Clipboard
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Clear clipboard after copy</div>
+            <div class="setting-sub">Automatically clear the clipboard after copying a password</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="opt-clear-clipboard" checked>
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Clipboard clear delay</div>
+            <div class="setting-sub">Seconds before clipboard is wiped</div>
+          </div>
+          <select id="opt-clipboard-timeout" class="select-input">
+            <option value="10">10 seconds</option>
+            <option value="20" selected>20 seconds</option>
+            <option value="30">30 seconds</option>
+            <option value="60">1 minute</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+          Breach monitoring
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">HaveIBeenPwned alerts</div>
+            <div class="setting-sub">Check passwords against known data breaches</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="opt-hibp" checked>
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Weak password warnings</div>
+            <div class="setting-sub">Highlight logins with weak or short passwords in vault health</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="opt-weak-warn" checked>
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+      </div>
+
+      <button class="btn-save" id="btn-save-security">Save changes</button>
+    </section>
+
+    <!-- Autofill -->
+    <section id="page-autofill" class="page">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div class="page-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <h1>Autofill</h1>
+        </div>
+        <p>Control how Fortress fills credentials on web pages.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span>
+          Inline autofill
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Show Fortress icon in input fields</div>
+            <div class="setting-sub">Adds a small lock icon next to password and username fields</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="opt-inline-btn" checked>
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Autofill on page load</div>
+            <div class="setting-sub">Automatically fill when a single matching credential exists</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="opt-autofill-on-load">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v14a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg></span>
+          Save prompts
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Ask to save new logins</div>
+            <div class="setting-sub">Show a banner when new credentials are detected</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="opt-save-prompt" checked>
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Ask to update changed passwords</div>
+            <div class="setting-sub">Prompt when a saved password has changed</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="opt-update-prompt" checked>
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></span>
+          Excluded sites
+        </div>
+        <p class="card-sub">Fortress will never autofill or prompt on these sites.</p>
+        <div class="excluded-list" id="excluded-list"></div>
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <input id="excluded-input" type="url" class="text-input" placeholder="https://example.com" style="flex:1;">
+          <button class="btn-add-site" id="btn-add-excluded">Add site</button>
+        </div>
+      </div>
+
+      <button class="btn-save" id="btn-save-autofill">Save changes</button>
+    </section>
+
+    <!-- Generator -->
+    <section id="page-generator" class="page">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div class="page-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+          </div>
+          <h1>Password Generator</h1>
+        </div>
+        <p>Set defaults for the built-in password generator.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg></span>
+          Password defaults
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Default length</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <input id="opt-gen-len" type="range" min="8" max="128" value="20" class="range-input" style="width:120px;">
+            <span id="opt-gen-len-val" class="val-badge">20</span>
+          </div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info"><div class="setting-label">Uppercase (A&ndash;Z)</div></div>
+          <label class="toggle-switch"><input type="checkbox" id="opt-gen-upper" checked><span class="toggle-track"></span></label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info"><div class="setting-label">Lowercase (a&ndash;z)</div></div>
+          <label class="toggle-switch"><input type="checkbox" id="opt-gen-lower" checked><span class="toggle-track"></span></label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info"><div class="setting-label">Numbers (0&ndash;9)</div></div>
+          <label class="toggle-switch"><input type="checkbox" id="opt-gen-digits" checked><span class="toggle-track"></span></label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info"><div class="setting-label">Symbols (!@#$)</div></div>
+          <label class="toggle-switch"><input type="checkbox" id="opt-gen-symbols" checked><span class="toggle-track"></span></label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info"><div class="setting-label">Exclude ambiguous characters</div><div class="setting-sub">Avoid 0, O, l, I, 1 to prevent confusion</div></div>
+          <label class="toggle-switch"><input type="checkbox" id="opt-gen-ambiguous"><span class="toggle-track"></span></label>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+          Passphrase defaults
+        </div>
+        <div class="setting-row">
+          <div class="setting-info"><div class="setting-label">Number of words</div></div>
+          <select id="opt-gen-words" class="select-input">
+            <option value="3">3</option>
+            <option value="4" selected>4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info"><div class="setting-label">Word separator</div></div>
+          <select id="opt-gen-sep" class="select-input">
+            <option value="-" selected>Hyphen (-)</option>
+            <option value=".">Dot (.)</option>
+            <option value="_">Underscore (_)</option>
+            <option value=" ">Space</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn-save" id="btn-save-generator">Save changes</button>
+    </section>
+
+    <!-- Notifications -->
+    <section id="page-notifications" class="page">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div class="page-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </div>
+          <h1>Notifications</h1>
+        </div>
+        <p>Control when Fortress alerts you.</p>
+      </div>
+
+      <div class="card">
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Breach detection alerts</div>
+            <div class="setting-sub">Notify when a saved credential appears in a known breach</div>
+          </div>
+          <label class="toggle-switch"><input type="checkbox" id="opt-notif-breach" checked><span class="toggle-track"></span></label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Vault locked notifications</div>
+            <div class="setting-sub">Show a notification when the vault auto-locks</div>
+          </div>
+          <label class="toggle-switch"><input type="checkbox" id="opt-notif-lock" checked><span class="toggle-track"></span></label>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Weak password reminders</div>
+            <div class="setting-sub">Remind you to update weak passwords periodically</div>
+          </div>
+          <label class="toggle-switch"><input type="checkbox" id="opt-notif-weak"><span class="toggle-track"></span></label>
+        </div>
+      </div>
+
+      <button class="btn-save" id="btn-save-notifications">Save changes</button>
+    </section>
+
+    <!-- Data & Privacy -->
+    <section id="page-data" class="page">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div class="page-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          </div>
+          <h1>Data &amp; Privacy</h1>
+        </div>
+        <p>Export, import, and manage your vault data.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
+          Export vault
+        </div>
+        <p class="card-sub">Download an encrypted or plain-text backup of all your vault items.</p>
+        <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+          <button class="btn-action" id="btn-export-encrypted">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export Encrypted (JSON)
+          </button>
+          <button class="btn-action btn-action-danger" id="btn-export-plain">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export Plain CSV &#9888;
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+          Import vault
+        </div>
+        <p class="card-sub">Import from Bitwarden, 1Password, LastPass, Chrome, Firefox, or Fortress JSON.</p>
+        <div style="display:flex;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap;">
+          <select id="import-format" class="select-input">
+            <option value="fortress">Fortress JSON</option>
+            <option value="bitwarden">Bitwarden JSON</option>
+            <option value="1password">1Password 1PUX</option>
+            <option value="lastpass">LastPass CSV</option>
+            <option value="chrome">Chrome CSV</option>
+            <option value="firefox">Firefox CSV</option>
+          </select>
+          <button class="btn-action" id="btn-import">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Choose file &amp; import
+          </button>
+          <input type="file" id="import-file-input" accept=".json,.csv,.1pux" style="display:none;">
+        </div>
+        <div id="import-status" class="import-status" hidden></div>
+      </div>
+
+      <div class="card card-danger">
+        <div class="card-title" style="color:var(--danger);">
+          <span class="card-title-icon" style="background:rgba(239,68,68,0.12);color:var(--danger);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+          Danger zone
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Clear extension data</div>
+            <div class="setting-sub">Remove all locally cached data. Your vault on the service remains intact.</div>
+          </div>
+          <button class="btn-action btn-action-danger" id="btn-clear-data">Clear local data</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Appearance -->
+    <section id="page-appearance" class="page">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div class="page-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </div>
+          <h1>Appearance</h1>
+        </div>
+        <p>Customize how Fortress looks across popup and settings.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></span>
+          Theme
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Color theme</div>
+            <div class="setting-sub">Choose light, dark, or follow your system preference</div>
+          </div>
+          <div class="theme-pills" id="theme-pills">
+            <button class="theme-pill" data-theme-val="light">Light</button>
+            <button class="theme-pill" data-theme-val="dark">Dark</button>
+            <button class="theme-pill" data-theme-val="system">Auto</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="page-about" class="page">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div class="page-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <h1>About Fortress</h1>
+        </div>
+      </div>
+
+      <div class="card about-card">
+        <div class="about-logo">
+          <img src="../assets/icons/icon128.png" alt="Fortress">
+        </div>
+        <h2 class="about-name">FORTRESS</h2>
+        <p class="about-tagline">Beautiful, secure, blazing-fast password manager</p>
+        <div class="about-meta">
+          <span class="meta-pill">Extension v1.1.0</span>
+          <span class="meta-pill">MV3</span>
+          <span class="meta-pill">.NET 10 Backend</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Native host status</div>
+            <div class="setting-sub">com.fortress.vault</div>
+          </div>
+          <span id="host-status-badge" class="status-badge status-checking">Checking&hellip;</span>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-label">Session status</div>
+          </div>
+          <span id="session-status-badge" class="status-badge status-checking">Checking&hellip;</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></span>
+          Links
+        </div>
+        <div class="setting-row">
+          <div class="setting-info"><div class="setting-label">GitHub Repository</div></div>
+          <a href="https://github.com/UmarLone/Fortress" target="_blank" class="link-btn">Open &#8599;</a>
+        </div>
+        <div class="setting-row">
+          <div class="setting-info"><div class="setting-label">Privacy Policy</div></div>
+          <span class="link-btn" style="color:var(--text-muted);cursor:default;">Local-only</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI Security Insights -->
+    <section id="page-ai-insights" class="page">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div class="page-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M12 2a4 4 0 0 1 4 4 4 4 0 0 1-1.16 2.77L21 15h-4v4l-2-1-2 1v-4H9v-3.23A4 4 0 0 1 8 6a4 4 0 0 1 4-4z"/><circle cx="12" cy="6" r="1.5" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <h1>AI Security Insights</h1>
+        </div>
+        <p>AI-powered analysis to harden your digital security.</p>
+      </div>
+
+      <div class="card ai-scan-hero">
+        <span class="ai-scan-emoji">&#129302;</span>
+        <div style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">Analyze Your Vault</div>
+        <div style="font-size:13px;color:var(--text-muted);margin-bottom:22px;max-width:380px;margin-left:auto;margin-right:auto;">Fortress scans your vault for weak passwords, reused credentials, missing 2FA, and breached accounts.</div>
+        <button class="btn-save" id="btn-ai-scan" style="margin:0 auto;display:inline-flex;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="margin-right:6px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Run Security Scan
+        </button>
+      </div>
+
+      <div id="ai-insights-results" hidden>
+        <div class="card" id="ai-card-breached">
+          <div class="card-title">
+            <span class="card-title-icon" style="background:var(--danger-glow);color:var(--danger);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+            Breached Accounts <span id="ai-breach-count" class="val-badge" style="margin-left:8px;">0</span>
+          </div>
+          <div id="ai-breach-list" class="ai-result-list"></div>
+        </div>
+        <div class="card" id="ai-card-weak">
+          <div class="card-title">
+            <span class="card-title-icon" style="background:rgba(245,158,11,0.12);color:#F59E0B;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+            Weak Passwords <span id="ai-weak-count" class="val-badge" style="margin-left:8px;">0</span>
+          </div>
+          <div id="ai-weak-list" class="ai-result-list"></div>
+        </div>
+        <div class="card" id="ai-card-reused">
+          <div class="card-title">
+            <span class="card-title-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3"/></svg></span>
+            Reused Passwords <span id="ai-reused-count" class="val-badge" style="margin-left:8px;">0</span>
+          </div>
+          <div id="ai-reused-list" class="ai-result-list"></div>
+        </div>
+        <div class="card" id="ai-card-no2fa">
+          <div class="card-title">
+            <span class="card-title-icon" style="background:var(--accent-glow);color:var(--accent);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 7h6M9 11h4"/></svg></span>
+            Logins Without 2FA <span id="ai-no2fa-count" class="val-badge" style="margin-left:8px;">0</span>
+          </div>
+          <div id="ai-no2fa-list" class="ai-result-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Add / Edit Item -->
+    <section id="page-add-item" class="page">
+      <div class="page-header">
+        <div class="page-header-row" style="gap:8px;">
+          <button id="btn-add-item-back" class="btn-action" style="padding:6px 14px;flex-shrink:0;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" style="vertical-align:-1px;margin-right:4px;"><polyline points="15 18 9 12 15 6"/></svg>Vault
+          </button>
+          <div class="page-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+          <h1 id="add-item-page-title">New Item</h1>
+        </div>
+      </div>
+
+      <div class="opt-type-picker" id="opt-type-picker">
+        <button class="opt-type-btn active" data-itype="Login">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Login
+        </button>
+        <button class="opt-type-btn" data-itype="CreditCard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Card
+        </button>
+        <button class="opt-type-btn" data-itype="Authenticator">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/><path d="M9 7h6M9 11h4"/></svg>
+          2FA
+        </button>
+      </div>
+
+      <div class="opt-add-card">
+        <!-- Login fields -->
+        <div id="oai-fields-Login">
+          <div class="opt-form-group">
+            <label>Site / Label</label>
+            <input id="oai-label" type="text" class="opt-form-input" placeholder="e.g. GitHub">
+          </div>
+          <div class="opt-form-group">
+            <label>URL</label>
+            <input id="oai-url" type="url" class="opt-form-input" placeholder="https://...">
+          </div>
+          <div class="opt-form-group">
+            <label>Username / Email</label>
+            <input id="oai-username" type="text" class="opt-form-input" placeholder="you@example.com" autocomplete="off">
+          </div>
+          <div class="opt-form-group">
+            <label>Password</label>
+            <div class="opt-field-wrap">
+              <input id="oai-password" type="password" class="opt-form-input" placeholder="Password" autocomplete="new-password">
+              <button class="opt-eye-btn" data-for="oai-password" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            <div id="oai-strength-wrap" class="opt-strength-wrap" hidden>
+              <div class="opt-strength-bar"><div id="oai-strength-fill" class="opt-strength-fill"></div></div>
+              <span id="oai-strength-label" class="opt-strength-label"></span>
+            </div>
+          </div>
+          <div class="opt-form-group">
+            <label>TOTP Secret (optional)</label>
+            <input id="oai-totp" type="text" class="opt-form-input opt-form-input-mono" placeholder="otpauth:// or base32 secret" autocomplete="off">
+          </div>
+          <div class="opt-form-group">
+            <label>Notes (optional)</label>
+            <textarea id="oai-notes" class="opt-form-input" placeholder="Any notes..." rows="3"></textarea>
+          </div>
+          <label class="opt-form-toggle">
+            <input type="checkbox" id="oai-favorite"> Mark as favourite &#9733;
+          </label>
+        </div>
+
+        <!-- Credit Card fields -->
+        <div id="oai-fields-CreditCard" hidden>
+          <div class="opt-form-group">
+            <label>Card Label</label>
+            <input id="oai-card-label" type="text" class="opt-form-input" placeholder="e.g. Visa Debit">
+          </div>
+          <div class="opt-form-group">
+            <label>Cardholder Name</label>
+            <input id="oai-card-name" type="text" class="opt-form-input" placeholder="Full name">
+          </div>
+          <div class="opt-form-group">
+            <label>Card Number</label>
+            <input id="oai-card-number" type="text" class="opt-form-input opt-form-input-mono" placeholder="**** **** **** ****" maxlength="19" autocomplete="off">
+          </div>
+          <div class="opt-form-grid-2">
+            <div class="opt-form-group">
+              <label>Expiry (MM/YY)</label>
+              <input id="oai-card-expiry" type="text" class="opt-form-input" placeholder="MM/YY" maxlength="5">
+            </div>
+            <div class="opt-form-group">
+              <label>CVV</label>
+              <input id="oai-card-cvv" type="password" class="opt-form-input" placeholder="***" maxlength="4" autocomplete="off">
+            </div>
+          </div>
+          <div class="opt-form-group">
+            <label>Notes (optional)</label>
+            <textarea id="oai-card-notes" class="opt-form-input" placeholder="Any notes..." rows="2"></textarea>
+          </div>
+        </div>
+
+        <!-- Authenticator (2FA) fields -->
+        <div id="oai-fields-Authenticator" hidden>
+          <div class="opt-form-group">
+            <label>Issuer / Label</label>
+            <input id="oai-auth-issuer" type="text" class="opt-form-input" placeholder="e.g. GitHub, Google">
+          </div>
+          <div class="opt-form-group">
+            <label>Account / Username</label>
+            <input id="oai-auth-username" type="text" class="opt-form-input" placeholder="you@example.com">
+          </div>
+          <div class="opt-form-group">
+            <label>Secret Key (Base32)</label>
+            <div class="opt-field-wrap">
+              <input id="oai-auth-secret" type="password" class="opt-form-input opt-form-input-mono" placeholder="JBSWY3DPEHPK3PXP" autocomplete="off">
+              <button class="opt-eye-btn" data-for="oai-auth-secret" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="opt-form-grid-2">
+            <div class="opt-form-group">
+              <label>Type</label>
+              <select id="oai-auth-type" class="select-input" style="width:100%;">
+                <option value="TOTP">TOTP (Time-based)</option>
+                <option value="HOTP">HOTP (Counter-based)</option>
+              </select>
+            </div>
+            <div class="opt-form-group">
+              <label>Algorithm</label>
+              <select id="oai-auth-algorithm" class="select-input" style="width:100%;">
+                <option value="SHA1">SHA-1 (default)</option>
+                <option value="SHA256">SHA-256</option>
+                <option value="SHA512">SHA-512</option>
+              </select>
+            </div>
+          </div>
+          <div class="opt-form-grid-2">
+            <div class="opt-form-group">
+              <label>Digits</label>
+              <select id="oai-auth-digits" class="select-input" style="width:100%;">
+                <option value="6" selected>6 digits</option>
+                <option value="8">8 digits</option>
+              </select>
+            </div>
+            <div class="opt-form-group">
+              <label>Period (seconds)</label>
+              <select id="oai-auth-period" class="select-input" style="width:100%;">
+                <option value="30" selected>30 seconds</option>
+                <option value="60">60 seconds</option>
+              </select>
+            </div>
+          </div>
+          <label class="opt-form-toggle">
+            <input type="checkbox" id="oai-auth-favorite"> Mark as favourite &#9733;
+          </label>
+        </div>
+
+        <div style="margin-top:20px;display:flex;gap:10px;align-items:center;">
+          <button class="btn-save" id="btn-opt-save-item">
+            <span id="btn-opt-save-label">Save Login</span>
+          </button>
+          <button class="btn-action" id="btn-opt-cancel-item">Cancel</button>
+        </div>
+        <div id="oai-err" class="opt-err-msg" hidden></div>
+      </div>
+    </section>
+
+    <!-- Secure Items list page -->
+    <section id="page-secure-items" class="page">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div class="page-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
+          </div>
+          <h1>Secure Items</h1>
+        </div>
+        <p>Documents, identities, Wi-Fi credentials, SSH keys, and secure notes.</p>
+      </div>
+
+      <div class="vault-toolbar">
+        <div class="vault-search-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="si-search" type="search" class="vault-search-input" placeholder="Search secure items&hellip;" autocomplete="off">
+        </div>
+        <button class="btn-add-item" id="btn-si-add">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add item
+        </button>
+      </div>
+
+      <div class="opt-filter-row">
+        <div class="opt-filter-chips">
+          <button class="opt-chip active" data-si-filter="all">All</button>
+          <button class="opt-chip" data-si-filter="Identity">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Identity
+          </button>
+          <button class="opt-chip" data-si-filter="Documents">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
+            Documents
+          </button>
+          <button class="opt-chip" data-si-filter="WiFi">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+            Wi-Fi
+          </button>
+          <button class="opt-chip" data-si-filter="Ssh">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            SSH
+          </button>
+          <button class="opt-chip" data-si-filter="SecureNote">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Notes
+          </button>
+          <button class="opt-chip" data-si-filter="Favorites">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Favorites
+          </button>
+        </div>
+        <div class="vault-sort-wrap">
+          <select id="si-sort-opt" class="select-input">
+            <option value="az">A &mdash; Z</option>
+            <option value="za">Z &mdash; A</option>
+          </select>
+          <span id="si-item-count" class="vault-item-count"></span>
+        </div>
+      </div>
+
+      <div id="opt-si-list" class="opt-vault-list">
+        <div class="opt-list-loading"><div class="opt-spinner"></div></div>
+      </div>
+    </section>
+
+    <!-- Secure Items add / edit page -->
+    <section id="page-add-secure-item" class="page">
+      <div class="page-header">
+        <div class="page-header-row" style="gap:8px;">
+          <button id="btn-add-si-back" class="btn-action" style="padding:6px 14px;flex-shrink:0;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" style="vertical-align:-1px;margin-right:4px;"><polyline points="15 18 9 12 15 6"/></svg>Secure Items
+          </button>
+          <div class="page-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
+          </div>
+          <h1 id="add-si-page-title">New Secure Item</h1>
+        </div>
+      </div>
+
+      <!-- Type picker (9 types) -->
+      <div class="opt-type-picker opt-si-type-picker" id="opt-si-type-picker">
+        <button class="opt-type-btn active" data-sitype="Identity">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Identity
+        </button>
+        <button class="opt-type-btn" data-sitype="IdCard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+          ID Card
+        </button>
+        <button class="opt-type-btn" data-sitype="Passport">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="12" cy="11" r="3"/><line x1="7" y1="17" x2="17" y2="17"/></svg>
+          Passport
+        </button>
+        <button class="opt-type-btn" data-sitype="DriversLicense">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="7" cy="13" r="2"/><path d="M11 11h6M11 15h4"/></svg>
+          Driver's License
+        </button>
+        <button class="opt-type-btn" data-sitype="SocialSecurity">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+          Social Security
+        </button>
+        <button class="opt-type-btn" data-sitype="TaxNumber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Tax Number
+        </button>
+        <button class="opt-type-btn" data-sitype="WiFi">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+          Wi-Fi
+        </button>
+        <button class="opt-type-btn" data-sitype="Ssh">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+          SSH
+        </button>
+        <button class="opt-type-btn" data-sitype="SecureNote">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Secure Note
+        </button>
+      </div>
+
+      <div class="opt-add-card">
+
+        <!-- Identity fields -->
+        <div id="si-fields-Identity">
+          <div class="opt-form-group">
+            <label>Label</label>
+            <input id="si-id-label" type="text" class="opt-form-input" placeholder="e.g. Personal Profile">
+          </div>
+          <div class="opt-form-grid-2">
+            <div class="opt-form-group">
+              <label>First Name</label>
+              <input id="si-id-first" type="text" class="opt-form-input" placeholder="First">
+            </div>
+            <div class="opt-form-group">
+              <label>Last Name</label>
+              <input id="si-id-last" type="text" class="opt-form-input" placeholder="Last">
+            </div>
+          </div>
+          <div class="opt-form-group">
+            <label>Email</label>
+            <input id="si-id-email" type="email" class="opt-form-input" placeholder="email@example.com">
+          </div>
+          <div class="opt-form-group">
+            <label>Phone</label>
+            <input id="si-id-phone" type="tel" class="opt-form-input" placeholder="+1 555 000 0000">
+          </div>
+          <div class="opt-form-group">
+            <label>Company</label>
+            <input id="si-id-company" type="text" class="opt-form-input" placeholder="Company name">
+          </div>
+          <div class="opt-form-group">
+            <label>Address Line 1</label>
+            <input id="si-id-addr1" type="text" class="opt-form-input" placeholder="Street address">
+          </div>
+          <div class="opt-form-group">
+            <label>Address Line 2</label>
+            <input id="si-id-addr2" type="text" class="opt-form-input" placeholder="Apt, suite, etc.">
+          </div>
+          <div class="opt-form-grid-2">
+            <div class="opt-form-group">
+              <label>City</label>
+              <input id="si-id-city" type="text" class="opt-form-input" placeholder="City">
+            </div>
+            <div class="opt-form-group">
+              <label>State / Province</label>
+              <input id="si-id-state" type="text" class="opt-form-input" placeholder="State">
+            </div>
+          </div>
+          <div class="opt-form-grid-2">
+            <div class="opt-form-group">
+              <label>Country</label>
+              <input id="si-id-country" type="text" class="opt-form-input" placeholder="Country">
+            </div>
+            <div class="opt-form-group">
+              <label>Postal Code</label>
+              <input id="si-id-postal" type="text" class="opt-form-input" placeholder="ZIP / Postal">
+            </div>
+          </div>
+          <label class="opt-form-toggle">
+            <input type="checkbox" id="si-id-favorite"> Mark as favourite &#9733;
+          </label>
+        </div>
+
+        <!-- Document fields (IdCard / Passport / DriversLicense / SocialSecurity / TaxNumber) -->
+        <div id="si-fields-Document" hidden>
+          <div class="opt-form-group">
+            <label>Label</label>
+            <input id="si-doc-label" type="text" class="opt-form-input" placeholder="e.g. My Passport">
+          </div>
+          <div class="opt-form-group">
+            <label>Full Name</label>
+            <input id="si-doc-fullname" type="text" class="opt-form-input" placeholder="Name as on document">
+          </div>
+          <div class="opt-form-group">
+            <label>Document Number</label>
+            <div class="opt-field-wrap">
+              <input id="si-doc-number" type="password" class="opt-form-input opt-form-input-mono" placeholder="Document number" autocomplete="off">
+              <button class="opt-eye-btn" data-for="si-doc-number" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="opt-form-grid-2">
+            <div class="opt-form-group">
+              <label>Date of Birth</label>
+              <input id="si-doc-dob" type="date" class="opt-form-input">
+            </div>
+            <div class="opt-form-group">
+              <label>Nationality</label>
+              <input id="si-doc-nationality" type="text" class="opt-form-input" placeholder="e.g. US">
+            </div>
+          </div>
+          <div class="opt-form-group">
+            <label>Issuing Country</label>
+            <input id="si-doc-issuing" type="text" class="opt-form-input" placeholder="e.g. US">
+          </div>
+          <div class="opt-form-grid-2">
+            <div class="opt-form-group">
+              <label>Issue Date</label>
+              <input id="si-doc-issued" type="date" class="opt-form-input">
+            </div>
+            <div class="opt-form-group">
+              <label>Expiry Date</label>
+              <input id="si-doc-expiry" type="date" class="opt-form-input">
+            </div>
+          </div>
+          <label class="opt-form-toggle">
+            <input type="checkbox" id="si-doc-favorite"> Mark as favourite &#9733;
+          </label>
+        </div>
+
+        <!-- Wi-Fi fields -->
+        <div id="si-fields-WiFi" hidden>
+          <div class="opt-form-group">
+            <label>Label</label>
+            <input id="si-wifi-label" type="text" class="opt-form-input" placeholder="e.g. Home Wi-Fi">
+          </div>
+          <div class="opt-form-group">
+            <label>Network Name (SSID)</label>
+            <input id="si-wifi-ssid" type="text" class="opt-form-input" placeholder="Network name">
+          </div>
+          <div class="opt-form-group">
+            <label>Security Type</label>
+            <select id="si-wifi-security" class="select-input" style="width:100%;">
+              <option value="WPA3">WPA3</option>
+              <option value="WPA2" selected>WPA2</option>
+              <option value="WPA">WPA</option>
+              <option value="WEP">WEP</option>
+              <option value="Open">Open (no password)</option>
+            </select>
+          </div>
+          <div class="opt-form-group">
+            <label>Password</label>
+            <div class="opt-field-wrap">
+              <input id="si-wifi-password" type="password" class="opt-form-input" placeholder="Wi-Fi password" autocomplete="new-password">
+              <button class="opt-eye-btn" data-for="si-wifi-password" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <label class="opt-form-toggle">
+            <input type="checkbox" id="si-wifi-favorite"> Mark as favourite &#9733;
+          </label>
+        </div>
+
+        <!-- SSH fields -->
+        <div id="si-fields-Ssh" hidden>
+          <div class="opt-form-group">
+            <label>Label</label>
+            <input id="si-ssh-label" type="text" class="opt-form-input" placeholder="e.g. Production Server">
+          </div>
+          <div class="opt-form-group">
+            <label>Host</label>
+            <input id="si-ssh-host" type="text" class="opt-form-input" placeholder="hostname or IP">
+          </div>
+          <div class="opt-form-grid-2">
+            <div class="opt-form-group">
+              <label>Port</label>
+              <input id="si-ssh-port" type="number" class="opt-form-input" placeholder="22" value="22" min="1" max="65535">
+            </div>
+            <div class="opt-form-group">
+              <label>Username</label>
+              <input id="si-ssh-username" type="text" class="opt-form-input" placeholder="user">
+            </div>
+          </div>
+          <div class="opt-form-group">
+            <label>Password (optional)</label>
+            <div class="opt-field-wrap">
+              <input id="si-ssh-password" type="password" class="opt-form-input" placeholder="SSH password" autocomplete="new-password">
+              <button class="opt-eye-btn" data-for="si-ssh-password" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="opt-form-group">
+            <label>Private Key (optional)</label>
+            <div class="opt-field-wrap">
+              <textarea id="si-ssh-privatekey" class="opt-form-input opt-form-input-mono" placeholder="-----BEGIN RSA PRIVATE KEY-----" rows="4" autocomplete="off"></textarea>
+              <button class="opt-eye-btn opt-eye-btn-top" data-for="si-ssh-privatekey" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="opt-form-group">
+            <label>Key Fingerprint (optional)</label>
+            <input id="si-ssh-fingerprint" type="text" class="opt-form-input opt-form-input-mono" placeholder="SHA256:...">
+          </div>
+          <label class="opt-form-toggle">
+            <input type="checkbox" id="si-ssh-favorite"> Mark as favourite &#9733;
+          </label>
+        </div>
+
+        <!-- Secure Note fields -->
+        <div id="si-fields-SecureNote" hidden>
+          <div class="opt-form-group">
+            <label>Label / Title</label>
+            <input id="si-note-label" type="text" class="opt-form-input" placeholder="Note title">
+          </div>
+          <div class="opt-form-group">
+            <label>Content</label>
+            <div class="opt-field-wrap">
+              <textarea id="si-note-content" class="opt-form-input opt-form-input-mono" placeholder="Your secure note..." rows="8" autocomplete="off"></textarea>
+              <button class="opt-eye-btn opt-eye-btn-top" data-for="si-note-content" type="button">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <label class="opt-form-toggle">
+            <input type="checkbox" id="si-note-favorite"> Mark as favourite &#9733;
+          </label>
+        </div>
+
+        <div style="margin-top:20px;display:flex;gap:10px;align-items:center;">
+          <button class="btn-save" id="btn-si-save">
+            <span id="btn-si-save-label">Save Item</span>
+          </button>
+          <button class="btn-action" id="btn-si-cancel">Cancel</button>
+        </div>
+        <div id="si-err" class="opt-err-msg" hidden></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast container — stacked snackbars (bottom-right) -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Lock overlay — shown when vault is locked, blocks all page interaction -->
+  <div id="options-lock-overlay" class="options-lock-overlay" hidden>
+    <div class="options-lock-card">
+      <div class="options-lock-icon">
+    <div class="lock-header">
+    <div class="brand-logo">
+      <img src="../assets/icons/icon128.png" alt="Fortress">
+    </div>
+    
+  </div>
+      </div>
+      <h2 class="options-lock-title">Vault Locked</h2>
+      <p class="options-lock-sub">Your Fortress vault is locked. Unlock to access your passwords and 2FA codes.</p>
+      <button id="btn-lock-overlay-unlock" class="btn-primary options-lock-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="15" height="15" style="margin-right:8px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Unlock Now
+      </button>
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

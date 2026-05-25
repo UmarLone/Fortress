@@ -1,0 +1,1210 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.GoogleDriveSyncPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctrl="clr-namespace:Fortress.Controls"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:vm="clr-namespace:Fortress.ViewModels"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!--  ═══ HERO ═══  -->
+        <ctrl:VaultPageHero
+            Title="Google Drive"
+            Grid.Row="0"
+            BackCommand="{Binding GoBackCommand}"
+            CountText="Encrypted backup to your Google account"
+            GradientEnd="#34A853"
+            GradientStart="#4285F4"
+            IconGlyph="&#xEB5F;"
+            SearchEnabled="False"
+            Subtitle="Backup and Sync" />
+
+        <!--  CONTENT — three panels, only one visible at a time  -->
+        <ScrollView Grid.Row="1">
+            <Grid>
+
+                <!--  ═══ PANEL A — Not connected (default) ═══  -->
+                <VerticalStackLayout
+                    x:Name="PanelConnect"
+                    Padding="24,32,24,40"
+                    IsVisible="{Binding IsNotConnected}"
+                    Spacing="0">
+
+                    <!--  Google logo pill  -->
+                    <Border
+                        Padding="0"
+                        HeightRequest="96"
+                        HorizontalOptions="Center"
+                        StrokeThickness="0"
+                        WidthRequest="96">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="28" />
+                        </Border.StrokeShape>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Offset="0.0" Color="#4285F4" />
+                                <GradientStop Offset="0.5" Color="#34A853" />
+                                <GradientStop Offset="1.0" Color="#FBBC05" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <mi:MauiIcon
+                            HorizontalOptions="Center"
+                            Icon="{mi:FontAwesomeBrand Icon=Google}"
+                            IconColor="White"
+                            IconSize="48"
+                            VerticalOptions="Center" />
+                    </Border>
+
+                    <Label
+                        Margin="0,24,0,8"
+                        FontAttributes="Bold"
+                        FontSize="24"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Text="Connect Google Drive"
+                        TextColor="{DynamicResource TextColor}" />
+
+                    <Label
+                        Margin="0,0,0,32"
+                        FontSize="15"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        LineHeight="1.5"
+                        Text="Your vault is encrypted before it leaves this device. Google never sees your data."
+                        TextColor="{DynamicResource TextSecondaryColor}" />
+
+                    <!--  Feature pills  -->
+                    <VerticalStackLayout Spacing="12">
+
+                        <Border
+                            Padding="16,14"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="{DynamicResource GrayShadowColor}"
+                                    Opacity="0.05"
+                                    Radius="8"
+                                    Offset="0,3" />
+                            </Border.Shadow>
+                            <Grid ColumnDefinitions="42,*" ColumnSpacing="14">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="0"
+                                    BackgroundColor="#EBF3FE"
+                                    HeightRequest="42"
+                                    StrokeThickness="0"
+                                    WidthRequest="42">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=Lock}"
+                                        IconColor="#4285F4"
+                                        IconSize="20"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="End-to-End Encrypted"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        Text="AES-256 encrypted before upload"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+
+                        <Border
+                            Padding="16,14"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="{DynamicResource GrayShadowColor}"
+                                    Opacity="0.05"
+                                    Radius="8"
+                                    Offset="0,3" />
+                            </Border.Shadow>
+                            <Grid ColumnDefinitions="42,*" ColumnSpacing="14">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="0"
+                                    BackgroundColor="#E8F5E9"
+                                    HeightRequest="42"
+                                    StrokeThickness="0"
+                                    WidthRequest="42">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=Sync}"
+                                        IconColor="#34A853"
+                                        IconSize="20"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="Auto Backup"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        Text="Automatically backs up when your vault changes"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+
+                        <Border
+                            Padding="16,14"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="{DynamicResource GrayShadowColor}"
+                                    Opacity="0.05"
+                                    Radius="8"
+                                    Offset="0,3" />
+                            </Border.Shadow>
+                            <Grid ColumnDefinitions="42,*" ColumnSpacing="14">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="0"
+                                    BackgroundColor="#FEF3C7"
+                                    HeightRequest="42"
+                                    StrokeThickness="0"
+                                    WidthRequest="42">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=RestorePage}"
+                                        IconColor="#F59E0B"
+                                        IconSize="20"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="Easy Restore"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        Text="Restore your vault to any device in seconds"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+
+                    </VerticalStackLayout>
+
+                    <!--  Connect button  -->
+                    <Border
+                        Margin="0,32,0,0"
+                        Padding="0"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Offset="0.0" Color="#4285F4" />
+                                <GradientStop Offset="1.0" Color="#34A853" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="#4285F4"
+                                Opacity="0.35"
+                                Radius="16"
+                                Offset="0,6" />
+                        </Border.Shadow>
+                        <Grid>
+                            <Grid
+                                Padding="0,18"
+                                ColumnDefinitions="Auto,Auto"
+                                ColumnSpacing="10"
+                                HorizontalOptions="Center">
+                                <mi:MauiIcon
+                                    Grid.Column="0"
+                                    Icon="{mi:FontAwesomeBrand Icon=Google}"
+                                    IconColor="White"
+                                    IconSize="22"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    Grid.Column="1"
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    Text="Sign in with Google"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                            <Button
+                                Padding="0"
+                                BackgroundColor="Transparent"
+                                BorderWidth="0"
+                                Command="{Binding ConnectCommand}"
+                                HorizontalOptions="Fill"
+                                VerticalOptions="Fill" />
+                        </Grid>
+                    </Border>
+
+                    <!--  Privacy note  -->
+                    <Label
+                        Margin="0,16,0,0"
+                        FontSize="12"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Opacity="0.6"
+                        Text="Only files created by FORTRESS are accessible. We request minimal permissions."
+                        TextColor="{DynamicResource TextSecondaryColor}" />
+
+                </VerticalStackLayout>
+
+                <!--  ═══ PANEL B — Authenticating / Loading ═══  -->
+                <VerticalStackLayout
+                    x:Name="PanelLoading"
+                    Padding="24"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding IsBusy}"
+                    Spacing="20"
+                    VerticalOptions="Center">
+
+                    <ActivityIndicator
+                        HeightRequest="56"
+                        HorizontalOptions="Center"
+                        IsRunning="{Binding IsBusy}"
+                        WidthRequest="56"
+                        Color="#4285F4" />
+
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Text="{Binding BusyMessage}"
+                        TextColor="{DynamicResource TextColor}" />
+
+                    <Label
+                        FontSize="14"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Opacity="0.65"
+                        Text="Please wait..."
+                        TextColor="{DynamicResource TextSecondaryColor}" />
+
+                </VerticalStackLayout>
+
+                <!--  ═══ PANEL C — Connected dashboard ═══  -->
+                <VerticalStackLayout
+                    x:Name="PanelConnected"
+                    Padding="20,20,20,40"
+                    IsVisible="{Binding IsConnected}"
+                    Spacing="14">
+
+                    <!--  Account card  -->
+                    <Border
+                        Padding="20"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="18" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="{DynamicResource GrayShadowColor}"
+                                Opacity="0.07"
+                                Radius="14"
+                                Offset="0,4" />
+                        </Border.Shadow>
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+
+                            <!--  Avatar  -->
+                            <Border
+                                Grid.Column="0"
+                                Padding="0"
+                                HeightRequest="52"
+                                StrokeThickness="0"
+                                WidthRequest="52">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="26" />
+                                </Border.StrokeShape>
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Offset="0.0" Color="#4285F4" />
+                                        <GradientStop Offset="1.0" Color="#34A853" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="20"
+                                    HorizontalOptions="Center"
+                                    Text="{Binding UserInitial}"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+                            </Border>
+
+                            <!--  Name / email  -->
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="2"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="15"
+                                    Text="{Binding UserName}"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="{Binding UserEmail}"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+
+                            <!--  Connected badge  -->
+                            <Border
+                                Grid.Column="2"
+                                Padding="8,4"
+                                BackgroundColor="{DynamicResource SuccessLightColor}"
+                                StrokeThickness="0"
+                                VerticalOptions="Center">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="8" />
+                                </Border.StrokeShape>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="11"
+                                    Text="&#x2713; CONNECTED"
+                                    TextColor="{DynamicResource SuccessColor}" />
+                            </Border>
+
+                        </Grid>
+                    </Border>
+
+                    <!--  Last sync info card  -->
+                    <Border
+                        Padding="20"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="18" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="{DynamicResource GrayShadowColor}"
+                                Opacity="0.07"
+                                Radius="14"
+                                Offset="0,4" />
+                        </Border.Shadow>
+                        <Grid
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="16"
+                            RowDefinitions="Auto,Auto"
+                            RowSpacing="16">
+                            <Border
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="0"
+                                Padding="12"
+                                BackgroundColor="#EBF3FE"
+                                HeightRequest="52"
+                                StrokeThickness="0"
+                                VerticalOptions="Center"
+                                WidthRequest="52">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="15" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=History}"
+                                    IconColor="#4285F4"
+                                    IconSize="26"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Spacing="2">
+                                <Label
+                                    FontSize="12"
+                                    Opacity="0.65"
+                                    Text="LAST BACKUP"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    Text="{Binding LastSyncDisplay}"
+                                    TextColor="{DynamicResource TextColor}" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Spacing="2">
+                                <Label
+                                    FontSize="12"
+                                    Opacity="0.65"
+                                    Text="BACKUP FILE"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                                <Label
+                                    FontSize="14"
+                                    Text="fortress_vault_backup.gkb"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <!--  ── AUTO-BACKUP SCHEDULE ──  -->
+                    <Border
+                        Padding="20"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="18" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="{DynamicResource GrayShadowColor}"
+                                Opacity="0.07"
+                                Radius="14"
+                                Offset="0,4" />
+                        </Border.Shadow>
+                        <VerticalStackLayout Spacing="16">
+
+                            <!--  Header row  -->
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="12"
+                                    BackgroundColor="#EBF3FE"
+                                    HeightRequest="52"
+                                    StrokeThickness="0"
+                                    WidthRequest="52">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="15" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=Schedule}"
+                                        IconColor="#4285F4"
+                                        IconSize="26"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="15"
+                                        Text="Auto-Backup Schedule"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        Text="{Binding SelectedSchedule.Description}"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+
+                            <BoxView HeightRequest="1" Color="{DynamicResource Gray-100}" />
+
+                            <!--  Schedule chips — uniform 3-column grid  -->
+                            <Grid
+                                ColumnDefinitions="*,*,*"
+                                ColumnSpacing="8"
+                                RowDefinitions="Auto,Auto"
+                                RowSpacing="8">
+
+                                <!--  Row 0  -->
+                                <Border
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Padding="0"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Border.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding ScheduleOptions[0].IsSelected}"
+                                            TargetType="Border"
+                                            Value="True">
+                                            <Setter Property="BackgroundColor" Value="#4285F4" />
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Binding="{Binding ScheduleOptions[0].IsSelected}"
+                                            TargetType="Border"
+                                            Value="False">
+                                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F1F5F9, Dark=#1E293B}" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+                                    <Grid>
+                                        <VerticalStackLayout
+                                            Padding="10,10"
+                                            HorizontalOptions="Center"
+                                            Spacing="4">
+                                            <Label
+                                                FontFamily="MaterialIconsRegular"
+                                                FontSize="18"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding ScheduleOptions[0].IconGlyph}">
+                                                <Label.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[0].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="True">
+                                                        <Setter Property="TextColor" Value="White" />
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[0].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="False">
+                                                        <Setter Property="TextColor" Value="{DynamicResource TextSecondaryColor}" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="11"
+                                                HorizontalOptions="Center"
+                                                HorizontalTextAlignment="Center"
+                                                Text="{Binding ScheduleOptions[0].Label}">
+                                                <Label.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[0].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="True">
+                                                        <Setter Property="TextColor" Value="White" />
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[0].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="False">
+                                                        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                        </VerticalStackLayout>
+                                        <Button
+                                            Padding="0"
+                                            BackgroundColor="Transparent"
+                                            BorderWidth="0"
+                                            Command="{Binding SelectScheduleCommand}"
+                                            CommandParameter="{Binding ScheduleOptions[0]}"
+                                            HorizontalOptions="Fill"
+                                            VerticalOptions="Fill" />
+                                    </Grid>
+                                </Border>
+
+                                <Border
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Padding="0"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Border.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding ScheduleOptions[1].IsSelected}"
+                                            TargetType="Border"
+                                            Value="True">
+                                            <Setter Property="BackgroundColor" Value="#4285F4" />
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Binding="{Binding ScheduleOptions[1].IsSelected}"
+                                            TargetType="Border"
+                                            Value="False">
+                                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F1F5F9, Dark=#1E293B}" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+                                    <Grid>
+                                        <VerticalStackLayout
+                                            Padding="10,10"
+                                            HorizontalOptions="Center"
+                                            Spacing="4">
+                                            <Label
+                                                FontFamily="MaterialIconsRegular"
+                                                FontSize="18"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding ScheduleOptions[1].IconGlyph}">
+                                                <Label.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[1].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="True">
+                                                        <Setter Property="TextColor" Value="White" />
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[1].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="False">
+                                                        <Setter Property="TextColor" Value="{DynamicResource TextSecondaryColor}" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="11"
+                                                HorizontalOptions="Center"
+                                                HorizontalTextAlignment="Center"
+                                                Text="{Binding ScheduleOptions[1].Label}">
+                                                <Label.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[1].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="True">
+                                                        <Setter Property="TextColor" Value="White" />
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[1].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="False">
+                                                        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                        </VerticalStackLayout>
+                                        <Button
+                                            Padding="0"
+                                            BackgroundColor="Transparent"
+                                            BorderWidth="0"
+                                            Command="{Binding SelectScheduleCommand}"
+                                            CommandParameter="{Binding ScheduleOptions[1]}"
+                                            HorizontalOptions="Fill"
+                                            VerticalOptions="Fill" />
+                                    </Grid>
+                                </Border>
+
+                                <Border
+                                    Grid.Row="0"
+                                    Grid.Column="2"
+                                    Padding="0"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Border.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding ScheduleOptions[2].IsSelected}"
+                                            TargetType="Border"
+                                            Value="True">
+                                            <Setter Property="BackgroundColor" Value="#4285F4" />
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Binding="{Binding ScheduleOptions[2].IsSelected}"
+                                            TargetType="Border"
+                                            Value="False">
+                                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F1F5F9, Dark=#1E293B}" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+                                    <Grid>
+                                        <VerticalStackLayout
+                                            Padding="10,10"
+                                            HorizontalOptions="Center"
+                                            Spacing="4">
+                                            <Label
+                                                FontFamily="MaterialIconsRegular"
+                                                FontSize="18"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding ScheduleOptions[2].IconGlyph}">
+                                                <Label.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[2].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="True">
+                                                        <Setter Property="TextColor" Value="White" />
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[2].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="False">
+                                                        <Setter Property="TextColor" Value="{DynamicResource TextSecondaryColor}" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="11"
+                                                HorizontalOptions="Center"
+                                                HorizontalTextAlignment="Center"
+                                                Text="{Binding ScheduleOptions[2].Label}">
+                                                <Label.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[2].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="True">
+                                                        <Setter Property="TextColor" Value="White" />
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[2].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="False">
+                                                        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                        </VerticalStackLayout>
+                                        <Button
+                                            Padding="0"
+                                            BackgroundColor="Transparent"
+                                            BorderWidth="0"
+                                            Command="{Binding SelectScheduleCommand}"
+                                            CommandParameter="{Binding ScheduleOptions[2]}"
+                                            HorizontalOptions="Fill"
+                                            VerticalOptions="Fill" />
+                                    </Grid>
+                                </Border>
+
+                                <!--  Row 1  -->
+                                <Border
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Padding="0"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Border.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding ScheduleOptions[3].IsSelected}"
+                                            TargetType="Border"
+                                            Value="True">
+                                            <Setter Property="BackgroundColor" Value="#4285F4" />
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Binding="{Binding ScheduleOptions[3].IsSelected}"
+                                            TargetType="Border"
+                                            Value="False">
+                                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F1F5F9, Dark=#1E293B}" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+                                    <Grid>
+                                        <VerticalStackLayout
+                                            Padding="10,10"
+                                            HorizontalOptions="Center"
+                                            Spacing="4">
+                                            <Label
+                                                FontFamily="MaterialIconsRegular"
+                                                FontSize="18"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding ScheduleOptions[3].IconGlyph}">
+                                                <Label.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[3].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="True">
+                                                        <Setter Property="TextColor" Value="White" />
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[3].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="False">
+                                                        <Setter Property="TextColor" Value="{DynamicResource TextSecondaryColor}" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="11"
+                                                HorizontalOptions="Center"
+                                                HorizontalTextAlignment="Center"
+                                                Text="{Binding ScheduleOptions[3].Label}">
+                                                <Label.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[3].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="True">
+                                                        <Setter Property="TextColor" Value="White" />
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[3].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="False">
+                                                        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                        </VerticalStackLayout>
+                                        <Button
+                                            Padding="0"
+                                            BackgroundColor="Transparent"
+                                            BorderWidth="0"
+                                            Command="{Binding SelectScheduleCommand}"
+                                            CommandParameter="{Binding ScheduleOptions[3]}"
+                                            HorizontalOptions="Fill"
+                                            VerticalOptions="Fill" />
+                                    </Grid>
+                                </Border>
+
+                                <Border
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Padding="0"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <Border.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding ScheduleOptions[4].IsSelected}"
+                                            TargetType="Border"
+                                            Value="True">
+                                            <Setter Property="BackgroundColor" Value="#4285F4" />
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Binding="{Binding ScheduleOptions[4].IsSelected}"
+                                            TargetType="Border"
+                                            Value="False">
+                                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F1F5F9, Dark=#1E293B}" />
+                                        </DataTrigger>
+                                    </Border.Triggers>
+                                    <Grid>
+                                        <VerticalStackLayout
+                                            Padding="10,10"
+                                            HorizontalOptions="Center"
+                                            Spacing="4">
+                                            <Label
+                                                FontFamily="MaterialIconsRegular"
+                                                FontSize="18"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding ScheduleOptions[4].IconGlyph}">
+                                                <Label.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[4].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="True">
+                                                        <Setter Property="TextColor" Value="White" />
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[4].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="False">
+                                                        <Setter Property="TextColor" Value="{DynamicResource TextSecondaryColor}" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="11"
+                                                HorizontalOptions="Center"
+                                                HorizontalTextAlignment="Center"
+                                                Text="{Binding ScheduleOptions[4].Label}">
+                                                <Label.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[4].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="True">
+                                                        <Setter Property="TextColor" Value="White" />
+                                                    </DataTrigger>
+                                                    <DataTrigger
+                                                        Binding="{Binding ScheduleOptions[4].IsSelected}"
+                                                        TargetType="Label"
+                                                        Value="False">
+                                                        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                        </VerticalStackLayout>
+                                        <Button
+                                            Padding="0"
+                                            BackgroundColor="Transparent"
+                                            BorderWidth="0"
+                                            Command="{Binding SelectScheduleCommand}"
+                                            CommandParameter="{Binding ScheduleOptions[4]}"
+                                            HorizontalOptions="Fill"
+                                            VerticalOptions="Fill" />
+                                    </Grid>
+                                </Border>
+
+                                <!--  Empty placeholder to balance the grid  -->
+                                <BoxView
+                                    Grid.Row="1"
+                                    Grid.Column="2"
+                                    Color="Transparent" />
+
+                            </Grid>
+
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Action buttons  -->
+                    <Label
+                        Margin="4,6,0,0"
+                        FontAttributes="Bold"
+                        FontSize="13"
+                        Opacity="0.55"
+                        Text="ACTIONS"
+                        TextColor="{DynamicResource TextSecondaryColor}" />
+
+                    <!--  Backup Now  -->
+                    <Border
+                        Padding="0"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="{DynamicResource GrayShadowColor}"
+                                Opacity="0.06"
+                                Radius="10"
+                                Offset="0,3" />
+                        </Border.Shadow>
+                        <Grid>
+                            <Grid
+                                Padding="18,16"
+                                ColumnDefinitions="44,*,Auto"
+                                ColumnSpacing="14">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="0"
+                                    BackgroundColor="#EBF3FE"
+                                    HeightRequest="44"
+                                    StrokeThickness="0"
+                                    WidthRequest="44">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="13" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=CloudUpload}"
+                                        IconColor="#4285F4"
+                                        IconSize="22"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="15"
+                                        Text="Backup Now"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        Text="Upload an encrypted copy to Drive"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                                <mi:MauiIcon
+                                    Grid.Column="2"
+                                    Icon="{mi:Material Icon=ChevronRight}"
+                                    IconColor="{DynamicResource TextTertiaryColor}"
+                                    IconSize="22"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                            <Button
+                                Padding="0"
+                                BackgroundColor="Transparent"
+                                BorderWidth="0"
+                                Command="{Binding BackupNowCommand}"
+                                HorizontalOptions="Fill"
+                                VerticalOptions="Fill" />
+                        </Grid>
+                    </Border>
+
+                    <!--  Restore from Drive  -->
+                    <Border
+                        Padding="0"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="{DynamicResource GrayShadowColor}"
+                                Opacity="0.06"
+                                Radius="10"
+                                Offset="0,3" />
+                        </Border.Shadow>
+                        <Grid>
+                            <Grid
+                                Padding="18,16"
+                                ColumnDefinitions="44,*,Auto"
+                                ColumnSpacing="14">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="0"
+                                    BackgroundColor="#E8F5E9"
+                                    HeightRequest="44"
+                                    StrokeThickness="0"
+                                    WidthRequest="44">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="13" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=CloudDownload}"
+                                        IconColor="#34A853"
+                                        IconSize="22"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="15"
+                                        Text="Restore from Drive"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        Text="Download and decrypt your backup"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                                <mi:MauiIcon
+                                    Grid.Column="2"
+                                    Icon="{mi:Material Icon=ChevronRight}"
+                                    IconColor="{DynamicResource TextTertiaryColor}"
+                                    IconSize="22"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                            <Button
+                                Padding="0"
+                                BackgroundColor="Transparent"
+                                BorderWidth="0"
+                                Command="{Binding RestoreCommand}"
+                                HorizontalOptions="Fill"
+                                VerticalOptions="Fill" />
+                        </Grid>
+                    </Border>
+
+                    <!--  Disconnect  -->
+                    <Border
+                        Padding="0"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="{DynamicResource GrayShadowColor}"
+                                Opacity="0.06"
+                                Radius="10"
+                                Offset="0,3" />
+                        </Border.Shadow>
+                        <Grid>
+                            <Grid
+                                Padding="18,16"
+                                ColumnDefinitions="44,*,Auto"
+                                ColumnSpacing="14">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="0"
+                                    BackgroundColor="{DynamicResource DangerLightColor}"
+                                    HeightRequest="44"
+                                    StrokeThickness="0"
+                                    WidthRequest="44">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="13" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=LinkOff}"
+                                        IconColor="{DynamicResource DangerColor}"
+                                        IconSize="22"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="15"
+                                        Text="Disconnect Account"
+                                        TextColor="{DynamicResource DangerColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        Text="Remove Google Drive access from FORTRESS"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                                <mi:MauiIcon
+                                    Grid.Column="2"
+                                    Icon="{mi:Material Icon=ChevronRight}"
+                                    IconColor="{DynamicResource TextTertiaryColor}"
+                                    IconSize="22"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                            <Button
+                                Padding="0"
+                                BackgroundColor="Transparent"
+                                BorderWidth="0"
+                                Command="{Binding DisconnectCommand}"
+                                HorizontalOptions="Fill"
+                                VerticalOptions="Fill" />
+                        </Grid>
+                    </Border>
+
+                    <!--  Security note  -->
+                    <Border
+                        Margin="0,4,0,0"
+                        Padding="16"
+                        BackgroundColor="{DynamicResource InfoLightColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <mi:MauiIcon
+                                Grid.Column="0"
+                                Icon="{mi:Material Icon=Shield}"
+                                IconColor="{DynamicResource InfoColor}"
+                                IconSize="22"
+                                VerticalOptions="Start" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="3">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    Text="Your data is always encrypted"
+                                    TextColor="{DynamicResource InfoColor}" />
+                                <Label
+                                    FontSize="12"
+                                    LineHeight="1.4"
+                                    Text="FORTRESS encrypts your vault with your master password before uploading. Even Google cannot read your data."
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                </VerticalStackLayout>
+
+            </Grid>
+        </ScrollView>
+
+    </Grid>
+</ContentPage>

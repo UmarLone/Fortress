@@ -1,0 +1,753 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.AddEditSecureItemPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:Fortress.Converters"
+    xmlns:ctrl="clr-namespace:Fortress.Controls"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    xmlns:vm="clr-namespace:Fortress.ViewModels"
+    prism:ViewModelLocator.AutowireViewModel="Automatic"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <converter:BoolToObjectConverter
+            x:Key="BoolToOpacityConverter"
+            FalseObject="0.4"
+            TrueObject="1.0" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!--  ── Header ──────────────────────────────────────────────────────  -->
+        <Border
+            Grid.Row="0"
+            Padding="20,16,20,24"
+            BackgroundColor="{DynamicResource PrimaryColor}"
+            StrokeThickness="0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,24,24" />
+            </Border.StrokeShape>
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+
+                <!--  Back  -->
+                <Border
+                    Grid.Column="0"
+                    Padding="0"
+                    BackgroundColor="#30FFFFFF"
+                    HeightRequest="40"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="40">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Button
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding GoBackCommand}"
+                        HeightRequest="40"
+                        WidthRequest="40">
+                        <Button.ImageSource>
+                            <FontImageSource
+                                FontFamily="MaterialIconsRegular"
+                                Glyph="&#xE5C4;"
+                                Size="22"
+                                Color="White" />
+                        </Button.ImageSource>
+                    </Button>
+                </Border>
+
+                <!--  Title  -->
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    Text="{Binding FormTitle}"
+                    TextColor="White"
+                    VerticalOptions="Center" />
+
+                <!--  Delete (edit mode only)  -->
+                <Border
+                    Grid.Column="2"
+                    Padding="0"
+                    BackgroundColor="#30FFFFFF"
+                    HeightRequest="40"
+                    IsVisible="{Binding IsEditMode}"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="40">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Button
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding DeleteCommand}"
+                        HeightRequest="40"
+                        WidthRequest="40">
+                        <Button.ImageSource>
+                            <FontImageSource
+                                FontFamily="MaterialIconsRegular"
+                                Glyph="&#xE872;"
+                                Size="20"
+                                Color="White" />
+                        </Button.ImageSource>
+                    </Button>
+                </Border>
+
+            </Grid>
+        </Border>
+
+        <!--  ── Body ────────────────────────────────────────────────────────  -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16,20,16,12" Spacing="12">
+
+                <!--  ── Type picker ──────────────────────────────────────────  -->
+                <Label
+                    Margin="4,0,0,0"
+                    FontAttributes="Bold"
+                    FontSize="12"
+                    Text="ITEM TYPE"
+                    TextColor="{DynamicResource TextTertiaryColor}" />
+
+                <!--  Item type selector — taps open a bottom sheet  -->
+                <Border
+                    Padding="14,10"
+                    BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    Opacity="{Binding IsTypePickerEnabled, Converter={StaticResource BoolToOpacityConverter}}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.04"
+                            Radius="6"
+                            Offset="0,2" />
+                    </Border.Shadow>
+                    <Grid>
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                            <Border
+                                Grid.Column="0"
+                                Padding="8"
+                                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                HeightRequest="36"
+                                StrokeThickness="0"
+                                VerticalOptions="Center"
+                                WidthRequest="36">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <Label
+                                    FontFamily="MaterialIconsRegular"
+                                    FontSize="18"
+                                    HorizontalOptions="Center"
+                                    Text="&#xE8F4;"
+                                    TextColor="{DynamicResource PrimaryColor}"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="2"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontSize="11"
+                                    Text="SELECT TYPE"
+                                    TextColor="{DynamicResource TextTertiaryColor}" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="15"
+                                    Text="{Binding SelectedType.Label}"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <!--  Edit-mode lock hint  -->
+                                <Label
+                                    FontSize="11"
+                                    IsVisible="{Binding IsEditMode}"
+                                    Text="Type cannot be changed after saving"
+                                    TextColor="{DynamicResource TextTertiaryColor}" />
+                            </VerticalStackLayout>
+                            <Label
+                                Grid.Column="2"
+                                FontFamily="MaterialIconsRegular"
+                                FontSize="20"
+                                IsVisible="{Binding IsTypePickerEnabled}"
+                                Text="&#xE5C5;"
+                                TextColor="{DynamicResource TextTertiaryColor}"
+                                VerticalOptions="Center" />
+                        </Grid>
+                        <!--  Full-row tap target — only active when not in edit mode  -->
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding SelectTypeCommand}"
+                            HorizontalOptions="Fill"
+                            IsEnabled="{Binding IsTypePickerEnabled}"
+                            VerticalOptions="Fill" />
+                    </Grid>
+                </Border>
+
+                <!--  ── Shared label ─────────────────────────────────────────  -->
+                <Label
+                    Margin="4,8,0,0"
+                    FontAttributes="Bold"
+                    FontSize="12"
+                    Text="GENERAL"
+                    TextColor="{DynamicResource TextTertiaryColor}" />
+
+                <ctrl:VaultFormField
+                    ErrorMessage="{Binding LabelError}"
+                    FieldLabel="LABEL *"
+                    HasError="{Binding HasLabelError}"
+                    IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    IconColor="{DynamicResource PrimaryColor}"
+                    IconGlyph="&#xE873;"
+                    Placeholder="e.g. My Passport, Home Wi-Fi"
+                    Text="{Binding Label}" />
+
+                <!--
+                    ──────────────────────────────────────────────────────────
+                    DOCUMENT SECTION  (ID Card / Passport / DL / SSN / Tax)
+                    ──────────────────────────────────────────────────────────
+                -->
+                <VerticalStackLayout IsVisible="{Binding IsDocumentSection}" Spacing="12">
+
+                    <Label
+                        Margin="4,8,0,0"
+                        FontAttributes="Bold"
+                        FontSize="12"
+                        Text="DOCUMENT DETAILS"
+                        TextColor="{DynamicResource TextTertiaryColor}" />
+
+                    <ctrl:VaultFormField
+                        FieldLabel="FULL NAME"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE7FD;"
+                        Placeholder="Name as on document"
+                        Text="{Binding FullName}" />
+
+                    <ctrl:VaultFormField
+                        FieldLabel="DATE OF BIRTH"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE878;"
+                        Placeholder="DD/MM/YYYY"
+                        Text="{Binding DateOfBirth}" />
+
+                    <ctrl:VaultFormField
+                        FieldLabel="NATIONALITY"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE80B;"
+                        Placeholder="e.g. British"
+                        Text="{Binding Nationality}" />
+
+                    <ctrl:VaultFormField
+                        FieldLabel="DOCUMENT NUMBER"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE8F4;"
+                        IsPassword="True"
+                        Placeholder="Document / ID number"
+                        Text="{Binding Number}" />
+
+                    <ctrl:VaultFormField
+                        FieldLabel="ISSUING COUNTRY"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE80B;"
+                        Placeholder="Country that issued this document"
+                        Text="{Binding IssuingCountry}" />
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <ctrl:VaultFormField
+                            Grid.Column="0"
+                            FieldLabel="ISSUED DATE"
+                            IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                            IconColor="{DynamicResource PrimaryColor}"
+                            IconGlyph="&#xE8DF;"
+                            Placeholder="DD/MM/YYYY"
+                            Text="{Binding IssuedDate}" />
+                        <ctrl:VaultFormField
+                            Grid.Column="1"
+                            FieldLabel="EXPIRY DATE"
+                            IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                            IconColor="{DynamicResource PrimaryColor}"
+                            IconGlyph="&#xE8DF;"
+                            Placeholder="DD/MM/YYYY"
+                            Text="{Binding ExpiryDate}" />
+                    </Grid>
+
+                </VerticalStackLayout>
+
+                <!--
+                    ──────────────────────────────────────────────────────────
+                    IDENTITY SECTION  (personal profile: name, email, phone,
+                    address, company)
+                    ──────────────────────────────────────────────────────────
+                -->
+                <VerticalStackLayout IsVisible="{Binding IsIdentitySection}" Spacing="12">
+
+                    <Label
+                        Margin="4,8,0,0"
+                        FontAttributes="Bold"
+                        FontSize="12"
+                        Text="PERSONAL DETAILS"
+                        TextColor="{DynamicResource TextTertiaryColor}" />
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <ctrl:VaultFormField
+                            Grid.Column="0"
+                            FieldLabel="FIRST NAME *"
+                            IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                            IconColor="{DynamicResource PrimaryColor}"
+                            IconGlyph="&#xE7FD;"
+                            Placeholder="First name"
+                            Text="{Binding FirstName}" />
+                        <ctrl:VaultFormField
+                            Grid.Column="1"
+                            FieldLabel="LAST NAME"
+                            IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                            IconColor="{DynamicResource PrimaryColor}"
+                            IconGlyph="&#xE7FD;"
+                            Placeholder="Last name"
+                            Text="{Binding LastName}" />
+                    </Grid>
+
+                    <ctrl:VaultFormField
+                        FieldLabel="EMAIL"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE0BE;"
+                        Keyboard="Email"
+                        Placeholder="email@example.com"
+                        Text="{Binding Email}" />
+
+                    <ctrl:VaultFormField
+                        FieldLabel="PHONE"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE0CD;"
+                        Keyboard="Telephone"
+                        Placeholder="+1 555 000 0000"
+                        Text="{Binding Phone}" />
+
+                    <ctrl:VaultFormField
+                        FieldLabel="COMPANY (optional)"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE8F9;"
+                        Placeholder="Organisation name"
+                        Text="{Binding Company}" />
+
+                    <Label
+                        Margin="4,8,0,0"
+                        FontAttributes="Bold"
+                        FontSize="12"
+                        Text="ADDRESS"
+                        TextColor="{DynamicResource TextTertiaryColor}" />
+
+                    <ctrl:VaultFormField
+                        FieldLabel="ADDRESS LINE 1"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE8B4;"
+                        Placeholder="Street address"
+                        Text="{Binding AddressLine1}" />
+
+                    <ctrl:VaultFormField
+                        FieldLabel="ADDRESS LINE 2 (optional)"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE8B4;"
+                        Placeholder="Apt, suite, floor…"
+                        Text="{Binding AddressLine2}" />
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <ctrl:VaultFormField
+                            Grid.Column="0"
+                            FieldLabel="CITY"
+                            IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                            IconColor="{DynamicResource PrimaryColor}"
+                            IconGlyph="&#xE8B4;"
+                            Placeholder="City"
+                            Text="{Binding City}" />
+                        <ctrl:VaultFormField
+                            Grid.Column="1"
+                            FieldLabel="STATE / REGION"
+                            IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                            IconColor="{DynamicResource PrimaryColor}"
+                            IconGlyph="&#xE8B4;"
+                            Placeholder="State"
+                            Text="{Binding State}" />
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <ctrl:VaultFormField
+                            Grid.Column="0"
+                            FieldLabel="COUNTRY"
+                            IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                            IconColor="{DynamicResource PrimaryColor}"
+                            IconGlyph="&#xE80B;"
+                            Placeholder="Country"
+                            Text="{Binding Country}" />
+                        <ctrl:VaultFormField
+                            Grid.Column="1"
+                            FieldLabel="POSTAL CODE"
+                            IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                            IconColor="{DynamicResource PrimaryColor}"
+                            IconGlyph="&#xE8B4;"
+                            Placeholder="Postal / ZIP"
+                            Text="{Binding PostalCode}" />
+                    </Grid>
+
+                </VerticalStackLayout>
+
+                <!--
+                    ──────────────────────────────────────────────────────────
+                    WI-FI SECTION
+                    ──────────────────────────────────────────────────────────
+                -->
+                <VerticalStackLayout IsVisible="{Binding IsWifiSection}" Spacing="12">
+
+                    <Label
+                        Margin="4,8,0,0"
+                        FontAttributes="Bold"
+                        FontSize="12"
+                        Text="WI-FI DETAILS"
+                        TextColor="{DynamicResource TextTertiaryColor}" />
+
+                    <ctrl:VaultFormField
+                        FieldLabel="NETWORK NAME (SSID)"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE63E;"
+                        Placeholder="Your Wi-Fi name"
+                        Text="{Binding Ssid}" />
+
+                    <!--  Security type — taps open a bottom sheet  -->
+                    <Border
+                        Padding="14,10"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.04"
+                                Radius="6"
+                                Offset="0,2" />
+                        </Border.Shadow>
+                        <Grid>
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="8"
+                                    BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                    HeightRequest="36"
+                                    StrokeThickness="0"
+                                    VerticalOptions="Center"
+                                    WidthRequest="36">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="10" />
+                                    </Border.StrokeShape>
+                                    <Label
+                                        FontFamily="MaterialIconsRegular"
+                                        FontSize="18"
+                                        HorizontalOptions="Center"
+                                        Text="&#xE897;"
+                                        TextColor="{DynamicResource PrimaryColor}"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontSize="11"
+                                        Text="SECURITY TYPE"
+                                        TextColor="{DynamicResource TextTertiaryColor}" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="15"
+                                        Text="{Binding WifiSecurity}"
+                                        TextColor="{DynamicResource TextColor}" />
+                                </VerticalStackLayout>
+                                <Label
+                                    Grid.Column="2"
+                                    FontFamily="MaterialIconsRegular"
+                                    FontSize="20"
+                                    Text="&#xE5C5;"
+                                    TextColor="{DynamicResource TextTertiaryColor}"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                            <Button
+                                Padding="0"
+                                BackgroundColor="Transparent"
+                                BorderWidth="0"
+                                Command="{Binding SelectWifiSecurityCommand}"
+                                HorizontalOptions="Fill"
+                                VerticalOptions="Fill" />
+                        </Grid>
+                    </Border>
+
+                    <ctrl:VaultFormField
+                        FieldLabel="PASSWORD"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE899;"
+                        IsPassword="True"
+                        Placeholder="Wi-Fi password"
+                        Text="{Binding Password}" />
+
+                </VerticalStackLayout>
+
+                <!--
+                    ──────────────────────────────────────────────────────────
+                    SSH SECTION
+                    ──────────────────────────────────────────────────────────
+                -->
+                <VerticalStackLayout IsVisible="{Binding IsSshSection}" Spacing="12">
+
+                    <Label
+                        Margin="4,8,0,0"
+                        FontAttributes="Bold"
+                        FontSize="12"
+                        Text="SSH CONNECTION"
+                        TextColor="{DynamicResource TextTertiaryColor}" />
+
+                    <ctrl:VaultFormField
+                        FieldLabel="HOST / IP ADDRESS"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE30A;"
+                        Keyboard="Url"
+                        Placeholder="server.example.com"
+                        Text="{Binding Host}" />
+
+                    <!--  USERNAME + PORT — equal proportional columns so PORT label never clips  -->
+                    <ctrl:VaultFormField
+                        FieldLabel="USERNAME"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE7FD;"
+                        Placeholder="user"
+                        Text="{Binding Username}" />
+                    <ctrl:VaultFormField
+                        FieldLabel="PORT"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE1BD;"
+                        Keyboard="Numeric"
+                        MaxLength="5"
+                        Placeholder="22"
+                        Text="{Binding Port}" />
+
+
+                    <ctrl:VaultFormField
+                        FieldLabel="PASSWORD / PASSPHRASE"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE899;"
+                        IsPassword="True"
+                        Placeholder="SSH password or key passphrase"
+                        Text="{Binding SshPassword}" />
+
+                    <Label
+                        Margin="4,8,0,0"
+                        FontAttributes="Bold"
+                        FontSize="12"
+                        Text="PRIVATE KEY (OPTIONAL)"
+                        TextColor="{DynamicResource TextTertiaryColor}" />
+
+                    <!--  Private key multi-line editor  -->
+                    <Border
+                        Padding="14,12"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.04"
+                                Radius="6"
+                                Offset="0,2" />
+                        </Border.Shadow>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <Border
+                                Grid.Column="0"
+                                Padding="8"
+                                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                HeightRequest="36"
+                                StrokeThickness="0"
+                                VerticalOptions="Start"
+                                WidthRequest="36">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <Label
+                                    FontFamily="MaterialIconsRegular"
+                                    FontSize="18"
+                                    HorizontalOptions="Center"
+                                    Text="&#xE322;"
+                                    TextColor="{DynamicResource PrimaryColor}"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                <Label
+                                    FontSize="11"
+                                    Text="PRIVATE KEY PEM"
+                                    TextColor="{DynamicResource TextTertiaryColor}" />
+                                <Editor
+                                    AutoSize="TextChanges"
+                                    FontFamily="Monospace"
+                                    FontSize="12"
+                                    MinimumHeightRequest="90"
+                                    Placeholder="-----BEGIN OPENSSH PRIVATE KEY-----"
+                                    PlaceholderColor="{DynamicResource TextTertiaryColor}"
+                                    Text="{Binding PrivateKey}"
+                                    TextColor="{DynamicResource TextColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                    <ctrl:VaultFormField
+                        FieldLabel="KEY FINGERPRINT (OPTIONAL)"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE8F4;"
+                        Placeholder="SHA256:xxxx..."
+                        Text="{Binding KeyFingerprint}" />
+
+                </VerticalStackLayout>
+
+                <!--
+                    ══════════════════════════════════════════════════════════
+                    SECURE NOTE SECTION
+                    ══════════════════════════════════════════════════════════
+                -->
+                <VerticalStackLayout IsVisible="{Binding IsSecureNoteSection}" Spacing="12">
+
+                    <Label
+                        Margin="4,8,0,0"
+                        FontAttributes="Bold"
+                        FontSize="12"
+                        Text="NOTE"
+                        TextColor="{DynamicResource TextTertiaryColor}" />
+
+                    <Border
+                        Padding="14,12"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="Black"
+                                Opacity="0.04"
+                                Radius="6"
+                                Offset="0,2" />
+                        </Border.Shadow>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <Border
+                                Grid.Column="0"
+                                Padding="8"
+                                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                HeightRequest="36"
+                                StrokeThickness="0"
+                                VerticalOptions="Start"
+                                WidthRequest="36">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <Label
+                                    FontFamily="MaterialIconsRegular"
+                                    FontSize="18"
+                                    HorizontalOptions="Center"
+                                    Text="&#xE873;"
+                                    TextColor="{DynamicResource PrimaryColor}"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                <Label
+                                    FontSize="11"
+                                    Text="NOTE CONTENT *"
+                                    TextColor="{DynamicResource TextTertiaryColor}" />
+                                <Editor
+                                    AutoSize="TextChanges"
+                                    FontSize="14"
+                                    MinimumHeightRequest="120"
+                                    Placeholder="Write your secure note here…"
+                                    PlaceholderColor="{DynamicResource TextTertiaryColor}"
+                                    Text="{Binding NoteContent}"
+                                    TextColor="{DynamicResource TextColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+
+                </VerticalStackLayout>
+
+                <!--  Encryption tip  -->
+                <Border
+                    Margin="0,4,0,0"
+                    Padding="12,10"
+                    BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <mi:MauiIcon
+                            Grid.Column="0"
+                            Icon="{mi:Material Icon=Lock}"
+                            IconColor="{DynamicResource PrimaryDarkenColor}"
+                            IconSize="16"
+                            VerticalOptions="Start" />
+                        <Label
+                            Grid.Column="1"
+                            FontSize="12"
+                            Text="Sensitive fields are encrypted with AES-256 before being saved."
+                            TextColor="{DynamicResource PrimaryDarkenColor}" />
+                    </Grid>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  ── Footer ──────────────────────────────────────────────────────  -->
+        <Grid
+            Grid.Row="2"
+            Padding="16,12,16,28"
+            BackgroundColor="{DynamicResource CardBackgroundColor}">
+            <Grid.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.06"
+                    Radius="12"
+                    Offset="0,-4" />
+            </Grid.Shadow>
+            <ctrl:VaultGradientButton
+                ColorEnd="{DynamicResource PrimaryDarkColor}"
+                ColorStart="{DynamicResource PrimaryColor}"
+                Command="{Binding SaveCommand}"
+                CornerRadius="14"
+                HeightRequest="52"
+                IsEnabled="{Binding CanSave}"
+                IsLoading="{Binding IsSaving}"
+                Text="{Binding SaveButtonText}" />
+        </Grid>
+
+    </Grid>
+</ContentPage>

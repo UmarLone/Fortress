@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<the49:BottomSheet
+    x:Class="Fortress.Views.PopupPages.AlertSheet"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:the49="clr-namespace:The49.Maui.BottomSheet;assembly=The49.Maui.BottomSheet"
+    xmlns:vm="clr-namespace:Fortress.ViewModels.PopupPagesViewModels"
+    x:DataType="vm:AlertSheetViewModel"
+    BackgroundColor="{DynamicResource CardBackgroundColor}"
+    HasBackdrop="True"
+    HasHandle="True">
+
+    <the49:BottomSheet.Detents>
+        <the49:ContentDetent />
+    </the49:BottomSheet.Detents>
+
+    <VerticalStackLayout
+        Padding="20,4,20,36"
+        BackgroundColor="{DynamicResource CardBackgroundColor}"
+        Spacing="0">
+
+        <!--  ── Icon + Title ───────────────────────────────────────────────  -->
+        <Grid
+            Margin="0,16,0,0"
+            ColumnDefinitions="Auto,*"
+            ColumnSpacing="12"
+            IsVisible="{Binding HasTitle}">
+
+            <!--  Coloured icon tile  -->
+            <Border
+                Grid.Column="0"
+                Padding="10"
+                HeightRequest="44"
+                IsVisible="{Binding HasIcon}"
+                StrokeThickness="0"
+                VerticalOptions="Center"
+                WidthRequest="44">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="13" />
+                </Border.StrokeShape>
+                <Border.BackgroundColor>
+                    <Binding Path="IconTileColor" />
+                </Border.BackgroundColor>
+                <mi:MauiIcon
+                    HorizontalOptions="Center"
+                    Icon="{Binding SheetIcon.Icon}"
+                    IconColor="{Binding IconColor}"
+                    IconSize="22"
+                    InputTransparent="True"
+                    VerticalOptions="Center" />
+            </Border>
+
+            <Label
+                Grid.Column="1"
+                FontAttributes="Bold"
+                FontSize="17"
+                Text="{Binding Title}"
+                TextColor="{DynamicResource TextColor}"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <!--  ── Message ────────────────────────────────────────────────────  -->
+        <Label
+            Margin="0,10,0,0"
+            FontSize="14"
+            IsVisible="{Binding HasMessage}"
+            LineBreakMode="WordWrap"
+            Text="{Binding Message}"
+            TextColor="{DynamicResource TextSecondaryColor}" />
+
+        <!--  ── Input field (only for Prompt mode) ─────────────────────────  -->
+        <Border
+            Margin="0,16,0,0"
+            Padding="14,0"
+            BackgroundColor="{DynamicResource PageBackgroundColor}"
+            HeightRequest="50"
+            IsVisible="{Binding ShowInput}"
+            StrokeThickness="1">
+            <Border.Stroke>
+                <SolidColorBrush Color="{DynamicResource Gray-200}" />
+            </Border.Stroke>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="14" />
+            </Border.StrokeShape>
+            <Entry
+                FontSize="15"
+                Placeholder="{Binding InputPlaceholder}"
+                PlaceholderColor="{DynamicResource TextTertiaryColor}"
+                Text="{Binding InputText}"
+                TextColor="{DynamicResource TextColor}"
+                VerticalOptions="Center" />
+        </Border>
+
+        <!--  ── Divider ─────────────────────────────────────────────────────  -->
+        <BoxView
+            Margin="0,20,0,0"
+            HeightRequest="1"
+            Color="{DynamicResource Gray-100}" />
+
+        <!--  ── Action buttons ──────────────────────────────────────────────  -->
+        <VerticalStackLayout Margin="0,8,0,0" Spacing="8">
+
+            <!--  Primary / confirm button  -->
+            <Border
+                Padding="0"
+                IsVisible="{Binding HasConfirmButton}"
+                StrokeThickness="0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="14" />
+                </Border.StrokeShape>
+                <Border.Background>
+                    <Binding Path="ConfirmButtonBackground" />
+                </Border.Background>
+                <Button
+                    Padding="0"
+                    BackgroundColor="Transparent"
+                    BorderWidth="0"
+                    Command="{Binding ConfirmCommand}"
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    HeightRequest="50"
+                    Text="{Binding ConfirmText}"
+                    TextColor="{Binding ConfirmTextColor}" />
+            </Border>
+
+            <!--  Destructive button (e.g. Delete)  -->
+            <Border
+                Padding="0"
+                BackgroundColor="#FEF2F2"
+                IsVisible="{Binding HasDestructiveButton}"
+                StrokeThickness="0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="14" />
+                </Border.StrokeShape>
+                <Button
+                    Padding="0"
+                    BackgroundColor="Transparent"
+                    BorderWidth="0"
+                    Command="{Binding DestructiveCommand}"
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    HeightRequest="50"
+                    Text="{Binding DestructiveText}"
+                    TextColor="#DC2626" />
+            </Border>
+
+            <!--  Cancel button  -->
+            <Border
+                Padding="0"
+                BackgroundColor="{DynamicResource PageBackgroundColor}"
+                IsVisible="{Binding HasCancelButton}"
+                StrokeThickness="0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="14" />
+                </Border.StrokeShape>
+                <Button
+                    Padding="0"
+                    BackgroundColor="Transparent"
+                    BorderWidth="0"
+                    Command="{Binding CancelCommand}"
+                    FontSize="15"
+                    HeightRequest="50"
+                    Text="{Binding CancelText}"
+                    TextColor="{DynamicResource TextSecondaryColor}" />
+            </Border>
+
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+</the49:BottomSheet>

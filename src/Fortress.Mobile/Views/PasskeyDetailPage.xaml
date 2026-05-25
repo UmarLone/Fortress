@@ -1,0 +1,434 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.PasskeyDetailPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    Title="Passkey"
+    prism:ViewModelLocator.AutowireViewModel="Automatic"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="Auto,*">
+
+     <!--  ── HERO HEADER ─────────────────────────────────────────────────  -->
+  <Border
+   Grid.Row="0"
+ Padding="20,52,20,24"
+            StrokeThickness="0">
+    <Border.Background>
+       <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+           <GradientStop Offset="0.0" Color="#6D28D9" />
+    <GradientStop Offset="1.0" Color="#7C3AED" />
+   </LinearGradientBrush>
+  </Border.Background>
+     <Border.StrokeShape>
+    <RoundRectangle CornerRadius="0,0,28,28" />
+       </Border.StrokeShape>
+
+         <Grid ColumnDefinitions="Auto,*,Auto">
+           <!--  Back button  -->
+      <Border
+        Grid.Column="0"
+Padding="8"
+     BackgroundColor="#30FFFFFF"
+  HeightRequest="40"
+ StrokeThickness="0"
+ VerticalOptions="Start"
+            WidthRequest="40">
+              <Border.StrokeShape>
+    <RoundRectangle CornerRadius="12" />
+    </Border.StrokeShape>
+       <Button
+   Padding="0"
+ BackgroundColor="Transparent"
+       BorderWidth="0"
+        Command="{Binding GoBackCommand}"
+ HeightRequest="24"
+       WidthRequest="24">
+   <Button.ImageSource>
+       <FontImageSource
+           FontFamily="MaterialIconsRegular"
+    Glyph="&#xE5C4;"
+      Size="22"
+         Color="White" />
+      </Button.ImageSource>
+              </Button>
+    </Border>
+
+                <!--  Title + site  -->
+       <VerticalStackLayout
+        Grid.Column="1"
+       Margin="14,0"
+     Spacing="4"
+        VerticalOptions="Center">
+        <Label
+     FontAttributes="Bold"
+          FontSize="22"
+       LineBreakMode="TailTruncation"
+    Text="{Binding RpName}"
+            TextColor="White" />
+              <Label
+              FontSize="13"
+           Opacity="0.75"
+        Text="{Binding RpId}"
+            TextColor="White" />
+    </VerticalStackLayout>
+
+                <!--  Key icon  -->
+ <Border
+  Grid.Column="2"
+         Padding="12"
+              BackgroundColor="#30FFFFFF"
+         HeightRequest="52"
+     StrokeThickness="0"
+  VerticalOptions="Start"
+   WidthRequest="52">
+        <Border.StrokeShape>
+     <RoundRectangle CornerRadius="16" />
+         </Border.StrokeShape>
+         <mi:MauiIcon
+            HorizontalOptions="Center"
+       Icon="{mi:Material Icon=Key}"
+   IconColor="White"
+         IconSize="26"
+            VerticalOptions="Center" />
+         </Border>
+            </Grid>
+   </Border>
+
+        <!--  ── BODY ──────────────────────────────────────────────────────────  -->
+        <ScrollView Grid.Row="1" Padding="16,16,16,24">
+  <VerticalStackLayout Spacing="14">
+
+        <!--  ACCOUNT card  -->
+              <Label
+        Margin="4,0"
+      FontAttributes="Bold"
+       FontSize="12"
+          Text="ACCOUNT"
+      TextColor="{DynamicResource TextTertiaryColor}" />
+
+    <Border
+               Padding="4"
+    BackgroundColor="{DynamicResource CardBackgroundColor}"
+          StrokeThickness="0">
+         <Border.StrokeShape>
+   <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+          <Border.Shadow>
+         <Shadow
+ Brush="{DynamicResource GrayShadowColor}"
+  Opacity="0.06"
+     Radius="12"
+               Offset="0,4" />
+       </Border.Shadow>
+          <VerticalStackLayout Spacing="0">
+
+         <!--  Display name  -->
+       <Grid Padding="16,14" ColumnDefinitions="Auto,*">
+           <Border
+     Grid.Column="0"
+       Padding="8"
+              BackgroundColor="#EDE9FE"
+   HeightRequest="40"
+    StrokeThickness="0"
+              WidthRequest="40">
+        <Border.StrokeShape>
+       <RoundRectangle CornerRadius="10" />
+       </Border.StrokeShape>
+    <mi:MauiIcon
+          HorizontalOptions="Center"
+  Icon="{mi:Material Icon=Person}"
+       IconColor="#7C3AED"
+          IconSize="20"
+     VerticalOptions="Center" />
+             </Border>
+             <VerticalStackLayout
+   Grid.Column="1"
+        Margin="14,0"
+         VerticalOptions="Center">
+               <Label
+          FontSize="12"
+             Text="Display Name"
+     TextColor="{DynamicResource TextTertiaryColor}" />
+       <Label
+              FontAttributes="Bold"
+    FontSize="15"
+             Text="{Binding UserDisplayName}"
+      TextColor="{DynamicResource TextColor}" />
+      </VerticalStackLayout>
+ </Grid>
+         <BoxView Margin="16,0" HeightRequest="1" Color="{DynamicResource Gray-100}" />
+
+  <!--  Username  -->
+  <Grid Padding="16,14" ColumnDefinitions="Auto,*">
+          <Border
+     Grid.Column="0"
+             Padding="8"
+    BackgroundColor="#EDE9FE"
+ HeightRequest="40"
+      StrokeThickness="0"
+        WidthRequest="40">
+               <Border.StrokeShape>
+          <RoundRectangle CornerRadius="10" />
+     </Border.StrokeShape>
+       <mi:MauiIcon
+      HorizontalOptions="Center"
+      Icon="{mi:Material Icon=AlternateEmail}"
+              IconColor="#7C3AED"
+      IconSize="20"
+         VerticalOptions="Center" />
+  </Border>
+       <VerticalStackLayout
+             Grid.Column="1"
+         Margin="14,0"
+      VerticalOptions="Center">
+        <Label
+          FontSize="12"
+           Text="Username / Email"
+  TextColor="{DynamicResource TextTertiaryColor}" />
+   <Label
+      FontAttributes="Bold"
+     FontSize="15"
+Text="{Binding UserName}"
+     TextColor="{DynamicResource TextColor}" />
+     </VerticalStackLayout>
+   </Grid>
+
+           </VerticalStackLayout>
+   </Border>
+
+       <!--  TECHNICAL card  -->
+            <Label
+          Margin="4,0"
+        FontAttributes="Bold"
+             FontSize="12"
+         Text="TECHNICAL DETAILS"
+        TextColor="{DynamicResource TextTertiaryColor}" />
+
+          <Border
+            Padding="4"
+        BackgroundColor="{DynamicResource CardBackgroundColor}"
+             StrokeThickness="0">
+       <Border.StrokeShape>
+            <RoundRectangle CornerRadius="16" />
+        </Border.StrokeShape>
+        <Border.Shadow>
+     <Shadow
+      Brush="{DynamicResource GrayShadowColor}"
+       Opacity="0.06"
+        Radius="12"
+       Offset="0,4" />
+         </Border.Shadow>
+   <VerticalStackLayout Spacing="0">
+
+          <!--  Credential ID  -->
+      <Grid Padding="16,14" ColumnDefinitions="Auto,*">
+            <Border
+     Grid.Column="0"
+      Padding="8"
+       BackgroundColor="#DBEAFE"
+           HeightRequest="40"
+     StrokeThickness="0"
+            WidthRequest="40">
+      <Border.StrokeShape>
+           <RoundRectangle CornerRadius="10" />
+    </Border.StrokeShape>
+        <mi:MauiIcon
+   HorizontalOptions="Center"
+       Icon="{mi:Material Icon=Fingerprint}"
+   IconColor="#3B82F6"
+              IconSize="20"
+        VerticalOptions="Center" />
+         </Border>
+        <VerticalStackLayout
+        Grid.Column="1"
+         Margin="14,0"
+          VerticalOptions="Center">
+    <Label
+         FontSize="12"
+ Text="Credential ID"
+                   TextColor="{DynamicResource TextTertiaryColor}" />
+ <Label
+           FontFamily="Monospace"
+      FontSize="13"
+ Text="{Binding CredentialId}"
+        TextColor="{DynamicResource TextColor}" />
+       </VerticalStackLayout>
+    </Grid>
+          <BoxView Margin="16,0" HeightRequest="1" Color="{DynamicResource Gray-100}" />
+
+    <!--  Algorithm  -->
+  <Grid Padding="16,14" ColumnDefinitions="Auto,*">
+    <Border
+    Grid.Column="0"
+           Padding="8"
+   BackgroundColor="#DCFCE7"
+              HeightRequest="40"
+  StrokeThickness="0"
+     WidthRequest="40">
+    <Border.StrokeShape>
+          <RoundRectangle CornerRadius="10" />
+               </Border.StrokeShape>
+   <mi:MauiIcon
+    HorizontalOptions="Center"
+        Icon="{mi:Material Icon=Security}"
+IconColor="#16A34A"
+       IconSize="20"
+               VerticalOptions="Center" />
+ </Border>
+         <VerticalStackLayout
+         Grid.Column="1"
+     Margin="14,0"
+            VerticalOptions="Center">
+   <Label
+                 FontSize="12"
+          Text="Algorithm"
+   TextColor="{DynamicResource TextTertiaryColor}" />
+     <Label
+     FontAttributes="Bold"
+FontSize="15"
+        Text="{Binding Algorithm}"
+   TextColor="{DynamicResource TextColor}" />
+          </VerticalStackLayout>
+          </Grid>
+                 <BoxView Margin="16,0" HeightRequest="1" Color="{DynamicResource Gray-100}" />
+
+               <!--  Sign count  -->
+       <Grid Padding="16,14" ColumnDefinitions="Auto,*">
+        <Border
+           Grid.Column="0"
+    Padding="8"
+       BackgroundColor="#FEF3C7"
+           HeightRequest="40"
+  StrokeThickness="0"
+             WidthRequest="40">
+         <Border.StrokeShape>
+      <RoundRectangle CornerRadius="10" />
+       </Border.StrokeShape>
+          <mi:MauiIcon
+            HorizontalOptions="Center"
+      Icon="{mi:Material Icon=BarChart}"
+     IconColor="#F59E0B"
+              IconSize="20"
+       VerticalOptions="Center" />
+           </Border>
+     <VerticalStackLayout
+     Grid.Column="1"
+      Margin="14,0"
+    VerticalOptions="Center">
+          <Label
+ FontSize="12"
+ Text="Times Used"
+TextColor="{DynamicResource TextTertiaryColor}" />
+        <Label
+ FontAttributes="Bold"
+          FontSize="15"
+      Text="{Binding SignCount}"
+        TextColor="{DynamicResource TextColor}" />
+           </VerticalStackLayout>
+       </Grid>
+         <BoxView Margin="16,0" HeightRequest="1" Color="{DynamicResource Gray-100}" />
+
+   <!--  Created at  -->
+            <Grid Padding="16,14" ColumnDefinitions="Auto,*">
+       <Border
+    Grid.Column="0"
+      Padding="8"
+      BackgroundColor="{DynamicResource Gray-100}"
+               HeightRequest="40"
+      StrokeThickness="0"
+              WidthRequest="40">
+   <Border.StrokeShape>
+   <RoundRectangle CornerRadius="10" />
+          </Border.StrokeShape>
+<mi:MauiIcon
+        HorizontalOptions="Center"
+Icon="{mi:Material Icon=CalendarToday}"
+   IconColor="{DynamicResource TextSecondaryColor}"
+    IconSize="20"
+     VerticalOptions="Center" />
+               </Border>
+     <VerticalStackLayout
+        Grid.Column="1"
+          Margin="14,0"
+        VerticalOptions="Center">
+            <Label
+         FontSize="12"
+   Text="Created"
+    TextColor="{DynamicResource TextTertiaryColor}" />
+    <Label
+     FontAttributes="Bold"
+         FontSize="15"
+          Text="{Binding CreatedAt}"
+     TextColor="{DynamicResource TextColor}" />
+           </VerticalStackLayout>
+                 </Grid>
+
+                </VerticalStackLayout>
+         </Border>
+
+       <!--  DANGER ZONE  -->
+  <Label
+               Margin="4,0"
+   FontAttributes="Bold"
+           FontSize="12"
+            Text="DANGER ZONE"
+     TextColor="{DynamicResource TextTertiaryColor}" />
+
+        <Border
+           Padding="4"
+  BackgroundColor="{DynamicResource CardBackgroundColor}"
+            StrokeThickness="0">
+    <Border.StrokeShape>
+     <RoundRectangle CornerRadius="16" />
+  </Border.StrokeShape>
+ <Grid Padding="16,14" ColumnDefinitions="Auto,*,Auto">
+              <Grid.GestureRecognizers>
+ <TapGestureRecognizer Command="{Binding DeleteCommand}" />
+       </Grid.GestureRecognizers>
+       <Border
+  Grid.Column="0"
+        Padding="8"
+  BackgroundColor="#FEE2E2"
+         HeightRequest="40"
+      StrokeThickness="0"
+              WidthRequest="40">
+          <Border.StrokeShape>
+              <RoundRectangle CornerRadius="10" />
+         </Border.StrokeShape>
+                    <mi:MauiIcon
+  HorizontalOptions="Center"
+          Icon="{mi:Material Icon=DeleteOutline}"
+                  IconColor="#EF4444"
+             IconSize="20"
+               VerticalOptions="Center" />
+    </Border>
+         <VerticalStackLayout
+                  Grid.Column="1"
+           Margin="14,0"
+        VerticalOptions="Center">
+            <Label
+    FontSize="15"
+  Text="Delete Passkey"
+         TextColor="#EF4444" />
+        <Label
+           FontSize="12"
+       Text="Permanently removes this passkey from your vault"
+   TextColor="{DynamicResource TextSecondaryColor}" />
+               </VerticalStackLayout>
+                  <mi:MauiIcon
+Grid.Column="2"
+            Icon="{mi:Material Icon=ChevronRight}"
+                 IconColor="#EF4444"
+             IconSize="20"
+   VerticalOptions="Center" />
+                </Grid>
+           </Border>
+
+       </VerticalStackLayout>
+  </ScrollView>
+    </Grid>
+</ContentPage>

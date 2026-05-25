@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Application
+    x:Class="Fortress.Mobile.App"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:Fortress.Converters"
+    xmlns:local="clr-namespace:Fortress.Mobile"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:sfButtons="clr-namespace:Syncfusion.Maui.Toolkit.Buttons;assembly=Syncfusion.Maui.Toolkit"
+    xmlns:styles="clr-namespace:Fortress.Styles">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!--  Place styles first so our custom Styles.xaml can override them  -->
+
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <!--  Add default Light theme  -->
+                <styles:Light />
+                <sfButtons:SfButtonStyles />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!--  Global converters – available on every page including ContentPage attributes  -->
+            <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converter:BoolToObjectConverter x:Key="BoolToObjectConverter" />
+            <converter:IsListNotNullOrEmptyConverter x:Key="IsListNotNullOrEmptyConverter" />
+            <converter:StringNotEmptyConverter x:Key="StringNotEmptyConverter" />
+
+            <Style ApplyToDerivedTypes="True" TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{DynamicResource NavigationBarBackgroundColor}" />
+                <Setter Property="BarTextColor" Value="{DynamicResource NavigationBarTextColor}" />
+
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

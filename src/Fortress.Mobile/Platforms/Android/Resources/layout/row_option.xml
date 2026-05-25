@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:background="?attr/selectableItemBackground">
+
+    <!--  Icon badge — rounded rect with light primary background, matching main-app BottomSheet  -->
+ <FrameLayout
+     android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_icon_badge">
+
+        <ImageView
+  android:id="@+id/icon"
+    android:layout_width="20dp"
+     android:layout_height="20dp"
+    android:layout_gravity="center"
+            android:tint="@color/colorPrimary" />
+
+    </FrameLayout>
+
+  <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+     android:layout_marginStart="14dp"
+     android:layout_weight="1"
+      android:textSize="15sp"
+    android:textColor="@color/gk_gray_800" />
+
+</LinearLayout>

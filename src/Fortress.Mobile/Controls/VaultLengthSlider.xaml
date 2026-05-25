@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    VaultLengthSlider
+    Card-style length selector: icon badge, label, +/- stepper buttons and Slider.
+    Used on the Password Generator page.
+
+    Bindable properties
+    Length        int      - two-way bound current value
+    Minimumint      - slider minimum (default 6)
+    Maximumint      - slider maximum (default 64)
+    IncreaseCommand ICommand - routed to the + button
+    DecreaseCommand ICommand - routed to the - button
+
+    Usage
+    <ctrl:VaultLengthSlider
+   Length="{Binding NumberOfLetters}"
+        IncreaseCommand="{Binding IncreaseLengthCommand}"
+        DecreaseCommand="{Binding DecreaseLengthCommand}" />
+-->
+<ContentView
+    x:Class="Fortress.Controls.VaultLengthSlider"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+x:Name="This">
+
+    <Border
+  Padding="20,16"
+        BackgroundColor="{DynamicResource CardBackgroundColor}"
+        StrokeThickness="0">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="16" />
+        </Border.StrokeShape>
+        <Border.Shadow>
+            <Shadow Brush="Black" Opacity="0.05" Radius="8" Offset="0,2" />
+        </Border.Shadow>
+
+        <VerticalStackLayout Spacing="10">
+
+        <!--  Icon, Label, Minus, Count  -->
+    <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="10">
+
+      <!--  Icon badge-->
+           <Border
+            Grid.Column="0"
+       Padding="8"
+        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+     HeightRequest="36"
+    StrokeThickness="0"
+  VerticalOptions="Center"
+       WidthRequest="36">
+         <Border.StrokeShape>
+        <RoundRectangle CornerRadius="10" />
+    </Border.StrokeShape>
+     <mi:MauiIcon
+       HorizontalOptions="Center"
+        Icon="{mi:Material Icon=TextFields}"
+                 IconColor="{DynamicResource PrimaryColor}"
+   IconSize="18"
+     VerticalOptions="Center" />
+        </Border>
+
+        <!--  Label  -->
+     <Label
+            Grid.Column="1"
+         FontAttributes="Bold"
+         FontSize="14"
+     Text="Length"
+     TextColor="{DynamicResource TextColor}"
+         VerticalOptions="Center" />
+
+           <!--  Minus button  -->
+           <Border
+     Grid.Column="2"
+            Padding="0"
+   BackgroundColor="{DynamicResource Gray-100}"
+     HeightRequest="32"
+    StrokeThickness="0"
+       VerticalOptions="Center"
+      WidthRequest="32">
+<Border.StrokeShape>
+       <RoundRectangle CornerRadius="8" />
+        </Border.StrokeShape>
+        <Grid>
+             <mi:MauiIcon
+        HorizontalOptions="Center"
+      Icon="{mi:Material Icon=Remove}"
+        IconColor="{DynamicResource TextSecondaryColor}"
+              IconSize="18"
+            InputTransparent="True"
+   VerticalOptions="Center" />
+      <Button
+      Padding="0"
+               BackgroundColor="Transparent"
+  BorderWidth="0"
+       Command="{Binding DecreaseCommand, Source={x:Reference This}}"
+            HorizontalOptions="Fill"
+            VerticalOptions="Fill" />
+            </Grid>
+                </Border>
+
+           <!--  Count badge  -->
+     <Border
+     Grid.Column="3"
+        Padding="10,6"
+   BackgroundColor="{DynamicResource PrimaryLightestColor}"
+ StrokeThickness="0"
+     VerticalOptions="Center">
+           <Border.StrokeShape>
+          <RoundRectangle CornerRadius="8" />
+      </Border.StrokeShape>
+       <Label
+   FontAttributes="Bold"
+        FontSize="15"
+             HorizontalOptions="Center"
+      MinimumWidthRequest="28"
+  Text="{Binding Length, Source={x:Reference This}}"
+               TextColor="{DynamicResource PrimaryColor}"
+           VerticalOptions="Center" />
+      </Border>
+            </Grid>
+
+  <!--  Slider + Plus button  -->
+       <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+  <Slider
+                  Grid.Column="0"
+                    Maximum="{Binding Maximum, Source={x:Reference This}}"
+      MaximumTrackColor="{DynamicResource Gray-200}"
+         Minimum="{Binding Minimum, Source={x:Reference This}}"
+          MinimumTrackColor="{DynamicResource PrimaryColor}"
+         ThumbColor="{DynamicResource PrimaryColor}"
+  Value="{Binding Length, Source={x:Reference This}}" />
+
+  <!--  Plus button  -->
+     <Border
+             Grid.Column="1"
+           Padding="0"
+     BackgroundColor="{DynamicResource PrimaryLightestColor}"
+               HeightRequest="32"
+  StrokeThickness="0"
+      VerticalOptions="Center"
+ WidthRequest="32">
+         <Border.StrokeShape>
+      <RoundRectangle CornerRadius="8" />
+         </Border.StrokeShape>
+ <Grid>
+    <mi:MauiIcon
+   HorizontalOptions="Center"
+   Icon="{mi:Material Icon=Add}"
+    IconColor="{DynamicResource PrimaryColor}"
+       IconSize="18"
+     InputTransparent="True"
+      VerticalOptions="Center" />
+    <Button
+ Padding="0"
+ BackgroundColor="Transparent"
+            BorderWidth="0"
+          Command="{Binding IncreaseCommand, Source={x:Reference This}}"
+             HorizontalOptions="Fill"
+   VerticalOptions="Fill" />
+         </Grid>
+      </Border>
+   </Grid>
+
+        </VerticalStackLayout>
+    </Border>
+</ContentView>

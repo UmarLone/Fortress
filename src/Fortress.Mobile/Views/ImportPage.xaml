@@ -1,0 +1,2192 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.ImportPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:Fortress.Converters"
+    xmlns:ctrl="clr-namespace:Fortress.Controls"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    xmlns:vm="clr-namespace:Fortress.ViewModels"
+    prism:ViewModelLocator.AutowireViewModel="Automatic"
+    x:DataType="vm:ImportPageViewModel"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <converter:InverseBoolConverter x:Key="InvertBool" />
+        <converter:IsPositiveConverter x:Key="IsPositive" />
+        <converter:BoolToOpacityConverter x:Key="BoolToOpacity" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!--  HEADER  -->
+        <Border
+            Grid.Row="0"
+            Padding="0"
+            StrokeThickness="0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Offset="0.0" Color="{DynamicResource HeroGradientStart}" />
+                    <GradientStop Offset="1.0" Color="{DynamicResource HeroGradientEnd}" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,28,28" />
+            </Border.StrokeShape>
+            <VerticalStackLayout Padding="20,16,20,24" Spacing="20">
+
+                <!--  Back + title  -->
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                    <Border
+                        Grid.Column="0"
+                        Padding="0"
+                        BackgroundColor="#20FFFFFF"
+                        HeightRequest="42"
+                        StrokeThickness="0"
+                        VerticalOptions="Center"
+                        WidthRequest="42">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="13" />
+                        </Border.StrokeShape>
+                        <Grid>
+                            <mi:MauiIcon
+                                HorizontalOptions="Center"
+                                Icon="{mi:Material Icon=ArrowBack}"
+                                IconColor="White"
+                                IconSize="20"
+                                InputTransparent="True"
+                                VerticalOptions="Center" />
+                            <Button
+                                Padding="0"
+                                BackgroundColor="Transparent"
+                                BorderWidth="0"
+                                Command="{Binding GoBackCommand}"
+                                HorizontalOptions="Fill"
+                                VerticalOptions="Fill" />
+                        </Grid>
+                    </Border>
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        Spacing="2"
+                        VerticalOptions="Center">
+                        <Label
+                            FontSize="12"
+                            Opacity="0.75"
+                            Text="VAULT"
+                            TextColor="White" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="26"
+                            Text="Import Vault"
+                            TextColor="White" />
+                    </VerticalStackLayout>
+                    <Border
+                        Grid.Column="2"
+                        Padding="10,5"
+                        BackgroundColor="#25FFFFFF"
+                        StrokeThickness="0"
+                        VerticalOptions="Center">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20" />
+                        </Border.StrokeShape>
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="12"
+                            TextColor="White"
+                            VerticalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span
+                                        FontAttributes="Bold"
+                                        FontSize="12"
+                                        Text="{Binding CurrentStepNumber}"
+                                        TextColor="White" />
+                                    <Span
+                                        FontSize="12"
+                                        Text=" / 3"
+                                        TextColor="#B3FFFFFF" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Border>
+                </Grid>
+
+                <!--  Wizard step track  -->
+                <Grid ColumnDefinitions="Auto,*,Auto,*,Auto" ColumnSpacing="0">
+                    <!--  Step 1 circle (always white)  -->
+                    <Border
+                        Grid.Column="0"
+                        Padding="0"
+                        BackgroundColor="White"
+                        HeightRequest="32"
+                        HorizontalOptions="Center"
+                        StrokeThickness="0"
+                        WidthRequest="32">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Grid>
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="13"
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding IsPickStep}"
+                                Text="1"
+                                TextColor="{DynamicResource HeroGradientStart}"
+                                VerticalOptions="Center" />
+                            <mi:MauiIcon
+                                HorizontalOptions="Center"
+                                Icon="{mi:Material Icon=Check}"
+                                IconColor="{DynamicResource HeroGradientStart}"
+                                IconSize="16"
+                                IsVisible="{Binding IsPickStep, Converter={StaticResource InvertBool}}"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                    <BoxView
+                        Grid.Column="1"
+                        BackgroundColor="#50FFFFFF"
+                        HeightRequest="2"
+                        VerticalOptions="Center" />
+                    <!--  Step 2 circle white (active/done)  -->
+                    <Border
+                        Grid.Column="2"
+                        Padding="0"
+                        BackgroundColor="White"
+                        HeightRequest="32"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding IsPickStep, Converter={StaticResource InvertBool}}"
+                        StrokeThickness="0"
+                        WidthRequest="32">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Grid>
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="13"
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding IsPreviewStep}"
+                                Text="2"
+                                TextColor="{DynamicResource HeroGradientStart}"
+                                VerticalOptions="Center" />
+                            <mi:MauiIcon
+                                HorizontalOptions="Center"
+                                Icon="{mi:Material Icon=Check}"
+                                IconColor="{DynamicResource HeroGradientStart}"
+                                IconSize="16"
+                                IsVisible="{Binding IsResultStep}"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                    <!--  Step 2 circle dim (step 1 only)  -->
+                    <Border
+                        Grid.Column="2"
+                        Padding="0"
+                        BackgroundColor="#40FFFFFF"
+                        HeightRequest="32"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding IsPickStep}"
+                        StrokeThickness="0"
+                        WidthRequest="32">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="13"
+                            HorizontalOptions="Center"
+                            Opacity="0.7"
+                            Text="2"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                    </Border>
+                    <BoxView
+                        Grid.Column="3"
+                        BackgroundColor="#50FFFFFF"
+                        HeightRequest="2"
+                        VerticalOptions="Center" />
+                    <!--  Step 3 circle white (result only)  -->
+                    <Border
+                        Grid.Column="4"
+                        Padding="0"
+                        BackgroundColor="White"
+                        HeightRequest="32"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding IsResultStep}"
+                        StrokeThickness="0"
+                        WidthRequest="32">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="13"
+                            HorizontalOptions="Center"
+                            Text="3"
+                            TextColor="{DynamicResource HeroGradientStart}"
+                            VerticalOptions="Center" />
+                    </Border>
+                    <!--  Step 3 circle dim  -->
+                    <Border
+                        Grid.Column="4"
+                        Padding="0"
+                        BackgroundColor="#40FFFFFF"
+                        HeightRequest="32"
+                        HorizontalOptions="Center"
+                        IsVisible="{Binding IsResultStep, Converter={StaticResource InvertBool}}"
+                        StrokeThickness="0"
+                        WidthRequest="32">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="13"
+                            HorizontalOptions="Center"
+                            Opacity="0.7"
+                            Text="3"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                    </Border>
+                </Grid>
+
+                <!--  Step labels  -->
+                <Grid
+                    ColumnDefinitions="60,*,60,*,60"
+                    ColumnSpacing="0"
+                    HorizontalOptions="Fill">
+                    <Label
+                        Grid.Column="0"
+                        FontSize="10"
+                        HorizontalTextAlignment="Center"
+                        Text="Choose"
+                        TextColor="White" />
+                    <Label
+                        Grid.Column="2"
+                        FontSize="10"
+                        HorizontalTextAlignment="Center"
+                        Text="Review"
+                        TextColor="White" />
+                    <Label
+                        Grid.Column="4"
+                        FontSize="10"
+                        HorizontalTextAlignment="Center"
+                        Text="Done"
+                        TextColor="White" />
+                </Grid>
+
+            </VerticalStackLayout>
+        </Border>
+
+        <!--  BODY  -->
+        <ScrollView Grid.Row="1" Padding="0,0,0,32">
+            <Grid Padding="16,20">
+
+                <!--  ═══ STEP 1 ═══  -->
+                <VerticalStackLayout
+                    x:Name="Step1View"
+                    IsVisible="{Binding IsPickStep}"
+                    Spacing="16">
+
+                    <!--  Tab selector  -->
+                    <Border
+                        Padding="4"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="{DynamicResource GrayShadowColor}"
+                                Opacity="0.07"
+                                Radius="10"
+                                Offset="0,3" />
+                        </Border.Shadow>
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="4">
+                            <!--  Passwords tab  -->
+                            <Grid Grid.Column="0">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectPasswordsTabCommand}" />
+                                </Grid.GestureRecognizers>
+                                <Border
+                                    Padding="0,14"
+                                    IsVisible="{Binding IsPasswordsTab}"
+                                    StrokeThickness="0">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                            <GradientStop Offset="0.0" Color="{DynamicResource HeroGradientStart}" />
+                                            <GradientStop Offset="1.0" Color="{DynamicResource PrimaryGradient}" />
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                                        <mi:MauiIcon
+                                            HorizontalOptions="Center"
+                                            Icon="{mi:Material Icon=Lock}"
+                                            IconColor="White"
+                                            IconSize="20" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            HorizontalOptions="Center"
+                                            Text="Passwords"
+                                            TextColor="White" />
+                                    </VerticalStackLayout>
+                                </Border>
+                                <VerticalStackLayout
+                                    Padding="0,14"
+                                    HorizontalOptions="Center"
+                                    IsVisible="{Binding IsPasswordsTab, Converter={StaticResource InvertBool}}"
+                                    Spacing="4">
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=Lock}"
+                                        IconColor="{DynamicResource TextTertiaryColor}"
+                                        IconSize="20" />
+                                    <Label
+                                        FontSize="13"
+                                        HorizontalOptions="Center"
+                                        Text="Passwords"
+                                        TextColor="{DynamicResource TextTertiaryColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                            <!--  Authenticators tab  -->
+                            <Grid Grid.Column="1">
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectAuthenticatorsTabCommand}" />
+                                </Grid.GestureRecognizers>
+                                <Border
+                                    Padding="0,14"
+                                    IsVisible="{Binding IsAuthenticatorsTab}"
+                                    StrokeThickness="0">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                            <GradientStop Offset="0.0" Color="{DynamicResource HeroGradientStart}" />
+                                            <GradientStop Offset="1.0" Color="{DynamicResource PrimaryGradient}" />
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                                        <mi:MauiIcon
+                                            HorizontalOptions="Center"
+                                            Icon="{mi:Material Icon=QrCodeScanner}"
+                                            IconColor="White"
+                                            IconSize="20" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            HorizontalOptions="Center"
+                                            Text="Authenticators"
+                                            TextColor="White" />
+                                    </VerticalStackLayout>
+                                </Border>
+                                <VerticalStackLayout
+                                    Padding="0,14"
+                                    HorizontalOptions="Center"
+                                    IsVisible="{Binding IsAuthenticatorsTab, Converter={StaticResource InvertBool}}"
+                                    Spacing="4">
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=QrCodeScanner}"
+                                        IconColor="{DynamicResource TextTertiaryColor}"
+                                        IconSize="20" />
+                                    <Label
+                                        FontSize="13"
+                                        HorizontalOptions="Center"
+                                        Text="Authenticators"
+                                        TextColor="{DynamicResource TextTertiaryColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <!--  PASSWORDS TAB  -->
+                    <VerticalStackLayout IsVisible="{Binding IsPasswordsTab}" Spacing="14">
+                        <!--  Instruction card  -->
+                        <Border
+                            Padding="16"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="{DynamicResource GrayShadowColor}"
+                                    Opacity="0.06"
+                                    Radius="10"
+                                    Offset="0,3" />
+                            </Border.Shadow>
+                            <VerticalStackLayout Spacing="14">
+                                <HorizontalStackLayout Spacing="10">
+                                    <Border
+                                        Padding="9"
+                                        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                        HeightRequest="40"
+                                        StrokeThickness="0"
+                                        WidthRequest="40">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+                                        <mi:MauiIcon
+                                            HorizontalOptions="Center"
+                                            Icon="{mi:Material Icon=Info}"
+                                            IconColor="{DynamicResource PrimaryColor}"
+                                            IconSize="20"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                    <VerticalStackLayout Spacing="1" VerticalOptions="Center">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="15"
+                                            Text="How to export"
+                                            TextColor="{DynamicResource TextColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            Opacity="0.7"
+                                            Text="Export a CSV or JSON from your browser or password manager"
+                                            TextColor="{DynamicResource TextSecondaryColor}" />
+                                    </VerticalStackLayout>
+                                </HorizontalStackLayout>
+                                <VerticalStackLayout Spacing="10">
+                                    <HorizontalStackLayout Spacing="12">
+                                        <Border
+                                            Padding="0"
+                                            BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                            HeightRequest="26"
+                                            StrokeThickness="0"
+                                            WidthRequest="26">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="13" />
+                                            </Border.StrokeShape>
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="12"
+                                                HorizontalOptions="Center"
+                                                Text="1"
+                                                TextColor="{DynamicResource PrimaryColor}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Label
+                                            FontSize="13"
+                                            Text="Open your browser or password manager settings"
+                                            TextColor="{DynamicResource TextSecondaryColor}"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Spacing="12">
+                                        <Border
+                                            Padding="0"
+                                            BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                            HeightRequest="26"
+                                            StrokeThickness="0"
+                                            WidthRequest="26">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="13" />
+                                            </Border.StrokeShape>
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="12"
+                                                HorizontalOptions="Center"
+                                                Text="2"
+                                                TextColor="{DynamicResource PrimaryColor}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Label
+                                            FontSize="13"
+                                            Text="Find &quot;Export passwords&quot; and save the file"
+                                            TextColor="{DynamicResource TextSecondaryColor}"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Spacing="12">
+                                        <Border
+                                            Padding="0"
+                                            BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                            HeightRequest="26"
+                                            StrokeThickness="0"
+                                            WidthRequest="26">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="13" />
+                                            </Border.StrokeShape>
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="12"
+                                                HorizontalOptions="Center"
+                                                Text="3"
+                                                TextColor="{DynamicResource PrimaryColor}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Label
+                                            FontSize="13"
+                                            Text="Tap &quot;Pick File&quot; below and select it"
+                                            TextColor="{DynamicResource TextSecondaryColor}"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Spacing="8">
+                                    <Label
+                                        FontSize="12"
+                                        Opacity="0.7"
+                                        Text="SUPPORTED FORMATS"
+                                        TextColor="{DynamicResource TextTertiaryColor}" />
+                                    <FlexLayout
+                                        AlignContent="Start"
+                                        AlignItems="Start"
+                                        JustifyContent="Start"
+                                        Wrap="Wrap">
+                                        <Border
+                                            Margin="3"
+                                            Padding="9,5"
+                                            BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                            StrokeThickness="0">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="20" />
+                                            </Border.StrokeShape>
+                                            <Label
+                                                FontSize="11"
+                                                LineBreakMode="NoWrap"
+                                                Text="Chrome CSV"
+                                                TextColor="{DynamicResource PrimaryColor}" />
+                                        </Border>
+                                        <Border
+                                            Margin="3"
+                                            Padding="9,5"
+                                            BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                            StrokeThickness="0">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="20" />
+                                            </Border.StrokeShape>
+                                            <Label
+                                                FontSize="11"
+                                                LineBreakMode="NoWrap"
+                                                Text="Edge CSV"
+                                                TextColor="{DynamicResource PrimaryColor}" />
+                                        </Border>
+                                        <Border
+                                            Margin="3"
+                                            Padding="9,5"
+                                            BackgroundColor="#DBEAFE"
+                                            StrokeThickness="0">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="20" />
+                                            </Border.StrokeShape>
+                                            <Label
+                                                FontSize="11"
+                                                LineBreakMode="NoWrap"
+                                                Text="Firefox CSV"
+                                                TextColor="#1D4ED8" />
+                                        </Border>
+                                        <Border
+                                            Margin="3"
+                                            Padding="9,5"
+                                            BackgroundColor="#FEF3C7"
+                                            StrokeThickness="0">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="20" />
+                                            </Border.StrokeShape>
+                                            <Label
+                                                FontSize="11"
+                                                LineBreakMode="NoWrap"
+                                                Text="Safari CSV"
+                                                TextColor="#B45309" />
+                                        </Border>
+                                        <Border
+                                            Margin="3"
+                                            Padding="9,5"
+                                            BackgroundColor="#DCFCE7"
+                                            StrokeThickness="0">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="20" />
+                                            </Border.StrokeShape>
+                                            <Label
+                                                FontSize="11"
+                                                LineBreakMode="NoWrap"
+                                                Text="Bitwarden JSON/CSV"
+                                                TextColor="#15803D" />
+                                        </Border>
+                                        <Border
+                                            Margin="3"
+                                            Padding="9,5"
+                                            BackgroundColor="#CFFAFE"
+                                            StrokeThickness="0">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="20" />
+                                            </Border.StrokeShape>
+                                            <Label
+                                                FontSize="11"
+                                                LineBreakMode="NoWrap"
+                                                Text="1Password JSON/CSV"
+                                                TextColor="#0E7490" />
+                                        </Border>
+                                        <Border
+                                            Margin="3"
+                                            Padding="9,5"
+                                            BackgroundColor="#FCE7F3"
+                                            StrokeThickness="0">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="20" />
+                                            </Border.StrokeShape>
+                                            <Label
+                                                FontSize="11"
+                                                LineBreakMode="NoWrap"
+                                                Text="Dashlane JSON/CSV"
+                                                TextColor="#9D174D" />
+                                        </Border>
+                                        <Border
+                                            Margin="3"
+                                            Padding="9,5"
+                                            BackgroundColor="#FEE2E2"
+                                            StrokeThickness="0">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="20" />
+                                            </Border.StrokeShape>
+                                            <Label
+                                                FontSize="11"
+                                                LineBreakMode="NoWrap"
+                                                Text="LastPass CSV"
+                                                TextColor="#B91C1C" />
+                                        </Border>
+                                    </FlexLayout>
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!--  File drop zone card  -->
+                        <Border
+                            Padding="20,18"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="{DynamicResource GrayShadowColor}"
+                                    Opacity="0.06"
+                                    Radius="10"
+                                    Offset="0,3" />
+                            </Border.Shadow>
+                            <VerticalStackLayout Spacing="14">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="15"
+                                    Text="Select export file"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <!--  Drop zone  -->
+                                <Border
+                                    Padding="28,24"
+                                    BackgroundColor="{DynamicResource PrimaryLight}"
+                                    StrokeThickness="1.5">
+                                    <Border.Stroke>
+                                        <SolidColorBrush Color="{DynamicResource PrimaryColor}" />
+                                    </Border.Stroke>
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="14" />
+                                    </Border.StrokeShape>
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding PickFileCommand}" />
+                                    </Border.GestureRecognizers>
+                                    <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
+                                        <Border
+                                            Padding="14"
+                                            BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                            HeightRequest="64"
+                                            HorizontalOptions="Center"
+                                            StrokeThickness="0"
+                                            WidthRequest="64">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="20" />
+                                            </Border.StrokeShape>
+                                            <Grid>
+                                                <mi:MauiIcon
+                                                    HorizontalOptions="Center"
+                                                    Icon="{mi:Material Icon=FileUpload}"
+                                                    IconColor="{DynamicResource PrimaryColor}"
+                                                    IconSize="32"
+                                                    IsVisible="{Binding HasFile, Converter={StaticResource InvertBool}}"
+                                                    VerticalOptions="Center" />
+                                                <mi:MauiIcon
+                                                    HorizontalOptions="Center"
+                                                    Icon="{mi:Material Icon=InsertDriveFile}"
+                                                    IconColor="{DynamicResource PrimaryColor}"
+                                                    IconSize="32"
+                                                    IsVisible="{Binding HasFile}"
+                                                    VerticalOptions="Center" />
+                                            </Grid>
+                                        </Border>
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="15"
+                                            HorizontalOptions="Center"
+                                            HorizontalTextAlignment="Center"
+                                            Text="{Binding SelectedFileName, FallbackValue='Tap to pick file'}"
+                                            TextColor="{DynamicResource PrimaryColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            HorizontalOptions="Center"
+                                            IsVisible="{Binding HasFile, Converter={StaticResource InvertBool}}"
+                                            Text=".csv  or  .json"
+                                            TextColor="{DynamicResource TextTertiaryColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            HorizontalOptions="Center"
+                                            IsVisible="{Binding HasFile}"
+                                            Text="Tap to change file"
+                                            TextColor="{DynamicResource TextTertiaryColor}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                                <!--  Analyse button  -->
+                                <Grid HeightRequest="52">
+                                    <Border Padding="0" StrokeThickness="0">
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                <GradientStop Offset="0.0" Color="{DynamicResource HeroGradientStart}" />
+                                                <GradientStop Offset="1.0" Color="{DynamicResource PrimaryGradient}" />
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="14" />
+                                        </Border.StrokeShape>
+                                    </Border>
+
+                                    <ctrl:VaultGradientButton
+                                        ColorEnd="{DynamicResource PrimaryDarkColor}"
+                                        ColorStart="{DynamicResource PrimaryColor}"
+                                        Command="{Binding AnalyseCommand}"
+                                        CornerRadius="14"
+                                        HeightRequest="52"
+                                        IsEnabled="{Binding HasFile}"
+                                        Text="Analyse File →" />
+
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+                    <!--  END PASSWORDS TAB  -->
+
+                    <!--  AUTHENTICATORS TAB  -->
+                    <VerticalStackLayout IsVisible="{Binding IsAuthenticatorsTab}" Spacing="14">
+                        <!--  Success pill  -->
+                        <Border
+                            Padding="14,12"
+                            BackgroundColor="#DCFCE7"
+                            IsVisible="{Binding AuthResult, Converter={StaticResource IsPositive}}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <HorizontalStackLayout Spacing="10">
+                                <mi:MauiIcon
+                                    Icon="{mi:Material Icon=CheckCircle}"
+                                    IconColor="#065F46"
+                                    IconSize="20"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    Text="{Binding AuthResultSummary}"
+                                    TextColor="#065F46"
+                                    VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+
+                        <!--  How to export card  -->
+                        <Border
+                            Padding="16"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="{DynamicResource GrayShadowColor}"
+                                    Opacity="0.06"
+                                    Radius="10"
+                                    Offset="0,3" />
+                            </Border.Shadow>
+                            <VerticalStackLayout Spacing="14">
+                                <HorizontalStackLayout Spacing="10">
+                                    <Border
+                                        Padding="9"
+                                        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                        HeightRequest="40"
+                                        StrokeThickness="0"
+                                        WidthRequest="40">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+                                        <mi:MauiIcon
+                                            HorizontalOptions="Center"
+                                            Icon="{mi:Material Icon=Info}"
+                                            IconColor="{DynamicResource PrimaryColor}"
+                                            IconSize="20"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                    <VerticalStackLayout Spacing="1" VerticalOptions="Center">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="15"
+                                            Text="How to export"
+                                            TextColor="{DynamicResource TextColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            Opacity="0.7"
+                                            Text="From Google or Microsoft Authenticator"
+                                            TextColor="{DynamicResource TextSecondaryColor}" />
+                                    </VerticalStackLayout>
+                                </HorizontalStackLayout>
+                                <VerticalStackLayout Spacing="10">
+                                    <HorizontalStackLayout Spacing="12">
+                                        <Border
+                                            Padding="0"
+                                            BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                            HeightRequest="26"
+                                            StrokeThickness="0"
+                                            WidthRequest="26">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="13" />
+                                            </Border.StrokeShape>
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="12"
+                                                HorizontalOptions="Center"
+                                                Text="1"
+                                                TextColor="{DynamicResource PrimaryColor}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Label
+                                            FontSize="13"
+                                            Text="Open Google/Microsoft Authenticator"
+                                            TextColor="{DynamicResource TextSecondaryColor}"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Spacing="12">
+                                        <Border
+                                            Padding="0"
+                                            BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                            HeightRequest="26"
+                                            StrokeThickness="0"
+                                            WidthRequest="26">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="13" />
+                                            </Border.StrokeShape>
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="12"
+                                                HorizontalOptions="Center"
+                                                Text="2"
+                                                TextColor="{DynamicResource PrimaryColor}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Label
+                                            FontSize="13"
+                                            Text="Tap Menu → Transfer accounts → Export"
+                                            TextColor="{DynamicResource TextSecondaryColor}"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                    <HorizontalStackLayout Spacing="12">
+                                        <Border
+                                            Padding="0"
+                                            BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                            HeightRequest="26"
+                                            StrokeThickness="0"
+                                            WidthRequest="26">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="13" />
+                                            </Border.StrokeShape>
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="12"
+                                                HorizontalOptions="Center"
+                                                Text="3"
+                                                TextColor="{DynamicResource PrimaryColor}"
+                                                VerticalOptions="Center" />
+                                        </Border>
+                                        <Label
+                                            FontSize="13"
+                                            Text="Tap &quot;Scan QR Code&quot; below to capture it"
+                                            TextColor="{DynamicResource TextSecondaryColor}"
+                                            VerticalOptions="Center" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!--  Scan QR card  -->
+                        <Border
+                            Padding="20,18"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="{DynamicResource GrayShadowColor}"
+                                    Opacity="0.06"
+                                    Radius="10"
+                                    Offset="0,3" />
+                            </Border.Shadow>
+                            <VerticalStackLayout Spacing="14">
+                                <HorizontalStackLayout Spacing="10">
+                                    <Border
+                                        Padding="9"
+                                        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                        HeightRequest="40"
+                                        StrokeThickness="0"
+                                        WidthRequest="40">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+                                        <mi:MauiIcon
+                                            HorizontalOptions="Center"
+                                            Icon="{mi:Material Icon=QrCode2}"
+                                            IconColor="{DynamicResource PrimaryColor}"
+                                            IconSize="20"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                    <VerticalStackLayout Spacing="1" VerticalOptions="Center">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="15"
+                                            Text="Scan QR Code"
+                                            TextColor="{DynamicResource TextColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            Text="Google · Microsoft Authenticator export"
+                                            TextColor="{DynamicResource TextTertiaryColor}" />
+                                    </VerticalStackLayout>
+                                </HorizontalStackLayout>
+                                <Grid HeightRequest="52">
+                                    <Border Padding="0" StrokeThickness="0">
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                <GradientStop Offset="0.0" Color="{DynamicResource HeroGradientStart}" />
+                                                <GradientStop Offset="1.0" Color="{DynamicResource PrimaryGradient}" />
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="14" />
+                                        </Border.StrokeShape>
+                                    </Border>
+
+                                    <ctrl:VaultGradientButton
+                                        ColorEnd="{DynamicResource PrimaryDarkColor}"
+                                        ColorStart="{DynamicResource PrimaryColor}"
+                                        Command="{Binding ScanGoogleQrCommand}"
+                                        CornerRadius="14"
+                                        HeightRequest="52"
+                                        Text="Scan QR Code" />
+
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!--  OR divider  -->
+                        <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="10">
+                            <BoxView
+                                Grid.Column="0"
+                                BackgroundColor="{DynamicResource Gray-200}"
+                                HeightRequest="1"
+                                VerticalOptions="Center" />
+                            <Label
+                                Grid.Column="1"
+                                CharacterSpacing="1"
+                                FontSize="11"
+                                Text="OR IMPORT FROM FILE"
+                                TextColor="{DynamicResource TextTertiaryColor}"
+                                VerticalOptions="Center" />
+                            <BoxView
+                                Grid.Column="2"
+                                BackgroundColor="{DynamicResource Gray-200}"
+                                HeightRequest="1"
+                                VerticalOptions="Center" />
+                        </Grid>
+
+                        <!--  Import from file card  -->
+                        <Border
+                            Padding="20,18"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="{DynamicResource GrayShadowColor}"
+                                    Opacity="0.06"
+                                    Radius="10"
+                                    Offset="0,3" />
+                            </Border.Shadow>
+                            <VerticalStackLayout Spacing="14">
+                                <HorizontalStackLayout Spacing="10">
+                                    <Border
+                                        Padding="9"
+                                        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                        HeightRequest="40"
+                                        StrokeThickness="0"
+                                        WidthRequest="40">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+                                        <mi:MauiIcon
+                                            HorizontalOptions="Center"
+                                            Icon="{mi:Material Icon=FileOpen}"
+                                            IconColor="{DynamicResource PrimaryColor}"
+                                            IconSize="20"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                    <VerticalStackLayout Spacing="1" VerticalOptions="Center">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="15"
+                                            Text="Import from Backup File"
+                                            TextColor="{DynamicResource TextColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            Text="Aegis · Raivo · 2FAS JSON"
+                                            TextColor="{DynamicResource TextTertiaryColor}" />
+                                    </VerticalStackLayout>
+                                </HorizontalStackLayout>
+                                <Grid HeightRequest="52">
+                                    <Border Padding="0" StrokeThickness="0">
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                <GradientStop Offset="0.0" Color="{DynamicResource HeroGradientStart}" />
+                                                <GradientStop Offset="1.0" Color="{DynamicResource PrimaryGradient}" />
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="14" />
+                                        </Border.StrokeShape>
+                                    </Border>
+
+                                    <ctrl:VaultGradientButton
+                                        ColorEnd="{DynamicResource PrimaryDarkColor}"
+                                        ColorStart="{DynamicResource PrimaryColor}"
+                                        Command="{Binding PickAuthFileCommand}"
+                                        CornerRadius="14"
+                                        HeightRequest="52"
+                                        Text="Pick Backup File" />
+
+                                </Grid>
+                            </VerticalStackLayout>
+                        </Border>
+
+                    </VerticalStackLayout>
+                    <!--  END AUTHENTICATORS TAB  -->
+
+                </VerticalStackLayout>
+                <!--  END STEP 1  -->
+
+                <!--  ═══ STEP 2 ═══  -->
+                <VerticalStackLayout
+                    x:Name="Step2View"
+                    IsVisible="{Binding IsPreviewStep}"
+                    Spacing="16">
+
+                    <!--  ── Passwords preview ────────────────────────────────── -->
+                    <VerticalStackLayout IsVisible="{Binding IsPasswordsTab}" Spacing="16">
+
+                    <!--  Summary card  -->
+                    <Border
+                        Padding="20,18"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="{DynamicResource GrayShadowColor}"
+                                Opacity="0.06"
+                                Radius="12"
+                                Offset="0,4" />
+                        </Border.Shadow>
+                        <VerticalStackLayout Spacing="16">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label
+                                    Grid.Column="0"
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    Text="File Analysis"
+                                    TextColor="{DynamicResource TextColor}"
+                                    VerticalOptions="Center" />
+                                <Border
+                                    Grid.Column="1"
+                                    Padding="10,4"
+                                    BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                    StrokeThickness="0"
+                                    VerticalOptions="Center">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="20" />
+                                    </Border.StrokeShape>
+                                    <Label
+                                        FontSize="12"
+                                        Text="{Binding FormatLabel}"
+                                        TextColor="{DynamicResource PrimaryColor}" />
+                                </Border>
+                            </Grid>
+                            <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="8">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="10,12"
+                                    BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <VerticalStackLayout HorizontalOptions="Center" Spacing="3">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="22"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding Preview.TotalRows}"
+                                            TextColor="{DynamicResource PrimaryColor}" />
+                                        <Label
+                                            FontSize="10"
+                                            HorizontalOptions="Center"
+                                            Text="Total"
+                                            TextColor="{DynamicResource PrimaryColor}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                                <Border
+                                    Grid.Column="1"
+                                    Padding="10,12"
+                                    BackgroundColor="#FEF3C7"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <VerticalStackLayout HorizontalOptions="Center" Spacing="3">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="22"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding Preview.DuplicateCount}"
+                                            TextColor="#B45309" />
+                                        <Label
+                                            FontSize="10"
+                                            HorizontalOptions="Center"
+                                            Text="Dupes"
+                                            TextColor="#B45309" />
+                                    </VerticalStackLayout>
+                                </Border>
+                                <Border
+                                    Grid.Column="2"
+                                    Padding="10,12"
+                                    BackgroundColor="#FEE2E2"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <VerticalStackLayout HorizontalOptions="Center" Spacing="3">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="22"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding Preview.WeakCount}"
+                                            TextColor="#DC2626" />
+                                        <Label
+                                            FontSize="10"
+                                            HorizontalOptions="Center"
+                                            Text="Weak"
+                                            TextColor="#DC2626" />
+                                    </VerticalStackLayout>
+                                </Border>
+                                <Border
+                                    Grid.Column="3"
+                                    Padding="10,12"
+                                    BackgroundColor="#FEF9C3"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+                                    <VerticalStackLayout HorizontalOptions="Center" Spacing="3">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="22"
+                                            HorizontalOptions="Center"
+                                            Text="{Binding Preview.ReusedCount}"
+                                            TextColor="#CA8A04" />
+                                        <Label
+                                            FontSize="10"
+                                            HorizontalOptions="Center"
+                                            Text="Reused"
+                                            TextColor="#CA8A04" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </Grid>
+                            <Border
+                                Padding="14,10"
+                                BackgroundColor="#DCFCE7"
+                                HorizontalOptions="Center"
+                                StrokeThickness="0">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="20" />
+                                </Border.StrokeShape>
+                                <HorizontalStackLayout Spacing="6">
+                                    <mi:MauiIcon
+                                        Icon="{mi:Material Icon=CheckCircle}"
+                                        IconColor="#16A34A"
+                                        IconSize="16"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="13"
+                                        TextColor="#16A34A"
+                                        VerticalOptions="Center">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span
+                                                    FontAttributes="Bold"
+                                                    Text="{Binding Preview.ValidRows}"
+                                                    TextColor="#16A34A" />
+                                                <Span Text=" passwords ready to import" TextColor="#16A34A" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </HorizontalStackLayout>
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Warnings  -->
+                    <Border
+                        Padding="16,14"
+                        BackgroundColor="#FFFBEB"
+                        IsVisible="{Binding HasWarnings}"
+                        Stroke="#FDE68A"
+                        StrokeThickness="1">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <VerticalStackLayout Spacing="8">
+                            <HorizontalStackLayout Spacing="8">
+                                <mi:MauiIcon
+                                    Icon="{mi:Material Icon=WarningAmber}"
+                                    IconColor="#B45309"
+                                    IconSize="20"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Heads up"
+                                    TextColor="#B45309"
+                                    VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Warnings}" Spacing="5">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="x:String">
+                                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                                            <Label
+                                                Grid.Column="0"
+                                                FontSize="12"
+                                                Text="•"
+                                                TextColor="#92400E"
+                                                VerticalOptions="Start" />
+                                            <Label
+                                                Grid.Column="1"
+                                                FontSize="12"
+                                                LineBreakMode="WordWrap"
+                                                Text="{Binding .}"
+                                                TextColor="#92400E" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </VerticalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Duplicate handling  -->
+                    <Border
+                        Padding="20,18"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="{DynamicResource GrayShadowColor}"
+                                Opacity="0.06"
+                                Radius="12"
+                                Offset="0,4" />
+                        </Border.Shadow>
+                        <VerticalStackLayout Spacing="14">
+                            <HorizontalStackLayout Spacing="10">
+                                <Border
+                                    Padding="9"
+                                    BackgroundColor="#FEF3C7"
+                                    HeightRequest="40"
+                                    StrokeThickness="0"
+                                    WidthRequest="40">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="10" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=Tune}"
+                                        IconColor="#B45309"
+                                        IconSize="20"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout Spacing="1" VerticalOptions="Center">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="15"
+                                        Text="Duplicate handling"
+                                        TextColor="{DynamicResource TextColor}" />
+                                    <Label
+                                        FontSize="12"
+                                        Opacity="0.7"
+                                        Text="Choose what happens when items already exist"
+                                        TextColor="{DynamicResource TextSecondaryColor}" />
+                                </VerticalStackLayout>
+                            </HorizontalStackLayout>
+                            <!--  Keep existing  -->
+                            <Border
+                                Padding="14,12"
+                                BackgroundColor="{DynamicResource Gray-50}"
+                                Stroke="{DynamicResource Gray-200}"
+                                StrokeThickness="1.5">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectMergeCommand}" CommandParameter="KeepExisting" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                    <Border
+                                        Grid.Column="0"
+                                        Padding="8"
+                                        BackgroundColor="#DCFCE7"
+                                        HeightRequest="38"
+                                        StrokeThickness="0"
+                                        WidthRequest="38">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+                                        <mi:MauiIcon
+                                            HorizontalOptions="Center"
+                                            Icon="{mi:Material Icon=Shield}"
+                                            IconColor="#16A34A"
+                                            IconSize="18"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                    <VerticalStackLayout
+                                        Grid.Column="1"
+                                        Spacing="2"
+                                        VerticalOptions="Center">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            Text="Keep existing"
+                                            TextColor="{DynamicResource TextColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            Text="Skip items already in your vault"
+                                            TextColor="{DynamicResource TextSecondaryColor}" />
+                                    </VerticalStackLayout>
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        IsChecked="{Binding MergeKeepExisting}"
+                                        VerticalOptions="Center"
+                                        Color="{DynamicResource PrimaryColor}" />
+                                </Grid>
+                            </Border>
+                            <!--  Replace  -->
+                            <Border
+                                Padding="14,12"
+                                BackgroundColor="{DynamicResource Gray-50}"
+                                Stroke="{DynamicResource Gray-200}"
+                                StrokeThickness="1">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectMergeCommand}" CommandParameter="ReplaceWithImported" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                    <Border
+                                        Grid.Column="0"
+                                        Padding="8"
+                                        BackgroundColor="#FEF3C7"
+                                        HeightRequest="38"
+                                        StrokeThickness="0"
+                                        WidthRequest="38">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+                                        <mi:MauiIcon
+                                            HorizontalOptions="Center"
+                                            Icon="{mi:Material Icon=Sync}"
+                                            IconColor="#B45309"
+                                            IconSize="18"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                    <VerticalStackLayout
+                                        Grid.Column="1"
+                                        Spacing="2"
+                                        VerticalOptions="Center">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            Text="Replace with imported"
+                                            TextColor="{DynamicResource TextColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            Text="Overwrite vault items with newer data"
+                                            TextColor="{DynamicResource TextSecondaryColor}" />
+                                    </VerticalStackLayout>
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        IsChecked="{Binding MergeReplace}"
+                                        VerticalOptions="Center"
+                                        Color="{DynamicResource PrimaryColor}" />
+                                </Grid>
+                            </Border>
+                            <!--  Duplicate  -->
+                            <Border
+                                Padding="14,12"
+                                BackgroundColor="{DynamicResource Gray-50}"
+                                Stroke="{DynamicResource Gray-200}"
+                                StrokeThickness="1">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding SelectMergeCommand}" CommandParameter="ImportAsDuplicate" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                    <Border
+                                        Grid.Column="0"
+                                        Padding="8"
+                                        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                        HeightRequest="38"
+                                        StrokeThickness="0"
+                                        WidthRequest="38">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+                                        <mi:MauiIcon
+                                            HorizontalOptions="Center"
+                                            Icon="{mi:Material Icon=ContentCopy}"
+                                            IconColor="{DynamicResource PrimaryColor}"
+                                            IconSize="18"
+                                            VerticalOptions="Center" />
+                                    </Border>
+                                    <VerticalStackLayout
+                                        Grid.Column="1"
+                                        Spacing="2"
+                                        VerticalOptions="Center">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="14"
+                                            Text="Import as duplicate"
+                                            TextColor="{DynamicResource TextColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            Text="Add alongside any existing item"
+                                            TextColor="{DynamicResource TextSecondaryColor}" />
+                                    </VerticalStackLayout>
+                                    <CheckBox
+                                        Grid.Column="2"
+                                        IsChecked="{Binding MergeImportAsDuplicate}"
+                                        VerticalOptions="Center"
+                                        Color="{DynamicResource PrimaryColor}" />
+                                </Grid>
+                            </Border>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Passwords action buttons  -->
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Button
+                            Grid.Column="0"
+                            Padding="18,0"
+                            BackgroundColor="{DynamicResource Gray-100}"
+                            Command="{Binding StartOverCommand}"
+                            CornerRadius="14"
+                            HeightRequest="52"
+                            Text="← Start Over"
+                            TextColor="{DynamicResource TextSecondaryColor}" />
+                        <Grid Grid.Column="1" HeightRequest="52">
+                            <Border
+                                Padding="0"
+                                Opacity="{Binding HasValidRows, Converter={StaticResource BoolToOpacity}}"
+                                StrokeThickness="0">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                        <GradientStop Offset="0.0" Color="{DynamicResource HeroGradientStart}" />
+                                        <GradientStop Offset="1.0" Color="{DynamicResource PrimaryGradient}" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="14" />
+                                </Border.StrokeShape>
+                            </Border>
+                            <Button
+                                Padding="0"
+                                BackgroundColor="Transparent"
+                                BorderWidth="0"
+                                Command="{Binding CommitCommand}"
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                IsEnabled="{Binding HasValidRows}"
+                                Text="Import Now →"
+                                TextColor="White" />
+                        </Grid>
+                    </Grid>
+
+                    </VerticalStackLayout>
+                    <!--  END PASSWORDS PREVIEW  -->
+
+                    <!--  ── Authenticators preview ──────────────────────────── -->
+                    <VerticalStackLayout IsVisible="{Binding IsAuthenticatorsTab}" Spacing="16">
+
+                        <!--  Auth summary card  -->
+                        <Border
+                            Padding="20,18"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="{DynamicResource GrayShadowColor}"
+                                    Opacity="0.06"
+                                    Radius="12"
+                                    Offset="0,4" />
+                            </Border.Shadow>
+                            <VerticalStackLayout Spacing="16">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label
+                                        Grid.Column="0"
+                                        FontAttributes="Bold"
+                                        FontSize="16"
+                                        Text="Account Analysis"
+                                        TextColor="{DynamicResource TextColor}"
+                                        VerticalOptions="Center" />
+                                    <Border
+                                        Grid.Column="1"
+                                        Padding="10,4"
+                                        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                        StrokeThickness="0"
+                                        VerticalOptions="Center">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="20" />
+                                        </Border.StrokeShape>
+                                        <Label
+                                            FontSize="12"
+                                            Text="{Binding AuthFormatLabel}"
+                                            TextColor="{DynamicResource PrimaryColor}" />
+                                    </Border>
+                                </Grid>
+                                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                                    <Border
+                                        Grid.Column="0"
+                                        Padding="10,12"
+                                        BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                        StrokeThickness="0">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="12" />
+                                        </Border.StrokeShape>
+                                        <VerticalStackLayout HorizontalOptions="Center" Spacing="3">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="22"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding AuthPreview.TotalParsed}"
+                                                TextColor="{DynamicResource PrimaryColor}" />
+                                            <Label
+                                                FontSize="10"
+                                                HorizontalOptions="Center"
+                                                Text="Total"
+                                                TextColor="{DynamicResource PrimaryColor}" />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="1"
+                                        Padding="10,12"
+                                        BackgroundColor="#DCFCE7"
+                                        StrokeThickness="0">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="12" />
+                                        </Border.StrokeShape>
+                                        <VerticalStackLayout HorizontalOptions="Center" Spacing="3">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="22"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding AuthPreview.ValidCount}"
+                                                TextColor="#16A34A" />
+                                            <Label
+                                                FontSize="10"
+                                                HorizontalOptions="Center"
+                                                Text="Valid"
+                                                TextColor="#16A34A" />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                    <Border
+                                        Grid.Column="2"
+                                        Padding="10,12"
+                                        BackgroundColor="#FCE7F3"
+                                        StrokeThickness="0">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="12" />
+                                        </Border.StrokeShape>
+                                        <VerticalStackLayout HorizontalOptions="Center" Spacing="3">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="22"
+                                                HorizontalOptions="Center"
+                                                Text="{Binding AuthPreview.DuplicateCount}"
+                                                TextColor="#B45309" />
+                                            <Label
+                                                FontSize="10"
+                                                HorizontalOptions="Center"
+                                                Text="Dupes"
+                                                TextColor="#B45309" />
+                                        </VerticalStackLayout>
+                                    </Border>
+                                </Grid>
+                                <!--  Ready pill  -->
+                                <Border
+                                    Padding="14,10"
+                                    BackgroundColor="#DCFCE7"
+                                    HorizontalOptions="Center"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="20" />
+                                    </Border.StrokeShape>
+                                    <HorizontalStackLayout Spacing="6">
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Icon=CheckCircle}"
+                                            IconColor="#16A34A"
+                                            IconSize="16"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            TextColor="#16A34A"
+                                            VerticalOptions="Center">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span
+                                                        FontAttributes="Bold"
+                                                        Text="{Binding AuthPreview.ValidCount}"
+                                                        TextColor="#16A34A" />
+                                                    <Span Text=" accounts ready to import" TextColor="#16A34A" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!--  Auth warnings  -->
+                        <Border
+                            Padding="16,14"
+                            BackgroundColor="#FFFBEB"
+                            IsVisible="{Binding AuthPreview.Warnings.Count, Converter={StaticResource IsPositive}}"
+                            Stroke="#FDE68A"
+                            StrokeThickness="1">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <VerticalStackLayout Spacing="8">
+                                <HorizontalStackLayout Spacing="8">
+                                    <mi:MauiIcon
+                                        Icon="{mi:Material Icon=WarningAmber}"
+                                        IconColor="#B45309"
+                                        IconSize="20"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="14"
+                                        Text="Heads up"
+                                        TextColor="#B45309"
+                                        VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+                                <VerticalStackLayout BindableLayout.ItemsSource="{Binding AuthPreview.Warnings}" Spacing="5">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="x:String">
+                                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                                                <Label
+                                                    Grid.Column="0"
+                                                    FontSize="12"
+                                                    Text="•"
+                                                    TextColor="#92400E"
+                                                    VerticalOptions="Start" />
+                                                <Label
+                                                    Grid.Column="1"
+                                                    FontSize="12"
+                                                    LineBreakMode="WordWrap"
+                                                    Text="{Binding .}"
+                                                    TextColor="#92400E" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!--  Auth action buttons  -->
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <Button
+                                Grid.Column="0"
+                                Padding="18,0"
+                                BackgroundColor="{DynamicResource Gray-100}"
+                                Command="{Binding CancelAuthPreviewCommand}"
+                                CornerRadius="14"
+                                HeightRequest="52"
+                                Text="← Start Over"
+                                TextColor="{DynamicResource TextSecondaryColor}" />
+                            <Grid Grid.Column="1" HeightRequest="52">
+                                <Border
+                                    Padding="0"
+                                    Opacity="{Binding HasAuthValidRows, Converter={StaticResource BoolToOpacity}}"
+                                    StrokeThickness="0">
+                                    <Border.Background>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                            <GradientStop Offset="0.0" Color="{DynamicResource HeroGradientStart}" />
+                                            <GradientStop Offset="1.0" Color="{DynamicResource PrimaryGradient}" />
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="14" />
+                                    </Border.StrokeShape>
+                                </Border>
+                                <Button
+                                    Padding="0"
+                                    BackgroundColor="Transparent"
+                                    BorderWidth="0"
+                                    Command="{Binding CommitAuthCommand}"
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    IsEnabled="{Binding HasAuthValidRows}"
+                                    Text="Import Now →"
+                                    TextColor="White" />
+                            </Grid>
+                        </Grid>
+
+                    </VerticalStackLayout>
+                    <!--  END AUTHENTICATORS PREVIEW  -->
+
+                </VerticalStackLayout>
+                <!--  END STEP 2  -->
+
+                <!--  ═══ STEP 3 ═══  -->
+                <VerticalStackLayout
+                    x:Name="Step3View"
+                    IsVisible="{Binding IsResultStep}"
+                    Spacing="20">
+                    <!--  Success hero  -->
+                    <Border Padding="0" StrokeThickness="0">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Offset="0.0" Color="{DynamicResource HeroGradientStart}" />
+                                <GradientStop Offset="1.0" Color="{DynamicResource PrimaryGradient}" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20" />
+                        </Border.StrokeShape>
+                        <VerticalStackLayout
+                            Padding="28,32"
+                            HorizontalOptions="Center"
+                            Spacing="16">
+                            <Border
+                                Padding="18"
+                                BackgroundColor="#25FFFFFF"
+                                HeightRequest="84"
+                                HorizontalOptions="Center"
+                                StrokeThickness="0"
+                                WidthRequest="84">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="42" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=CheckCircle}"
+                                    IconColor="White"
+                                    IconSize="44"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="22"
+                                HorizontalOptions="Center"
+                                HorizontalTextAlignment="Center"
+                                Text="Import Complete!"
+                                TextColor="White" />
+                            <Label
+                                FontSize="15"
+                                HorizontalOptions="Center"
+                                HorizontalTextAlignment="Center"
+                                Opacity="0.9"
+                                Text="{Binding FinalResultSummary}"
+                                TextColor="White" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Result tiles  -->
+                    <Border
+                        Padding="20,18"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="{DynamicResource GrayShadowColor}"
+                                Opacity="0.06"
+                                Radius="12"
+                                Offset="0,4" />
+                        </Border.Shadow>
+                        <VerticalStackLayout Spacing="14">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                Text="Import Summary"
+                                TextColor="{DynamicResource TextColor}" />
+                            <Grid
+                                ColumnDefinitions="*,*"
+                                ColumnSpacing="10"
+                                IsVisible="{Binding IsPasswordResult}"
+                                RowDefinitions="Auto,Auto"
+                                RowSpacing="10">
+                                <Border
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Padding="14,12"
+                                    BackgroundColor="#DCFCE7"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="14" />
+                                    </Border.StrokeShape>
+                                    <HorizontalStackLayout Spacing="10">
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Icon=CheckCircle}"
+                                            IconColor="#16A34A"
+                                            IconSize="22"
+                                            VerticalOptions="Center" />
+                                        <VerticalStackLayout Spacing="1" VerticalOptions="Center">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="20"
+                                                Text="{Binding Result.Imported}"
+                                                TextColor="#16A34A" />
+                                            <Label
+                                                FontSize="11"
+                                                Text="Imported"
+                                                TextColor="#16A34A" />
+                                        </VerticalStackLayout>
+                                    </HorizontalStackLayout>
+                                </Border>
+                                <Border
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Padding="14,12"
+                                    BackgroundColor="#FEF3C7"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="14" />
+                                    </Border.StrokeShape>
+                                    <HorizontalStackLayout Spacing="10">
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Icon=SkipNext}"
+                                            IconColor="#B45309"
+                                            IconSize="22"
+                                            VerticalOptions="Center" />
+                                        <VerticalStackLayout Spacing="1" VerticalOptions="Center">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="20"
+                                                Text="{Binding Result.Skipped}"
+                                                TextColor="#B45309" />
+                                            <Label
+                                                FontSize="11"
+                                                Text="Skipped"
+                                                TextColor="#B45309" />
+                                        </VerticalStackLayout>
+                                    </HorizontalStackLayout>
+                                </Border>
+                                <Border
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Padding="14,12"
+                                    BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="14" />
+                                    </Border.StrokeShape>
+                                    <HorizontalStackLayout Spacing="10">
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Icon=Sync}"
+                                            IconColor="{DynamicResource PrimaryColor}"
+                                            IconSize="22"
+                                            VerticalOptions="Center" />
+                                        <VerticalStackLayout Spacing="1" VerticalOptions="Center">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="20"
+                                                Text="{Binding Result.Replaced}"
+                                                TextColor="{DynamicResource PrimaryColor}" />
+                                            <Label
+                                                FontSize="11"
+                                                Text="Replaced"
+                                                TextColor="{DynamicResource PrimaryColor}" />
+                                        </VerticalStackLayout>
+                                    </HorizontalStackLayout>
+                                </Border>
+                                <Border
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Padding="14,12"
+                                    BackgroundColor="#FEE2E2"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="14" />
+                                    </Border.StrokeShape>
+                                    <HorizontalStackLayout Spacing="10">
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Icon=ErrorOutline}"
+                                            IconColor="#DC2626"
+                                            IconSize="22"
+                                            VerticalOptions="Center" />
+                                        <VerticalStackLayout Spacing="1" VerticalOptions="Center">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="20"
+                                                Text="{Binding Result.Failed}"
+                                                TextColor="#DC2626" />
+                                            <Label
+                                                FontSize="11"
+                                                Text="Failed"
+                                                TextColor="#DC2626" />
+                                        </VerticalStackLayout>
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </Grid>
+
+                            <!--  Auth result tiles  -->
+                            <Grid
+                                ColumnDefinitions="*,*"
+                                ColumnSpacing="10"
+                                IsVisible="{Binding IsAuthResult}"
+                                RowDefinitions="Auto,Auto"
+                                RowSpacing="10">
+                                <Border
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Padding="14,12"
+                                    BackgroundColor="#DCFCE7"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="14" />
+                                    </Border.StrokeShape>
+                                    <HorizontalStackLayout Spacing="10">
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Icon=CheckCircle}"
+                                            IconColor="#16A34A"
+                                            IconSize="22"
+                                            VerticalOptions="Center" />
+                                        <VerticalStackLayout Spacing="1" VerticalOptions="Center">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="20"
+                                                Text="{Binding AuthResult.Imported}"
+                                                TextColor="#16A34A" />
+                                            <Label
+                                                FontSize="11"
+                                                Text="Imported"
+                                                TextColor="#16A34A" />
+                                        </VerticalStackLayout>
+                                    </HorizontalStackLayout>
+                                </Border>
+                                <Border
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Padding="14,12"
+                                    BackgroundColor="#FEF3C7"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="14" />
+                                    </Border.StrokeShape>
+                                    <HorizontalStackLayout Spacing="10">
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Icon=SkipNext}"
+                                            IconColor="#B45309"
+                                            IconSize="22"
+                                            VerticalOptions="Center" />
+                                        <VerticalStackLayout Spacing="1" VerticalOptions="Center">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="20"
+                                                Text="{Binding AuthResult.Skipped}"
+                                                TextColor="#B45309" />
+                                            <Label
+                                                FontSize="11"
+                                                Text="Skipped"
+                                                TextColor="#B45309" />
+                                        </VerticalStackLayout>
+                                    </HorizontalStackLayout>
+                                </Border>
+                                <Border
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Padding="14,12"
+                                    BackgroundColor="#FEE2E2"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="14" />
+                                    </Border.StrokeShape>
+                                    <HorizontalStackLayout Spacing="10">
+                                        <mi:MauiIcon
+                                            Icon="{mi:Material Icon=ErrorOutline}"
+                                            IconColor="#DC2626"
+                                            IconSize="22"
+                                            VerticalOptions="Center" />
+                                        <VerticalStackLayout Spacing="1" VerticalOptions="Center">
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="20"
+                                                Text="{Binding AuthResult.Failed}"
+                                                TextColor="#DC2626" />
+                                            <Label
+                                                FontSize="11"
+                                                Text="Failed"
+                                                TextColor="#DC2626" />
+                                        </VerticalStackLayout>
+                                    </HorizontalStackLayout>
+                                </Border>
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <!--  Weak nudge  -->
+                    <Border
+                        Padding="16,14"
+                        BackgroundColor="#FFFBEB"
+                        IsVisible="{Binding Preview.WeakCount, Converter={StaticResource IsPositive}}"
+                        Stroke="#FDE68A"
+                        StrokeThickness="1">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <mi:MauiIcon
+                                Grid.Column="0"
+                                Icon="{mi:Material Icon=HealthAndSafety}"
+                                IconColor="#B45309"
+                                IconSize="24"
+                                VerticalOptions="Start" />
+
+                            <Label
+                                Grid.Column="1"
+                                FontSize="13"
+                                LineBreakMode="WordWrap"
+
+                                Text="Some imported passwords are weak. Visit Vault Health to review and strengthen them."
+                                TextColor="#92400E"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+
+                    <!--  Import Another button  -->
+                    <Grid HeightRequest="52">
+                        <Border Padding="0" StrokeThickness="0">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Offset="0.0" Color="{DynamicResource HeroGradientStart}" />
+                                    <GradientStop Offset="1.0" Color="{DynamicResource PrimaryGradient}" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                        </Border>
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding StartOverCommand}"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="Import Another File"
+                            TextColor="White" />
+                    </Grid>
+                </VerticalStackLayout>
+                <!--  END STEP 3  -->
+
+                <!--  BUSY OVERLAY  -->
+                <Grid
+                    BackgroundColor="{DynamicResource PageBackgroundColor}"
+                    HorizontalOptions="Fill"
+                    IsVisible="{Binding IsBusy}"
+                    Opacity="0.94"
+                    VerticalOptions="Fill" />
+                <VerticalStackLayout
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding IsBusy}"
+                    Spacing="20"
+                    VerticalOptions="Center">
+                    <Border
+                        Padding="28,24"
+                        BackgroundColor="{DynamicResource CardBackgroundColor}"
+                        HorizontalOptions="Center"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="24" />
+                        </Border.StrokeShape>
+                        <Border.Shadow>
+                            <Shadow
+                                Brush="{DynamicResource GrayShadowColor}"
+                                Opacity="0.14"
+                                Radius="24"
+                                Offset="0,8" />
+                        </Border.Shadow>
+                        <VerticalStackLayout HorizontalOptions="Center" Spacing="16">
+                            <ActivityIndicator
+                                HeightRequest="48"
+                                HorizontalOptions="Center"
+                                IsRunning="{Binding IsBusy}"
+                                WidthRequest="48"
+                                Color="{DynamicResource PrimaryColor}" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                HorizontalOptions="Center"
+                                HorizontalTextAlignment="Center"
+                                Text="{Binding StatusText}"
+                                TextColor="{DynamicResource TextColor}" />
+                            <Label
+                                FontSize="12"
+                                HorizontalOptions="Center"
+                                Opacity="0.6"
+                                Text="This may take a moment…"
+                                TextColor="{DynamicResource TextSecondaryColor}" />
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+            </Grid>
+        </ScrollView>
+
+    </Grid>
+</ContentPage>

@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<the49:BottomSheet
+    x:Class="Fortress.Views.PopupPages.VoiceListeningSheet"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:the49="clr-namespace:The49.Maui.BottomSheet;assembly=The49.Maui.BottomSheet"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    BackgroundColor="{DynamicResource CardBackgroundColor}"
+    HasBackdrop="True"
+    HasHandle="True"
+    IsCancelable="True">
+
+    <!--  Two detents: snapped default (~65 %) + full expand  -->
+    <the49:BottomSheet.Detents>
+        <the49:RatioDetent Ratio="0.65" />
+        <the49:FullscreenDetent />
+    </the49:BottomSheet.Detents>
+
+    <!--  ScrollView lets the chip section always be reachable  -->
+ <ScrollView>
+        <VerticalStackLayout
+            Padding="24,8,24,40"
+    BackgroundColor="{DynamicResource CardBackgroundColor}"
+            Spacing="0">
+
+  <!--  Header  -->
+      <Grid
+  Margin="0,8,0,0"
+              ColumnDefinitions="*,Auto"
+       ColumnSpacing="8">
+     <Label
+  Grid.Column="0"
+          FontAttributes="Bold"
+    FontSize="17"
+          TextColor="{DynamicResource TextColor}"
+           VerticalOptions="Center">
+                    <Label.Triggers>
+                        <DataTrigger Binding="{Binding IsDictating}" TargetType="Label" Value="True">
+                            <Setter Property="Text" Value="Recording Note" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsDictationReview}" TargetType="Label" Value="True">
+                            <Setter Property="Text" Value="Review Note" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsCommandMode}" TargetType="Label" Value="True">
+                            <Setter Property="Text" Value="Voice Command" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+          <Button
+    Grid.Column="1"
+            Padding="12,0"
+         BackgroundColor="{DynamicResource Gray-100}"
+        BorderWidth="0"
+        Command="{Binding CancelCommand}"
+        CornerRadius="20"
+        FontSize="13"
+     HeightRequest="36"
+    Text="Cancel"
+            TextColor="{DynamicResource TextSecondaryColor}" />
+         </Grid>
+
+            <!--  Mic + waveform — reduced top margin so chips get more room  -->
+          <Grid
+       Margin="0,20,0,16"
+          HeightRequest="90"
+ HorizontalOptions="Center"
+        WidthRequest="220">
+
+                <!--  Pulsing mic button  -->
+          <Border
+      x:Name="MicBorder"
+    Padding="18"
+            BackgroundColor="{DynamicResource PrimaryColor}"
+     HeightRequest="76"
+   HorizontalOptions="Center"
+          StrokeThickness="0"
+             VerticalOptions="Center"
+       WidthRequest="76">
+       <Border.StrokeShape>
+  <RoundRectangle CornerRadius="38" />
+         </Border.StrokeShape>
+        <Border.Shadow>
+       <Shadow
+             Brush="{DynamicResource PrimaryColor}"
+              Opacity="0.4"
+       Radius="20"
+     Offset="0,6" />
+      </Border.Shadow>
+     <mi:MauiIcon
+   HorizontalOptions="Center"
+      Icon="{mi:Material Icon=Mic}"
+       IconColor="White"
+           IconSize="34"
+       VerticalOptions="Center" />
+                </Border>
+
+           <!--  Waveform bars — only visible while listening  -->
+    <HorizontalStackLayout
+             HorizontalOptions="Center"
+            IsVisible="{Binding IsListening}"
+  Spacing="5"
+     VerticalOptions="End">
+       <BoxView
+                  x:Name="Bar1"
+          BackgroundColor="{DynamicResource PrimaryColor}"
+       CornerRadius="3"
+           HeightRequest="14"
+   Opacity="0.65"
+         WidthRequest="5" />
+          <BoxView
+      x:Name="Bar2"
+BackgroundColor="{DynamicResource PrimaryColor}"
+                CornerRadius="3"
+     HeightRequest="26"
+           Opacity="0.80"
+        WidthRequest="5" />
+       <BoxView
+         x:Name="Bar3"
+        BackgroundColor="{DynamicResource PrimaryColor}"
+CornerRadius="3"
+       HeightRequest="38"
+       WidthRequest="5" />
+      <BoxView
+ x:Name="Bar4"
+         BackgroundColor="{DynamicResource PrimaryColor}"
+          CornerRadius="3"
+            HeightRequest="26"
+     Opacity="0.80"
+               WidthRequest="5" />
+          <BoxView
+   x:Name="Bar5"
+           BackgroundColor="{DynamicResource PrimaryColor}"
+          CornerRadius="3"
+    HeightRequest="14"
+          Opacity="0.65"
+            WidthRequest="5" />
+         </HorizontalStackLayout>
+            </Grid>
+
+         <!--  Status label  -->
+         <Label
+     FontSize="16"
+       HorizontalOptions="Center"
+          HorizontalTextAlignment="Center"
+        Text="{Binding StatusText}"
+                TextColor="{DynamicResource TextColor}" />
+
+  <!--  Live transcript  -->
+   <Border
+ Margin="0,12,0,0"
+     Padding="14,10"
+    BackgroundColor="{DynamicResource Gray-100}"
+        IsVisible="{Binding HasTranscript}"
+       StrokeThickness="0">
+      <Border.StrokeShape>
+         <RoundRectangle CornerRadius="12" />
+        </Border.StrokeShape>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+     <mi:MauiIcon
+         Grid.Column="0"
+              Icon="{mi:Material Icon=GraphicEq}"
+IconColor="{DynamicResource PrimaryColor}"
+    IconSize="18"
+             VerticalOptions="Center" />
+   <Label
+ Grid.Column="1"
+           FontSize="14"
+         HorizontalTextAlignment="Start"
+        Opacity="0.85"
+    Text="{Binding TranscriptText}"
+                  TextColor="{DynamicResource TextColor}"
+             VerticalOptions="Center" />
+    </Grid>
+            </Border>
+
+     <!--  Processing spinner  -->
+            <ActivityIndicator
+    Margin="0,14,0,0"
+   HeightRequest="30"
+   HorizontalOptions="Center"
+      IsRunning="{Binding IsProcessing}"
+              IsVisible="{Binding IsProcessing}"
+      WidthRequest="30"
+        Color="{DynamicResource PrimaryColor}" />
+
+       <!--  Result badge (command recognition only, not shown in dictation modes)  -->
+            <Border
+            Margin="0,14,0,0"
+           Padding="16,12"
+                IsVisible="{Binding ShowCommandResult}"
+        StrokeThickness="0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="14" />
+     </Border.StrokeShape>
+       <Border.Triggers>
+      <DataTrigger
+  Binding="{Binding ResultSuccess}"
+              TargetType="Border"
+                Value="True">
+         <Setter Property="BackgroundColor" Value="#DCFCE7" />
+        </DataTrigger>
+   <DataTrigger
+     Binding="{Binding ResultSuccess}"
+   TargetType="Border"
+      Value="False">
+     <Setter Property="BackgroundColor" Value="#FEF2F2" />
+                 </DataTrigger>
+       </Border.Triggers>
+       <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+          <mi:MauiIcon
+    Icon="{mi:Material Icon=CheckCircle}"
+          IconColor="#16A34A"
+      IconSize="22"
+         VerticalOptions="Center">
+          <mi:MauiIcon.Triggers>
+      <DataTrigger
+  Binding="{Binding ResultSuccess}"
+        TargetType="mi:MauiIcon"
+   Value="False">
+      <Setter Property="Icon" Value="{mi:Material Icon=Cancel}" />
+             <Setter Property="IconColor" Value="#DC2626" />
+   </DataTrigger>
+ </mi:MauiIcon.Triggers>
+             </mi:MauiIcon>
+           <Label
+      FontAttributes="Bold"
+     FontSize="15"
+     Text="{Binding ResultText}"
+        VerticalOptions="Center">
+         <Label.Triggers>
+           <DataTrigger
+            Binding="{Binding ResultSuccess}"
+  TargetType="Label"
+        Value="True">
+  <Setter Property="TextColor" Value="#16A34A" />
+    </DataTrigger>
+         <DataTrigger
+           Binding="{Binding ResultSuccess}"
+             TargetType="Label"
+       Value="False">
+        <Setter Property="TextColor" Value="#DC2626" />
+   </DataTrigger>
+                 </Label.Triggers>
+       </Label>
+ </HorizontalStackLayout>
+            </Border>
+
+            <!--  Dictation review panel — shown after note recording is complete  -->
+            <VerticalStackLayout
+                Margin="0,16,0,0"
+                IsVisible="{Binding IsDictationReview}"
+                Spacing="12">
+
+                <!--  The captured note text  -->
+                <Border
+                    Padding="16,14"
+                    BackgroundColor="{DynamicResource Gray-100}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout Spacing="6">
+                        <Label
+                            FontSize="11"
+                            Opacity="0.6"
+                            Text="YOUR NOTE"
+                            TextColor="{DynamicResource TextSecondaryColor}" />
+                        <Label
+                            FontSize="15"
+                            LineBreakMode="WordWrap"
+                            Text="{Binding DictationText}"
+                            TextColor="{DynamicResource TextColor}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  Save / Try Again buttons  -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Button
+                        Grid.Column="0"
+                        BackgroundColor="{DynamicResource Gray-100}"
+                        BorderWidth="0"
+                        Command="{Binding RedoNoteCommand}"
+                        CornerRadius="14"
+                        FontSize="14"
+                        HeightRequest="50"
+                        Text="Try Again"
+                        TextColor="{DynamicResource TextSecondaryColor}" />
+                    <Grid Grid.Column="1" HeightRequest="50">
+                        <Border Padding="0" StrokeThickness="0">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Offset="0.0" Color="{DynamicResource HeroGradientStart}" />
+                                    <GradientStop Offset="1.0" Color="{DynamicResource PrimaryGradient}" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                        </Border>
+                        <Button
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding ConfirmNoteCommand}"
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            Text="Save Note"
+                            TextColor="White" />
+                    </Grid>
+                </Grid>
+            </VerticalStackLayout>
+
+            <!--  Hint chips — reduced top margin, uses full width  -->
+            <Label
+      Margin="0,18,0,8"
+    FontSize="12"
+   HorizontalOptions="Center"
+        Opacity="0.55"
+        IsVisible="{Binding IsCommandMode}"
+ Text="Try saying…"
+       TextColor="{DynamicResource TextSecondaryColor}" />
+
+     <FlexLayout
+      AlignContent="Start"
+     AlignItems="Start"
+  HorizontalOptions="Fill"
+        IsVisible="{Binding IsCommandMode}"
+    JustifyContent="Start"
+          Wrap="Wrap">
+
+       <Border
+  Margin="4"
+        Padding="10,6"
+    BackgroundColor="{DynamicResource PrimaryLightestColor}"
+      StrokeThickness="0">
+<Border.StrokeShape><RoundRectangle CornerRadius="20" /></Border.StrokeShape>
+         <Label FontSize="12" Text="Add a password" TextColor="{DynamicResource PrimaryColor}" />
+                </Border>
+
+    <Border
+     Margin="4"
+     Padding="10,6"
+           BackgroundColor="#FEF3C7"
+          StrokeThickness="0">
+               <Border.StrokeShape><RoundRectangle CornerRadius="20" /></Border.StrokeShape>
+          <Label FontSize="12" Text="Open my credit cards" TextColor="#B45309" />
+       </Border>
+
+         <Border
+                    Margin="4"
+         Padding="10,6"
+     BackgroundColor="#CFFAFE"
+        StrokeThickness="0">
+            <Border.StrokeShape><RoundRectangle CornerRadius="20" /></Border.StrokeShape>
+           <Label FontSize="12" Text="How many passwords?" TextColor="#0E7490" />
+       </Border>
+
+              <Border
+           Margin="4"
+          Padding="10,6"
+       BackgroundColor="#EDE9FE"
+           StrokeThickness="0">
+         <Border.StrokeShape><RoundRectangle CornerRadius="20" /></Border.StrokeShape>
+     <Label FontSize="12" Text="What's in my vault?" TextColor="#7C3AED" />
+           </Border>
+
+             <Border
+         Margin="4"
+              Padding="10,6"
+        BackgroundColor="#CCFBF1"
+      StrokeThickness="0">
+   <Border.StrokeShape><RoundRectangle CornerRadius="20" /></Border.StrokeShape>
+   <Label FontSize="12" Text="Lock my vault" TextColor="#0F766E" />
+         </Border>
+
+<Border
+          Margin="4"
+               Padding="10,6"
+    BackgroundColor="#FEE2E2"
+            StrokeThickness="0">
+    <Border.StrokeShape><RoundRectangle CornerRadius="20" /></Border.StrokeShape>
+          <Label FontSize="12" Text="Show weak passwords" TextColor="#DC2626" />
+         </Border>
+
+                <Border
+           Margin="4"
+ Padding="10,6"
+ BackgroundColor="#F0FDF4"
+        StrokeThickness="0">
+       <Border.StrokeShape><RoundRectangle CornerRadius="20" /></Border.StrokeShape>
+        <Label FontSize="12" Text="Open my groups" TextColor="#16A34A" />
+   </Border>
+
+         <Border
+Margin="4"
+ Padding="10,6"
+     BackgroundColor="#FFF7ED"
+          StrokeThickness="0">
+         <Border.StrokeShape><RoundRectangle CornerRadius="20" /></Border.StrokeShape>
+  <Label FontSize="12" Text="Sync my vault" TextColor="#EA580C" />
+         </Border>
+
+      </FlexLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</the49:BottomSheet>

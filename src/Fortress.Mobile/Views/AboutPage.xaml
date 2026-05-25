@@ -1,0 +1,663 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.AboutPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctrl="clr-namespace:Fortress.Controls"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!--  ═══ HERO HEADER ═══  -->
+        <ctrl:VaultPageHero
+            Title="About"
+            Grid.Row="0"
+            BackCommand="{Binding GoBackCommand}"
+            CountText="{Binding Version, StringFormat='Version {0}'}"
+            GradientEnd="{DynamicResource PrimaryGradient}"
+            GradientStart="{DynamicResource PrimaryColor}"
+            IconGlyph="&#xE88E;"
+            SearchEnabled="False" />
+
+        <!--  ═══ CONTENT ═══  -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="20,20,20,40" Spacing="20">
+
+                <!--  ── App Identity Card ────────────────────────  -->
+                <Border
+                    Padding="28,32"
+                    BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{DynamicResource GrayShadowColor}"
+                            Opacity="0.08"
+                            Radius="16"
+                            Offset="0,4" />
+                    </Border.Shadow>
+
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="14">
+
+                        <!--  Logo  -->
+                        <Border
+                            Padding="0"
+                            BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                            HeightRequest="88"
+                            HorizontalOptions="Center"
+                            StrokeThickness="0"
+                            WidthRequest="88">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="22" />
+                            </Border.StrokeShape>
+                            <Image
+                                Margin="14"
+                                Aspect="AspectFit"
+                                Source="logoblue.png" />
+                        </Border>
+
+                        <!--  App name  -->
+                        <Label
+                            CharacterSpacing="3"
+                            FontAttributes="Bold"
+                            FontFamily="Audiowide"
+                            FontSize="25"
+                            HorizontalOptions="Center"
+                            Text="FORTRESS"
+                            TextColor="{DynamicResource TextColor}" />
+
+                        <!--  Tagline  -->
+                        <Label
+                            FontSize="14"
+                            HorizontalOptions="Center"
+                            HorizontalTextAlignment="Center"
+                            Text="Your encrypted vault for passwords, cards,&#10;identities, 2FA codes &amp; secure notes."
+                            TextColor="{DynamicResource TextSecondaryColor}" />
+
+                        <!--  Version badge  -->
+                        <Border
+                            Padding="16,8"
+                            BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                            HorizontalOptions="Center"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="20" />
+                            </Border.StrokeShape>
+                            <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
+                                <mi:MauiIcon
+                                    Icon="{mi:Material Icon=NewReleases}"
+                                    IconColor="{DynamicResource PrimaryColor}"
+                                    IconSize="16"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    Text="{Binding Version, StringFormat='Version {0}'}"
+                                    TextColor="{DynamicResource PrimaryColor}"
+                                    VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  ── App Features Card ─────────────────────────  -->
+                <Border
+                    Padding="20"
+                    BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{DynamicResource GrayShadowColor}"
+                            Opacity="0.07"
+                            Radius="12"
+                            Offset="0,4" />
+                    </Border.Shadow>
+
+                    <VerticalStackLayout Spacing="0">
+
+                        <Label
+                            Margin="0,0,0,14"
+                            FontAttributes="Bold"
+                            FontSize="12"
+                            Text="WHAT'S INSIDE"
+                            TextColor="{DynamicResource TextTertiaryColor}" />
+
+                        <!--  Passwords  -->
+                        <Grid
+                            Padding="0,10"
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                HeightRequest="40"
+                                StrokeThickness="0"
+                                WidthRequest="40">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=Lock}"
+                                    IconColor="{DynamicResource PrimaryColor}"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="1"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Password Vault"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="Store &amp; auto-fill login credentials"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                        <BoxView
+                            Margin="54,0,0,0"
+                            HeightRequest="1"
+                            Color="{DynamicResource Gray-100}" />
+
+                        <!--  Authenticators  -->
+                        <Grid
+                            Padding="0,10"
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                BackgroundColor="#DCFCE7"
+                                HeightRequest="40"
+                                StrokeThickness="0"
+                                WidthRequest="40">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=QrCode2}"
+                                    IconColor="#16A34A"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="1"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Authenticator (TOTP)"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="Built-in 2FA codes for all your accounts"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                        <BoxView
+                            Margin="54,0,0,0"
+                            HeightRequest="1"
+                            Color="{DynamicResource Gray-100}" />
+
+                        <!--  Cards  -->
+                        <Grid
+                            Padding="0,10"
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                BackgroundColor="#FEF3C7"
+                                HeightRequest="40"
+                                StrokeThickness="0"
+                                WidthRequest="40">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=CreditCard}"
+                                    IconColor="#D97706"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="1"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Credit &amp; Debit Cards"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="Securely save payment card details"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                        <BoxView
+                            Margin="54,0,0,0"
+                            HeightRequest="1"
+                            Color="{DynamicResource Gray-100}" />
+
+                        <!--  Identities  -->
+                        <Grid
+                            Padding="0,10"
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                BackgroundColor="#EDE9FE"
+                                HeightRequest="40"
+                                StrokeThickness="0"
+                                WidthRequest="40">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=Badge}"
+                                    IconColor="#7C3AED"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="1"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Identities &amp; Addresses"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="Personal profiles and address books"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                        <BoxView
+                            Margin="54,0,0,0"
+                            HeightRequest="1"
+                            Color="{DynamicResource Gray-100}" />
+
+                        <!--  Secure Notes  -->
+                        <Grid
+                            Padding="0,10"
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                BackgroundColor="#CCFBF1"
+                                HeightRequest="40"
+                                StrokeThickness="0"
+                                WidthRequest="40">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=StickyNote2}"
+                                    IconColor="#0F766E"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="1"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Secure Notes"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="Encrypted notes for sensitive text"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <!--  Smart Autofill  -->
+                        <BoxView
+                            Margin="54,0,0,0"
+                            HeightRequest="1"
+                            Color="{DynamicResource Gray-100}" />
+                        <Grid
+                            Padding="0,10"
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                BackgroundColor="#FEF3C7"
+                                HeightRequest="40"
+                                StrokeThickness="0"
+                                WidthRequest="40">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=AutoAwesome}"
+                                    IconColor="#D97706"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="1"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Smart Autofill"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="One-tap fill on Android &amp; iOS"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <!--  Vault Health  -->
+                        <BoxView
+                            Margin="54,0,0,0"
+                            HeightRequest="1"
+                            Color="{DynamicResource Gray-100}" />
+                        <Grid
+                            Padding="0,10"
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                BackgroundColor="#CCFBF1"
+                                HeightRequest="40"
+                                StrokeThickness="0"
+                                WidthRequest="40">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=HealthAndSafety}"
+                                    IconColor="#14B8A6"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="1"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Vault Health Score"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="AI analysis of weak &amp; reused passwords"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <!--  Voice Commands  -->
+                        <BoxView
+                            Margin="54,0,0,0"
+                            HeightRequest="1"
+                            Color="{DynamicResource Gray-100}" />
+                        <Grid
+                            Padding="0,10"
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                BackgroundColor="#EDE9FE"
+                                HeightRequest="40"
+                                StrokeThickness="0"
+                                WidthRequest="40">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=Mic}"
+                                    IconColor="#7C3AED"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="1"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Voice Commands"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="Add, navigate and sync by voice"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <!--  Vault Groups  -->
+                        <BoxView
+                            Margin="54,0,0,0"
+                            HeightRequest="1"
+                            Color="{DynamicResource Gray-100}" />
+                        <Grid
+                            Padding="0,10"
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                BackgroundColor="#FCE7F3"
+                                HeightRequest="40"
+                                StrokeThickness="0"
+                                WidthRequest="40">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=FolderOpen}"
+                                    IconColor="#BE185D"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="1"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Vault Groups"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="Organise passwords into folders"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <!--  Cloud Backup  -->
+                        <BoxView
+                            Margin="54,0,0,0"
+                            HeightRequest="1"
+                            Color="{DynamicResource Gray-100}" />
+                        <Grid
+                            Padding="0,10"
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                BackgroundColor="#CFFAFE"
+                                HeightRequest="40"
+                                StrokeThickness="0"
+                                WidthRequest="40">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=CloudSync}"
+                                    IconColor="#0E7490"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="1"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Backups | Sync"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="Google Drive &amp; Dropbox encrypted sync"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <!--  Biometric Lock  -->
+                        <BoxView
+                            Margin="54,0,0,0"
+                            HeightRequest="1"
+                            Color="{DynamicResource Gray-100}" />
+                        <Grid
+                            Padding="0,10"
+                            ColumnDefinitions="Auto,*"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                BackgroundColor="#FEE2E2"
+                                HeightRequest="40"
+                                StrokeThickness="0"
+                                WidthRequest="40">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=Fingerprint}"
+                                    IconColor="#DC2626"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="1"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Text="Biometric &amp; PIN Lock"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="12"
+                                    Text="Face ID, fingerprint or 4-digit PIN"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                        </Grid>
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  ── Security Promise Card ───────────────────  -->
+                <Border
+                    Padding="18"
+                    BackgroundColor="{DynamicResource InfoLightColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                        <Border
+                            Grid.Column="0"
+                            Padding="10"
+                            BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                            HeightRequest="44"
+                            StrokeThickness="0"
+                            VerticalOptions="Start"
+                            WidthRequest="44">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <mi:MauiIcon
+                                HorizontalOptions="Center"
+                                Icon="{mi:Material Icon=Shield}"
+                                IconColor="{DynamicResource PrimaryColor}"
+                                IconSize="20"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="End-to-End Encrypted"
+                                TextColor="{DynamicResource InfoColor}" />
+                            <Label
+                                FontSize="13"
+                                Text="All your data is encrypted with AES-256 before it ever leaves your device. Your master password is never stored or transmitted."
+                                TextColor="{DynamicResource TextSecondaryColor}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!--  ── Check for Updates ───────────────────────  -->
+                <!--
+                <ctrl:VaultGradientButton
+                    ColorEnd="{DynamicResource PrimaryGradient}"
+                    ColorStart="{DynamicResource PrimaryColor}"
+                    Command="{Binding CheckUpdateCommand}"
+                    CornerRadius="14"
+                    HeightRequest="52"
+                    Text="Check for Updates" />-->
+
+                <!--  Copyright footer  -->
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="4">
+                    <Label
+                        FontSize="12"
+                        HorizontalOptions="Center"
+                        Text="{Binding CopyrightText}"
+                        TextColor="{DynamicResource TextTertiaryColor}" />
+                    <Label
+                        FontSize="11"
+                        HorizontalOptions="Center"
+                        Text="All rights reserved"
+                        TextColor="{DynamicResource TextTertiaryColor}" />
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

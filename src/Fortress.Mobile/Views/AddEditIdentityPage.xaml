@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.AddEditIdentityPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctrl="clr-namespace:Fortress.Controls"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    prism:ViewModelLocator.AutowireViewModel="Automatic"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!--  Header  -->
+        <Border
+            Grid.Row="0"
+            Padding="20,16,20,24"
+            BackgroundColor="{DynamicResource PrimaryColor}"
+            StrokeThickness="0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,24,24" />
+            </Border.StrokeShape>
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                <Border
+                    Grid.Column="0"
+                    Padding="0"
+                    BackgroundColor="#30FFFFFF"
+                    HeightRequest="40"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="40">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Button
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding GoBackCommand}"
+                        HeightRequest="40"
+                        WidthRequest="40">
+                        <Button.ImageSource>
+                            <FontImageSource
+                                FontFamily="MaterialIconsRegular"
+                                Glyph="&#xE5C4;"
+                                Size="22"
+                                Color="White" />
+                        </Button.ImageSource>
+                    </Button>
+                </Border>
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    Text="{Binding FormTitle}"
+                    TextColor="White"
+                    VerticalOptions="Center" />
+
+            </Grid>
+        </Border>
+
+        <!--  Body  -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16,20,16,12" Spacing="12">
+
+                <!--  ── PERSONAL ─────────────────────────────────  -->
+                <Label
+                    Margin="4,4,0,0"
+                    FontAttributes="Bold"
+                    FontSize="12"
+                    Text="IDENTITY LABEL"
+                    TextColor="{DynamicResource TextTertiaryColor}" />
+
+                <ctrl:VaultFormField
+                    x:Name="FieldLabel"
+                    ErrorMessage="{Binding LabelError}"
+                    FieldLabel="LABEL *"
+                    HasError="{Binding HasLabelError}"
+                    IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    IconColor="{DynamicResource PrimaryColor}"
+                    IconGlyph="&#xE873;"
+                    Placeholder="e.g. Home Address, Work Profile"
+                    Text="{Binding Label}" />
+
+                <Label
+                    Margin="4,8,0,0"
+                    FontAttributes="Bold"
+                    FontSize="12"
+                    Text="PERSONAL DETAILS"
+                    TextColor="{DynamicResource TextTertiaryColor}" />
+
+                <ctrl:VaultFormField
+                    x:Name="FieldFirstName"
+                    ErrorMessage="{Binding FirstNameError}"
+                    FieldLabel="FIRST NAME *"
+                    HasError="{Binding HasFirstNameError}"
+                    IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    IconColor="{DynamicResource PrimaryColor}"
+                    IconGlyph="&#xE7FD;"
+                    Placeholder="First name"
+                    Text="{Binding FirstName}" />
+
+                <ctrl:VaultFormField
+                    x:Name="FieldLastName"
+                    FieldLabel="LAST NAME"
+                    IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    IconColor="{DynamicResource PrimaryColor}"
+                    IconGlyph="&#xE7FD;"
+                    Placeholder="Last name"
+                    Text="{Binding LastName}" />
+
+                <ctrl:VaultFormField
+                    x:Name="FieldEmail"
+                    FieldLabel="EMAIL"
+                    IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    IconColor="{DynamicResource PrimaryColor}"
+                    IconGlyph="&#xE0BE;"
+                    Keyboard="Email"
+                    Placeholder="email@example.com"
+                    Text="{Binding Email}" />
+
+                <ctrl:VaultFormField
+                    x:Name="FieldPhone"
+                    FieldLabel="PHONE"
+                    IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    IconColor="{DynamicResource PrimaryColor}"
+                    IconGlyph="&#xE0CD;"
+                    Keyboard="Telephone"
+                    Placeholder="+1 555 000 0000"
+                    Text="{Binding Phone}" />
+
+                <ctrl:VaultFormField
+                    x:Name="FieldCompany"
+                    FieldLabel="COMPANY (optional)"
+                    IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    IconColor="{DynamicResource PrimaryColor}"
+                    IconGlyph="&#xE8F9;"
+                    Placeholder="Organisation name"
+                    Text="{Binding Company}" />
+
+                <!--  ── ADDRESS ──────────────────────────────────  -->
+                <Label
+                    Margin="4,8,0,0"
+                    FontAttributes="Bold"
+                    FontSize="12"
+                    Text="ADDRESS"
+                    TextColor="{DynamicResource TextTertiaryColor}" />
+
+                <ctrl:VaultFormField
+                    x:Name="FieldLine1"
+                    FieldLabel="ADDRESS LINE 1"
+                    IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    IconColor="{DynamicResource PrimaryColor}"
+                    IconGlyph="&#xE8B4;"
+                    Placeholder="Street address"
+                    Text="{Binding AddressLine1}" />
+
+                <ctrl:VaultFormField
+                    x:Name="FieldLine2"
+                    FieldLabel="ADDRESS LINE 2 (optional)"
+                    IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    IconColor="{DynamicResource PrimaryColor}"
+                    IconGlyph="&#xE8B4;"
+                    Placeholder="Apt, Suite, Floor..."
+                    Text="{Binding AddressLine2}" />
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <ctrl:VaultFormField
+                        x:Name="FieldCity"
+                        Grid.Column="0"
+                        FieldLabel="CITY"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE7F1;"
+                        Placeholder="City"
+                        Text="{Binding City}" />
+                    <ctrl:VaultFormField
+                        x:Name="FieldState"
+                        Grid.Column="1"
+                        FieldLabel="STATE / PROVINCE"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE0C8;"
+                        Placeholder="State"
+                        Text="{Binding State}" />
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <ctrl:VaultFormField
+                        x:Name="FieldPostalCode"
+                        Grid.Column="0"
+                        FieldLabel="POSTAL CODE"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE0C8;"
+                        Placeholder="00000"
+                        Text="{Binding PostalCode}" />
+                    <ctrl:VaultFormField
+                        x:Name="FieldCountry"
+                        Grid.Column="1"
+                        FieldLabel="COUNTRY"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE80B;"
+                        Placeholder="Country"
+                        Text="{Binding Country}" />
+                </Grid>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  Footer  -->
+        <Grid
+            Grid.Row="2"
+            Padding="16,12,16,28"
+            BackgroundColor="{DynamicResource CardBackgroundColor}">
+            <Grid.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.06"
+                    Radius="12"
+                    Offset="0,-4" />
+            </Grid.Shadow>
+            <ctrl:VaultGradientButton
+                ColorEnd="{DynamicResource PrimaryDarkColor}"
+                ColorStart="{DynamicResource PrimaryColor}"
+                Command="{Binding SaveCommand}"
+                CornerRadius="14"
+                HeightRequest="52"
+                IsEnabled="{Binding CanSave}"
+                IsLoading="{Binding IsSaving}"
+                Text="{Binding SaveButtonText}" />
+        </Grid>
+    </Grid>
+</ContentPage>

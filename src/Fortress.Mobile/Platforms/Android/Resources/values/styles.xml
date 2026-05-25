@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+	<!-- Main application theme -->
+	<style name="MainTheme" parent="MainTheme.Base" />
+
+	<!-- Base theme applied for all APIs -->
+	<style name="MainTheme.Base" parent="Theme.Material3.DayNight.NoActionBar">
+		<!-- Disable the default ActionBar -->
+		<item name="windowNoTitle">true</item>
+		<item name="windowActionBar">false</item>
+
+		<!-- Material color scheme -->
+		<item name="colorPrimary">#407cca</item>
+		<item name="colorPrimaryDark">#407CCA</item>
+		<item name="colorOnPrimary">#FFFFFF</item>
+		<item name="colorSecondary">#4b7bc9</item>
+		<item name="colorOnSecondary">#FFFFFF</item>
+		<item name="colorSurface">#FFFFFF</item>
+		<item name="colorOnSurface">#000000</item>
+
+		<!-- Required by BottomSheetBehavior -->
+		<item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
+
+		<!-- Status / navigation bars -->
+		<item name="android:statusBarColor">?attr/colorPrimary</item>
+		<item name="android:navigationBarColor">?attr/colorPrimary</item>
+
+		<!-- Dialog theme for date pickers etc. -->
+		<item name="android:datePickerDialogTheme">@style/AppCompatDialogStyle</item>
+
+		<!-- Optional attributes -->
+		<item name="android:forceDarkAllowed">false</item>
+		<item name="android:windowActionModeOverlay">true</item>
+		<item name="android:windowTranslucentStatus">false</item>
+		<item name="android:windowTranslucentNavigation">false</item>
+	</style>
+
+	<!-- Dialog styles -->
+	<style name="AppCompatDialogStyle" parent="Theme.Material3.Light.Dialog">
+		<item name="colorAccent">#4b7bc9</item>
+	</style>
+
+	<style name="Dialog" parent="Theme.Material3.Light.Dialog">
+		<item name="windowActionBar">false</item>
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowIsFloating">true</item>
+		<item name="android:windowBackground">@android:color/transparent</item>
+	</style>
+
+	<!-- Overlay for BottomSheet (used by The49.Maui.BottomSheet) -->
+	<style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+		<item name="bottomSheetStyle">@style/Widget.App.BottomSheet.Modal</item>
+	</style>
+
+	<style name="Widget.App.BottomSheet.Modal" parent="Widget.Material3.BottomSheet.Modal">
+		<item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>
+		<item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+		<item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+	</style>
+
+	<style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
+		<item name="cornerFamily">rounded</item>
+		<item name="cornerSizeTopLeft">16dp</item>
+		<item name="cornerSizeTopRight">16dp</item>
+		<item name="cornerSizeBottomLeft">0dp</item>
+		<item name="cornerSizeBottomRight">0dp</item>
+	</style>
+
+	<!-- Optional translucent variant -->
+	<style name="Theme.AppCompat.Translucent" parent="Theme.Material3.Light.NoActionBar">
+		<item name="android:background">@android:color/transparent</item>
+		<item name="android:statusBarColor">@android:color/transparent</item>
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowBackground">@android:color/transparent</item>
+		<item name="android:colorBackgroundCacheHint">@null</item>
+		<item name="android:windowIsTranslucent">true</item>
+		<item name="android:backgroundDimEnabled">true</item>
+		<item name="android:windowAnimationStyle">@android:style/Animation</item>
+	</style>
+
+	<!-- Splash theme -->
+	<style name="MainTheme.Splash" parent="Theme.Material3.DayNight.NoActionBar">
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowFullscreen">true</item>
+		<item name="android:windowContentOverlay">@null</item>
+		<item name="android:windowActionBar">false</item>
+	</style>
+	<style name="Theme.GK.Autofill.Transparent" parent="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
+		<item name="android:windowIsTranslucent">true</item>
+		<item name="android:windowBackground">@android:color/transparent</item>
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:backgroundDimEnabled">false</item>
+		<item name="android:windowDisablePreview">true</item>
+	</style>
+	<!-- Autofill BottomSheet Theme -->
+	<style name="Theme.Fortress.Autofill"
+		   parent="Theme.MaterialComponents.Light.NoActionBar">
+
+		<item name="android:windowIsTranslucent">true</item>
+		<item name="android:windowCloseOnTouchOutside">true</item>
+
+		<!-- Required for BottomSheet -->
+		<item name="bottomSheetDialogTheme">
+			@style/ThemeOverlay.MaterialComponents.BottomSheetDialog
+		</item>
+
+	</style>
+	 
+
+	<style name="GKBottomSheetStyle"
+       parent="Widget.MaterialComponents.BottomSheet.Modal">
+		<item name="shapeAppearance">@style/GKBottomSheetShape</item>
+	</style>
+	<style name="BottomSheetDialogTheme"
+		   parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+		<item name="bottomSheetStyle">@style/GKBottomSheetStyle</item>
+	</style>
+	<style name="GKBottomSheetShape"
+       parent="ShapeAppearance.MaterialComponents.LargeComponent">
+		<item name="cornerFamily">rounded</item>
+		<item name="cornerSizeTopLeft">20dp</item>
+		<item name="cornerSizeTopRight">20dp</item>
+		<item name="cornerSizeBottomLeft">0dp</item>
+		<item name="cornerSizeBottomRight">0dp</item>
+	</style>
+	
+	
+	<style name="Theme.Fortress.Autofill.Transparent"
+       parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+		<!-- Make window truly transparent -->
+		<item name="android:windowIsTranslucent">true</item>
+		<item name="android:windowBackground">@android:color/transparent</item>
+
+		<!-- REMOVE blue / primary tint -->
+		<item name="android:statusBarColor">@android:color/transparent</item>
+		<item name="android:navigationBarColor">@android:color/transparent</item>
+
+		<!-- No dim / no overlay -->
+		<item name="android:backgroundDimEnabled">false</item>
+
+		<!-- Prevent system drawing overlays -->
+		<item name="android:fitsSystemWindows">false</item>
+	</style>
+
+	<!-- Autofill tab strip text styles -->
+    <style name="TabSelected">
+     <item name="android:textSize">14sp</item>
+<item name="android:textStyle">bold</item>
+    <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="TabUnselected">
+        <item name="android:textSize">14sp</item>
+      <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/gk_gray_500</item>
+    </style>
+
+</resources>

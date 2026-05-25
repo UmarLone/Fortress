@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.CloudSyncPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctrl="clr-namespace:Fortress.Controls"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!--  ═══ HERO HEADER ═══  -->
+        <ctrl:VaultPageHero
+            Title="Backups | Sync"
+            Grid.Row="0"
+            BackCommand="{Binding GoBackCommand}"
+            CountText="Backup your encrypted vault"
+            GradientEnd="{DynamicResource HeroGradientEnd}"
+            GradientStart="{DynamicResource HeroGradientStart}"
+            IconGlyph="&#xEB5F;"
+            SearchEnabled="False"
+            Subtitle="SETTINGS" />
+
+        <!--  ═══ CONTENT ═══  -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16,16,16,32" Spacing="14">
+
+                <!--  Section label  -->
+                <Label
+                    Margin="4,4,0,0"
+                    FontAttributes="Bold"
+                    FontSize="13"
+                    Opacity="0.55"
+                    Text="CLOUD PROVIDERS"
+                    TextColor="{DynamicResource TextSecondaryColor}" />
+
+                <!--  ── Google Drive ──  -->
+                <Border
+                    Padding="0"
+                    BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{DynamicResource GrayShadowColor}"
+                            Opacity="0.06"
+                            Radius="12"
+                            Offset="0,4" />
+                    </Border.Shadow>
+                    <Grid>
+                        <Grid
+                            Padding="18"
+                            ColumnDefinitions="Auto,*,Auto"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="12"
+                                HeightRequest="50"
+                                InputTransparent="True"
+                                StrokeThickness="0"
+                                WidthRequest="50">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Offset="0.0" Color="#4285F4" />
+                                        <GradientStop Offset="1.0" Color="#34A853" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:FontAwesomeBrand Icon=Google}"
+                                    IconColor="White"
+                                    IconSize="24"
+                                    InputTransparent="True"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                InputTransparent="True"
+                                Spacing="4"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    InputTransparent="True"
+                                    Text="Google Drive"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="13"
+                                    InputTransparent="True"
+                                    Text="Secure backup to your Google account"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                            <Grid
+                                Grid.Column="2"
+                                ColumnDefinitions="Auto,Auto"
+                                ColumnSpacing="6"
+                                InputTransparent="True"
+                                VerticalOptions="Center">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="8,4"
+                                    BackgroundColor="{DynamicResource SuccessLightColor}"
+                                    InputTransparent="True"
+                                    IsVisible="{Binding IsGoogleDriveConnected}"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="11"
+                                        InputTransparent="True"
+                                        Text="● ON"
+                                        TextColor="{DynamicResource SuccessColor}" />
+                                </Border>
+                                <mi:MauiIcon
+                                    Grid.Column="1"
+                                    Icon="{mi:Material Icon=ChevronRight}"
+                                    IconColor="{DynamicResource TextTertiaryColor}"
+                                    IconSize="24"
+                                    InputTransparent="True"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                        </Grid>
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding SelectProviderCommand}"
+                            CommandParameter="GoogleDrive"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+                    </Grid>
+                </Border>
+
+                <!--  ── Dropbox ──  -->
+                <Border
+                    Padding="0"
+                    BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{DynamicResource GrayShadowColor}"
+                            Opacity="0.06"
+                            Radius="12"
+                            Offset="0,4" />
+                    </Border.Shadow>
+                    <Grid>
+                        <Grid
+                            Padding="18"
+                            ColumnDefinitions="Auto,*,Auto"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="12"
+                                BackgroundColor="#0061FF"
+                                HeightRequest="50"
+                                InputTransparent="True"
+                                StrokeThickness="0"
+                                WidthRequest="50">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:FontAwesomeBrand Icon=Dropbox}"
+                                    IconColor="White"
+                                    IconSize="24"
+                                    InputTransparent="True"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                InputTransparent="True"
+                                Spacing="4"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    InputTransparent="True"
+                                    Text="Dropbox"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="13"
+                                    InputTransparent="True"
+                                    Text="Backup to your Dropbox storage"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                            <Grid
+                                Grid.Column="2"
+                                ColumnDefinitions="Auto,Auto"
+                                ColumnSpacing="6"
+                                InputTransparent="True"
+                                VerticalOptions="Center">
+
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="8,4"
+                                    BackgroundColor="{DynamicResource SuccessLightColor}"
+                                    InputTransparent="True"
+                                    IsVisible="{Binding IsDropboxConnected}"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="11"
+                                        InputTransparent="True"
+                                        Text="● ON"
+                                        TextColor="{DynamicResource SuccessColor}" />
+                                </Border>
+                                <mi:MauiIcon
+                                    Grid.Column="1"
+                                    Icon="{mi:Material Icon=ChevronRight}"
+                                    IconColor="{DynamicResource TextTertiaryColor}"
+                                    IconSize="24"
+                                    InputTransparent="True"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                        </Grid>
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding SelectProviderCommand}"
+                            CommandParameter="Dropbox"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+                    </Grid>
+                </Border>
+
+                <!--  ── OneDrive ──  -->
+                <Border
+                    Padding="0"
+                    BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{DynamicResource GrayShadowColor}"
+                            Opacity="0.06"
+                            Radius="12"
+                            Offset="0,4" />
+                    </Border.Shadow>
+                    <Grid>
+                        <Grid
+                            Padding="18"
+                            ColumnDefinitions="Auto,*,Auto"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="12"
+                                HeightRequest="50"
+                                StrokeThickness="0"
+                                WidthRequest="50">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Offset="0.0" Color="#0078D4" />
+                                        <GradientStop Offset="1.0" Color="#00BCF2" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:FontAwesomeBrand Icon=Microsoft}"
+                                    IconColor="White"
+                                    IconSize="24"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="4"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    Text="OneDrive"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="13"
+                                    Text="Backup to your Microsoft OneDrive"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                            <Grid
+                                Grid.Column="2"
+                                ColumnDefinitions="Auto,Auto"
+                                ColumnSpacing="6"
+                                VerticalOptions="Center">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="8,4"
+                                    BackgroundColor="{DynamicResource SuccessLightColor}"
+                                    InputTransparent="True"
+                                    IsVisible="{Binding IsOneDriveConnected}"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="11"
+                                        InputTransparent="True"
+                                        Text="● ON"
+                                        TextColor="{DynamicResource SuccessColor}" />
+                                </Border>
+                                <mi:MauiIcon
+                                    Grid.Column="1"
+                                    Icon="{mi:Material Icon=ChevronRight}"
+                                    IconColor="{DynamicResource TextTertiaryColor}"
+                                    IconSize="24"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                        </Grid>
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding SelectProviderCommand}"
+                            CommandParameter="OneDrive"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+                    </Grid>
+                </Border>
+
+                <!--  ── iCloud Drive ──  -->
+                <!--<Border
+                    Padding="0"
+                    BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{DynamicResource GrayShadowColor}"
+                            Opacity="0.06"
+                            Radius="12"
+                            Offset="0,4" />
+                    </Border.Shadow>
+                    <Grid>
+                        <Grid
+                            Padding="18"
+                            ColumnDefinitions="Auto,*,Auto"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="12"
+                                HeightRequest="50"
+                                StrokeThickness="0"
+                                WidthRequest="50">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Offset="0.0" Color="#3478F6" />
+                                        <GradientStop Offset="1.0" Color="#007AFF" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:FontAwesomeBrand Icon=Apple}"
+                                    IconColor="White"
+                                    IconSize="24"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="4"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    Text="iCloud Drive"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="13"
+                                    Text="Native Apple backup — no sign-in needed"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                            <Grid
+                                Grid.Column="2"
+                                ColumnDefinitions="Auto,Auto"
+                                ColumnSpacing="6"
+                                VerticalOptions="Center">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="7,3"
+                                    BackgroundColor="{DynamicResource WarningLightColor}"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="10"
+                                        Text="SOON"
+                                        TextColor="{DynamicResource WarningColor}" />
+                                </Border>
+                                <mi:MauiIcon
+                                    Grid.Column="1"
+                                    Icon="{mi:Material Icon=ChevronRight}"
+                                    IconColor="{DynamicResource TextTertiaryColor}"
+                                    IconSize="24"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                        </Grid>
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding SelectProviderCommand}"
+                            CommandParameter="iCloud"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+                    </Grid>
+                </Border>-->
+
+                <!--  ── WebDAV / Self-Hosted ──  -->
+                <!--
+                <Border
+                    Padding="0"
+                    BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{DynamicResource GrayShadowColor}"
+                            Opacity="0.06"
+                            Radius="12"
+                            Offset="0,4" />
+                    </Border.Shadow>
+                    <Grid>
+                        <Grid
+                            Padding="18"
+                            ColumnDefinitions="Auto,*,Auto"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="12"
+                                HeightRequest="50"
+                                StrokeThickness="0"
+                                WidthRequest="50">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Offset="0.0" Color="#6366F1" />
+                                        <GradientStop Offset="1.0" Color="#8B5CF6" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:FontAwesomeBrand Icon=Docker}"
+                                    IconColor="White"
+                                    IconSize="24"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Spacing="4"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    Text="WebDAV / Self-Hosted"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="13"
+                                    Text="Nextcloud, Synology NAS, or any WebDAV server"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                            <Grid
+                                Grid.Column="2"
+                                ColumnDefinitions="Auto,Auto"
+                                ColumnSpacing="6"
+                                VerticalOptions="Center">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="7,3"
+                                    BackgroundColor="{DynamicResource WarningLightColor}"
+                                    StrokeThickness="0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="10"
+                                        Text="SOON"
+                                        TextColor="{DynamicResource WarningColor}" />
+                                </Border>
+                                <mi:MauiIcon
+                                    Grid.Column="1"
+                                    Icon="{mi:Material Icon=ChevronRight}"
+                                    IconColor="{DynamicResource TextTertiaryColor}"
+                                    IconSize="24"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                        </Grid>
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding SelectProviderCommand}"
+                            CommandParameter="WebDAV"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+                    </Grid>
+                </Border>-->
+
+                <!--  Section label  -->
+                <Label
+                    Margin="4,8,0,0"
+                    FontAttributes="Bold"
+                    FontSize="13"
+                    Opacity="0.55"
+                    Text="OTHER"
+                    TextColor="{DynamicResource TextSecondaryColor}" />
+
+                <!--  ── USB / External Storage ──  -->
+                <Border
+                    Padding="0"
+                    BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="{DynamicResource GrayShadowColor}"
+                            Opacity="0.06"
+                            Radius="12"
+                            Offset="0,4" />
+                    </Border.Shadow>
+                    <Grid>
+                        <Grid
+                            Padding="18"
+                            ColumnDefinitions="Auto,*,Auto"
+                            ColumnSpacing="14">
+                            <Border
+                                Grid.Column="0"
+                                Padding="12"
+                                HeightRequest="50"
+                                InputTransparent="True"
+                                StrokeThickness="0"
+                                WidthRequest="50">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Offset="0.0" Color="#78716C" />
+                                        <GradientStop Offset="1.0" Color="#44403C" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+                                <!--  USB drive glyph &#xE1BC; = usb  -->
+                                <Label
+                                    FontFamily="MaterialIconsRegular"
+                                    FontSize="24"
+                                    HorizontalOptions="Center"
+                                    InputTransparent="True"
+                                    Text="&#xE1BC;"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                InputTransparent="True"
+                                Spacing="4"
+                                VerticalOptions="Center">
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="16"
+                                    InputTransparent="True"
+                                    Text="USB / External Storage"
+                                    TextColor="{DynamicResource TextColor}" />
+                                <Label
+                                    FontSize="13"
+                                    InputTransparent="True"
+                                    Text="Export encrypted backup to a thumb drive or local file"
+                                    TextColor="{DynamicResource TextSecondaryColor}" />
+                            </VerticalStackLayout>
+                            <mi:MauiIcon
+                                Grid.Column="2"
+                                Icon="{mi:Material Icon=ChevronRight}"
+                                IconColor="{DynamicResource TextTertiaryColor}"
+                                IconSize="24"
+                                InputTransparent="True"
+                                VerticalOptions="Center" />
+                        </Grid>
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding SelectProviderCommand}"
+                            CommandParameter="UsbExport"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+                    </Grid>
+                </Border>
+
+                <!--  Info Banner  -->
+                <Border
+                    Margin="0,4,0,0"
+                    Padding="16"
+                    BackgroundColor="{DynamicResource InfoLightColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <mi:MauiIcon
+                            Grid.Column="0"
+                            Icon="{mi:Material Icon=Info}"
+                            IconColor="{DynamicResource InfoColor}"
+                            IconSize="24"
+                            VerticalOptions="Start" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="Your Data is Always Encrypted"
+                                TextColor="{DynamicResource InfoColor}" />
+                            <Label
+                                FontSize="13"
+                                Text="All backups are encrypted with your master password before uploading. No one can access your data without it."
+                                TextColor="{DynamicResource TextSecondaryColor}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

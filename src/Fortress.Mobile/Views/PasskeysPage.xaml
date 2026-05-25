@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.PasskeysPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctrl="clr-namespace:Fortress.Controls"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:models="clr-namespace:Fortress.Mobile.Core.Models;assembly=Fortress.Mobile.Core"
+    xmlns:prism="http://prismlibrary.com"
+    xmlns:vm="clr-namespace:Fortress.ViewModels"
+    Title="Passkeys"
+    prism:ViewModelLocator.AutowireViewModel="Automatic"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid>
+        <CollectionView ItemsSource="{Binding Passkeys}">
+
+            <CollectionView.Header>
+                <ctrl:VaultPageHero
+                    Title="Passkeys"
+                    BackCommand="{Binding GoBackCommand}"
+                    CountText="{Binding CountText}"
+                    GradientEnd="{DynamicResource HeroGradientEnd}"
+                    GradientStart="{DynamicResource HeroGradientStart}"
+                    IconGlyph="&#xE897;"
+                    SearchText="{Binding SearchText, Mode=TwoWay}"
+                    Subtitle="VAULT" />
+            </CollectionView.Header>
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout
+                    Padding="40"
+                    HorizontalOptions="Center"
+                    Spacing="16"
+                    VerticalOptions="Center">
+                    <Border
+                        Padding="24"
+                        BackgroundColor="#EDE9FE"
+                        HeightRequest="88"
+                        HorizontalOptions="Center"
+                        StrokeThickness="0"
+                        WidthRequest="88">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="44" />
+                        </Border.StrokeShape>
+                        <mi:MauiIcon
+                            HorizontalOptions="Center"
+                            Icon="{mi:Material Icon=Key}"
+                            IconColor="#7C3AED"
+                            IconSize="40"
+                            VerticalOptions="Center" />
+                    </Border>
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="20"
+                        HorizontalOptions="Center"
+                        Text="No passkeys yet"
+                        TextColor="{DynamicResource TextColor}" />
+                    <Label
+                        FontSize="14"
+                        HorizontalOptions="Center"
+                        HorizontalTextAlignment="Center"
+                        Text="Passkeys appear here once saved from a website or app that supports them."
+                        TextColor="{DynamicResource TextSecondaryColor}" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="0" Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:PasskeyItem">
+                    <Grid Padding="16,6,16,0">
+                        <Border
+                            Padding="0"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.05"
+                                    Radius="8"
+                                    Offset="0,3" />
+                            </Border.Shadow>
+                            <Grid>
+                                <Grid
+                                    Padding="16,14,16,14"
+                                    ColumnDefinitions="Auto,*,Auto"
+                                    ColumnSpacing="14">
+
+                                    <!--  Key icon tile  -->
+                                    <Border
+                                        Grid.Column="0"
+                                        Padding="12"
+                                        BackgroundColor="#EDE9FE"
+                                        HeightRequest="48"
+                                        StrokeThickness="0"
+                                        WidthRequest="48">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="12" />
+                                        </Border.StrokeShape>
+                                        <mi:MauiIcon
+                                            HorizontalOptions="Center"
+                                            Icon="{mi:Material Icon=Key}"
+                                            IconColor="#7C3AED"
+                                            IconSize="22"
+                                            VerticalOptions="Center" />
+                                    </Border>
+
+                                    <!--  Text  -->
+                                    <VerticalStackLayout
+                                        Grid.Column="1"
+                                        Spacing="3"
+                                        VerticalOptions="Center">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="15"
+                                            LineBreakMode="TailTruncation"
+                                            Text="{Binding RpId}"
+                                            TextColor="{DynamicResource TextColor}" />
+                                        <Label
+                                            FontSize="12"
+                                            LineBreakMode="TailTruncation"
+                                            Text="{Binding UserDisplayName}"
+                                            TextColor="{DynamicResource TextSecondaryColor}" />
+                                        <HorizontalStackLayout Spacing="4">
+                                            <Border
+                                                Padding="6,3"
+                                                BackgroundColor="#EDE9FE"
+                                                StrokeThickness="0">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="6" />
+                                                </Border.StrokeShape>
+                                                <Label
+                                                    FontSize="10"
+                                                    Text="PASSKEY"
+                                                    TextColor="#7C3AED" />
+                                            </Border>
+                                            <Label
+                                                FontSize="11"
+                                                Text="{Binding SignCount, StringFormat='Used {0}×'}"
+                                                TextColor="{DynamicResource TextTertiaryColor}"
+                                                VerticalOptions="Center" />
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+
+                                    <!--  Chevron  -->
+                                    <mi:MauiIcon
+                                        Grid.Column="2"
+                                        HorizontalOptions="End"
+                                        Icon="{mi:Material Icon=ChevronRight}"
+                                        IconColor="{DynamicResource TextTertiaryColor}"
+                                        IconSize="20"
+                                        VerticalOptions="Center" />
+                                </Grid>
+
+                                <!--  Full-row tap target  -->
+                                <Button
+                                    Padding="0"
+                                    BackgroundColor="Transparent"
+                                    BorderWidth="0"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ViewPasskeyCommand}"
+                                    CommandParameter="{Binding .}"
+                                    HorizontalOptions="Fill"
+                                    VerticalOptions="Fill" />
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <CollectionView.Footer>
+                <BoxView HeightRequest="100" Color="Transparent" />
+            </CollectionView.Footer>
+        </CollectionView>
+    </Grid>
+</ContentPage>

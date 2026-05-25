@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.ShareItemPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    Title="Share Item"
+    prism:ViewModelLocator.AutowireViewModel="Automatic"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!--  HEADER  -->
+        <Border
+            Grid.Row="0"
+            Padding="20,16,20,24"
+            StrokeThickness="0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Offset="0.0" Color="#10B981" />
+                    <GradientStop Offset="1.0" Color="#059669" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,28,28" />
+            </Border.StrokeShape>
+            <VerticalStackLayout Spacing="14">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                    <Border
+                        Grid.Column="0"
+                        Padding="0"
+                        BackgroundColor="#25FFFFFF"
+                        HeightRequest="40"
+                        StrokeThickness="0"
+                        WidthRequest="40">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding GoBackCommand}"
+                            HeightRequest="40"
+                            WidthRequest="40">
+                            <Button.ImageSource>
+                                <FontImageSource
+                                    FontFamily="MaterialIconsRegular"
+                                    Glyph="&#xE5C4;"
+                                    Size="22"
+                                    Color="White" />
+                            </Button.ImageSource>
+                        </Button>
+                    </Border>
+                    <VerticalStackLayout
+                        Grid.Column="1"
+                        Spacing="2"
+                        VerticalOptions="Center">
+                        <Label
+                            FontSize="12"
+                            Opacity="0.75"
+                            Text="VAULT"
+                            TextColor="White" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="Share Item"
+                            TextColor="White" />
+                    </VerticalStackLayout>
+                </Grid>
+                <Border
+                    Padding="14"
+                    BackgroundColor="#20FFFFFF"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <mi:MauiIcon
+                            Grid.Column="0"
+                            Icon="{mi:Material Icon=Share}"
+                            IconColor="White"
+                            IconSize="22"
+                            VerticalOptions="Center" />
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Spacing="2"
+                            VerticalOptions="Center">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                Text="{Binding ItemLabel}"
+                                TextColor="White" />
+                            <Label
+                                FontSize="12"
+                                Opacity="0.8"
+                                Text="{Binding ItemTypeDisplay}"
+                                TextColor="White" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+        </Border>
+
+        <!--  CONTENT  -->
+        <ScrollView Grid.Row="1" Padding="20,16,20,20">
+            <VerticalStackLayout Spacing="16">
+
+                <!--  Info banner  -->
+                <Border
+                    Padding="16"
+                    BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <mi:MauiIcon
+                            Grid.Column="0"
+                            Icon="{mi:Material Icon=Info}"
+                            IconColor="{DynamicResource PrimaryColor}"
+                            IconSize="22"
+                            VerticalOptions="Start" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="How sharing works"
+                                TextColor="{DynamicResource PrimaryColor}" />
+                            <Label
+                                FontSize="13"
+                                Text="The item is encrypted with the passphrase below. Share the file via any method (AirDrop, message, email,whatsapp) then tell the recipient the passphrase separately."
+                                TextColor="{DynamicResource TextSecondaryColor}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!--  Passphrase card  -->
+                <Border
+                    Padding="20"
+                    BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.06"
+                            Radius="14"
+                            Offset="0,4" />
+                    </Border.Shadow>
+                    <VerticalStackLayout Spacing="14">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            Text="Encryption Passphrase"
+                            TextColor="{DynamicResource TextColor}" />
+                        <Label
+                            FontSize="12"
+                            Text="Share this passphrase with the recipient via a different channel (verbally, text, etc.)"
+                            TextColor="{DynamicResource TextTertiaryColor}" />
+
+                        <!--  Passphrase display  -->
+                        <Border
+                            Padding="16,14"
+                            BackgroundColor="{DynamicResource Gray-50}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Label
+                                CharacterSpacing="1"
+                                FontAttributes="Bold"
+                                FontFamily="Courier New"
+                                FontSize="18"
+                                HorizontalTextAlignment="Center"
+                                IsVisible="{Binding IsPassphraseVisible}"
+                                Text="{Binding Passphrase}"
+                                TextColor="{DynamicResource TextColor}" />
+                        </Border>
+
+                        <!--  Action buttons  -->
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                            <Button
+                                Grid.Column="0"
+                                Padding="8,10"
+                                BackgroundColor="{DynamicResource Gray-100}"
+                                Command="{Binding CopyPassphraseCommand}"
+                                CornerRadius="10"
+                                FontAttributes="Bold"
+                                FontSize="12"
+                                HeightRequest="40"
+                                Text="Copy"
+                                TextColor="{DynamicResource TextSecondaryColor}" />
+                            <Button
+                                Grid.Column="1"
+                                Padding="8,10"
+                                BackgroundColor="{DynamicResource Gray-100}"
+                                Command="{Binding RegeneratePassphraseCommand}"
+                                CornerRadius="10"
+                                FontAttributes="Bold"
+                                FontSize="12"
+                                HeightRequest="40"
+                                Text="New"
+                                TextColor="{DynamicResource TextSecondaryColor}" />
+                            <Button
+                                Grid.Column="2"
+                                Padding="8,10"
+                                BackgroundColor="{DynamicResource Gray-100}"
+                                Command="{Binding TogglePassphraseVisibilityCommand}"
+                                CornerRadius="10"
+                                FontAttributes="Bold"
+                                FontSize="12"
+                                HeightRequest="40"
+                                Text="Hide"
+                                TextColor="{DynamicResource TextSecondaryColor}" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  Warning  -->
+                <Border
+                    Padding="14"
+                    BackgroundColor="{DynamicResource WarningLightColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                        <mi:MauiIcon
+                            Grid.Column="0"
+                            Icon="{mi:Material Icon=Warning}"
+                            IconColor="{DynamicResource WarningColor}"
+                            IconSize="20"
+                            VerticalOptions="Start" />
+                        <Label
+                            Grid.Column="1"
+                            FontSize="12"
+                            Text="Never send the passphrase in the same message as the file. Tell the recipient in person, by phone, or in a separate conversation."
+                            TextColor="{DynamicResource TextSecondaryColor}" />
+                    </Grid>
+                </Border>
+
+                <!--  Share button  -->
+                <Border
+                    Padding="0"
+                    BackgroundColor="#10B981"
+                    IsVisible="{Binding IsSharing, Converter={StaticResource InverseBoolConverter}}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="#10B981"
+                            Opacity="0.3"
+                            Radius="12"
+                            Offset="0,4" />
+                    </Border.Shadow>
+                    <Button
+                        Padding="0,16"
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding ShareCommand}"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="Encrypt &amp; Share "
+                        TextColor="White" />
+                </Border>
+
+                <!--  Sharing progress  -->
+                <Border
+                    Padding="20"
+                    BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    IsVisible="{Binding IsSharing}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.06"
+                            Radius="14"
+                            Offset="0,4" />
+                    </Border.Shadow>
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="12">
+                        <ActivityIndicator
+                            HeightRequest="32"
+                            HorizontalOptions="Center"
+                            IsRunning="{Binding IsSharing}"
+                            Color="#10B981" />
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="15"
+                            HorizontalTextAlignment="Center"
+                            Text="{Binding SharingStatus}"
+                            TextColor="{DynamicResource TextColor}" />
+                        <Label
+                            FontSize="12"
+                            HorizontalTextAlignment="Center"
+                            Opacity="0.6"
+                            Text="AES-256-GCM encryption with PBKDF2"
+                            TextColor="{DynamicResource TextSecondaryColor}" />
+                    </VerticalStackLayout>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

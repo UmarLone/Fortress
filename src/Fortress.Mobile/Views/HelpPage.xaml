@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.HelpPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:Fortress.Converters"
+    xmlns:ctrl="clr-namespace:Fortress.Controls"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:models="clr-namespace:Fortress.Models"
+  xmlns:prism="http://prismlibrary.com"
+    prism:ViewModelLocator.AutowireViewModel="Automatic"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+      <converter:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmpty" />
+      <converter:InverseBoolConverter x:Key="InvertBool" />
+
+        <!--  ── Template selector ─────────────────────────────────────────  -->
+   <ctrl:HelpRowTemplateSelector x:Key="HelpSelector">
+
+      <!--  CATEGORY HEADER  -->
+            <ctrl:HelpRowTemplateSelector.CategoryHeaderTemplate>
+             <DataTemplate x:DataType="models:HelpRow">
+        <VerticalStackLayout Padding="16,16,16,0" Spacing="0">
+        <Border
+            Padding="0,0,0,0"
+ BackgroundColor="{DynamicResource CardBackgroundColor}"
+    StrokeThickness="0">
+        <Border.StrokeShape>
+         <RoundRectangle CornerRadius="18,18,0,0" />
+        </Border.StrokeShape>
+               <Border.Shadow>
+               <Shadow
+        Brush="{DynamicResource GrayShadowColor}"
+             Opacity="0.06"
+       Radius="10"
+      Offset="0,3" />
+        </Border.Shadow>
+              <Grid
+          Padding="16,14"
+      ColumnDefinitions="Auto,*"
+  ColumnSpacing="12">
+    <Border
+      Grid.Column="0"
+               Padding="9"
+  BackgroundColor="{DynamicResource PrimaryLightestColor}"
+       HeightRequest="40"
+   StrokeThickness="0"
+    WidthRequest="40">
+              <Border.StrokeShape>
+      <RoundRectangle CornerRadius="11" />
+     </Border.StrokeShape>
+      <Label
+               FontFamily="MaterialIconsRegular"
+    FontSize="20"
+      HorizontalOptions="Center"
+         Text="{Binding CategoryIcon}"
+                TextColor="{DynamicResource PrimaryColor}"
+          VerticalOptions="Center" />
+          </Border>
+      <Label
+ Grid.Column="1"
+         FontAttributes="Bold"
+    FontSize="15"
+         Text="{Binding CategoryTitle}"
+       TextColor="{DynamicResource TextColor}"
+   VerticalOptions="Center" />
+             </Grid>
+     </Border>
+    <!--  Divider below header  -->
+     <BoxView
+          Margin="16,0"
+      BackgroundColor="{DynamicResource CardBackgroundColor}"
+     HeightRequest="1">
+   <BoxView.Triggers>
+   <DataTrigger
+              Binding="{Binding CategoryTitle}"
+       TargetType="BoxView"
+   Value="{x:Null}">
+       <Setter Property="Color" Value="Transparent" />
+     </DataTrigger>
+     </BoxView.Triggers>
+           </BoxView>
+                 <BoxView
+      Margin="16,0"
+   HeightRequest="1"
+ Color="{DynamicResource Gray-100}" />
+           </VerticalStackLayout>
+     </DataTemplate>
+        </ctrl:HelpRowTemplateSelector.CategoryHeaderTemplate>
+
+  <!--  QUESTION ROW (accordion)  -->
+          <ctrl:HelpRowTemplateSelector.QuestionTemplate>
+        <DataTemplate x:DataType="models:HelpRow">
+    <VerticalStackLayout
+       Margin="16,0"
+  BackgroundColor="{DynamicResource CardBackgroundColor}"
+        Spacing="0">
+   <!--  Question tap row  -->
+ <Grid
+          Padding="16,14,14,14"
+     ColumnDefinitions="*,Auto"
+     ColumnSpacing="8">
+      <Label
+          Grid.Column="0"
+   FontAttributes="Bold"
+         FontSize="13"
+      Text="{Binding Item.Question}"
+      TextColor="{DynamicResource TextColor}"
+      VerticalOptions="Center" />
+    <mi:MauiIcon
+             Grid.Column="1"
+       Icon="{mi:Material Icon=KeyboardArrowDown}"
+       IconColor="{DynamicResource PrimaryColor}"
+                IconSize="20"
+  VerticalOptions="Center">
+      <mi:MauiIcon.Triggers>
+      <DataTrigger
+        Binding="{Binding Item.IsExpanded}"
+            TargetType="mi:MauiIcon"
+         Value="True">
+          <Setter Property="Icon" Value="{mi:Material Icon=KeyboardArrowUp}" />
+        </DataTrigger>
+            </mi:MauiIcon.Triggers>
+        </mi:MauiIcon>
+              <Grid.GestureRecognizers>
+<TapGestureRecognizer
+  Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleItemCommand}"
+ CommandParameter="{Binding Item}" />
+        </Grid.GestureRecognizers>
+       </Grid>
+      <!--  Answer  -->
+     <VerticalStackLayout IsVisible="{Binding Item.IsExpanded}" Spacing="0">
+<BoxView
+            Margin="16,0"
+         HeightRequest="1"
+  Color="{DynamicResource Gray-100}" />
+          <Border
+        Margin="12,0,12,12"
+  Padding="12"
+         BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                StrokeThickness="0">
+              <Border.StrokeShape>
+         <RoundRectangle CornerRadius="12" />
+    </Border.StrokeShape>
+    <Label
+   FontSize="13"
+         LineHeight="1.5"
+     Text="{Binding Item.Answer}"
+     TextColor="{DynamicResource TextSecondaryColor}" />
+        </Border>
+                </VerticalStackLayout>
+       <!--  Row separator  -->
+    <BoxView
+     Margin="16,0"
+      HeightRequest="1"
+   Color="{DynamicResource Gray-50}" />
+        </VerticalStackLayout>
+           </DataTemplate>
+        </ctrl:HelpRowTemplateSelector.QuestionTemplate>
+
+ <!--  FOOTER (closes the last card + copyright)  -->
+            <ctrl:HelpRowTemplateSelector.FooterTemplate>
+     <DataTemplate x:DataType="models:HelpRow">
+ <VerticalStackLayout Spacing="0">
+   <!--  Close the last card  -->
+       <Border
+      Margin="16,0,16,0"
+           BackgroundColor="{DynamicResource CardBackgroundColor}"
+          HeightRequest="16"
+          StrokeThickness="0">
+      <Border.StrokeShape>
+                  <RoundRectangle CornerRadius="0,0,18,18" />
+       </Border.StrokeShape>
+ </Border>
+           <!--  Copyright  -->
+             <VerticalStackLayout
+    Margin="0,16,0,40"
+      HorizontalOptions="Center"
+      Spacing="2">
+            <Label
+     FontSize="12"
+       HorizontalOptions="Center"
+  Text="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.CopyrightText}"
+  TextColor="{DynamicResource TextTertiaryColor}" />
+            <Label
+           FontSize="11"
+         HorizontalOptions="Center"
+      Text="All rights reserved"
+          TextColor="{DynamicResource TextTertiaryColor}" />
+        </VerticalStackLayout>
+         </VerticalStackLayout>
+     </DataTemplate>
+     </ctrl:HelpRowTemplateSelector.FooterTemplate>
+
+        </ctrl:HelpRowTemplateSelector>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+  <!--  ═══ HERO HEADER ═══  -->
+        <ctrl:VaultPageHero
+        Title="Help &amp; FAQ"
+         Grid.Row="0"
+            BackCommand="{Binding GoBackCommand}"
+       CountText="How can we help you?"
+            GradientEnd="{DynamicResource PrimaryGradient}"
+   GradientStart="{DynamicResource PrimaryColor}"
+     IconGlyph="&#xE88E;"
+            SearchEnabled="False"
+   Subtitle="SUPPORT" />
+
+   <!--  ═══ CONTENT ═══  -->
+        <Grid Grid.Row="1" RowDefinitions="Auto,*">
+
+       <!--  Search bar  -->
+      <Border
+             Grid.Row="0"
+       Margin="16,14,16,4"
+         Padding="14,10"
+     BackgroundColor="{DynamicResource CardBackgroundColor}"
+                StrokeThickness="0">
+      <Border.StrokeShape>
+  <RoundRectangle CornerRadius="14" />
+            </Border.StrokeShape>
+   <Border.Shadow>
+   <Shadow
+               Brush="{DynamicResource GrayShadowColor}"
+    Opacity="0.06"
+     Radius="8"
+       Offset="0,2" />
+   </Border.Shadow>
+    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+    <mi:MauiIcon
+      Grid.Column="0"
+          Icon="{mi:Material Icon=Search}"
+     IconColor="{DynamicResource TextTertiaryColor}"
+  IconSize="20"
+             VerticalOptions="Center" />
+            <Entry
+         Grid.Column="1"
+    FontSize="14"
+         Placeholder="Search help topics…"
+    PlaceholderColor="{DynamicResource TextTertiaryColor}"
+     Text="{Binding SearchText}"
+  TextColor="{DynamicResource TextColor}"
+ VerticalOptions="Center" />
+                 <mi:MauiIcon
+              Grid.Column="2"
+         Icon="{mi:Material Icon=Close}"
+      IconColor="{DynamicResource TextTertiaryColor}"
+          IconSize="18"
+   IsVisible="{Binding SearchText, Converter={StaticResource StringNotNullOrEmpty}}"
+             VerticalOptions="Center">
+       <mi:MauiIcon.GestureRecognizers>
+     <TapGestureRecognizer Command="{Binding ClearSearchCommand}" />
+          </mi:MauiIcon.GestureRecognizers>
+           </mi:MauiIcon>
+      </Grid>
+  </Border>
+
+            <!--  Loading indicator  -->
+            <ActivityIndicator
+    Grid.Row="1"
+      HorizontalOptions="Center"
+       IsRunning="{Binding IsLoading}"
+    IsVisible="{Binding IsLoading}"
+       VerticalOptions="Center"
+   Color="{DynamicResource PrimaryColor}" />
+
+      <!--  Virtualised accordion list  -->
+        <CollectionView
+             Grid.Row="1"
+          IsVisible="{Binding IsLoading, Converter={StaticResource InvertBool}}"
+     ItemTemplate="{StaticResource HelpSelector}"
+        ItemsSource="{Binding Rows}"
+    SelectionMode="None">
+    <CollectionView.ItemsLayout>
+   <LinearItemsLayout ItemSpacing="0" Orientation="Vertical" />
+             </CollectionView.ItemsLayout>
+
+           <!--Empty state (search returned nothing)  -->
+<CollectionView.EmptyView>
+        <VerticalStackLayout
+       Padding="40"
+    HorizontalOptions="Center"
+          Spacing="12"
+    VerticalOptions="Center">
+            <mi:MauiIcon
+      HorizontalOptions="Center"
+       Icon="{mi:Material Icon=SearchOff}"
+            IconColor="{DynamicResource TextTertiaryColor}"
+          IconSize="48" />
+         <Label
+               FontAttributes="Bold"
+       FontSize="16"
+            HorizontalOptions="Center"
+    Text="No results found"
+          TextColor="{DynamicResource TextColor}" />
+ <Label
+         FontSize="13"
+      HorizontalOptions="Center"
+    HorizontalTextAlignment="Center"
+   Text="Try a different search term"
+              TextColor="{DynamicResource TextSecondaryColor}" />
+   </VerticalStackLayout>
+  </CollectionView.EmptyView>
+            </CollectionView>
+
+        </Grid>
+    </Grid>
+</ContentPage>

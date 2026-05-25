@@ -1,0 +1,270 @@
+<Page
+    x:Class="Fortress.Windows.Desktop.Views.Pages.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Fortress.Windows.Desktop.Views.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="About"
+    Margin="30"
+    d:DataContext="{d:DesignInstance local:AboutPage, IsDesignTimeCreatable=False}"
+    d:DesignHeight="800"
+    d:DesignWidth="900"
+    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+    ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    mc:Ignorable="d">
+
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="0,0,0,40">
+
+   <!--  Page header  -->
+            <TextBlock Margin="0,0,0,4" FontSize="26" FontWeight="SemiBold" Text="About" />
+         <TextBlock Margin="0,0,0,28" Opacity="0.6" Text="Information about Fortress and its components" />
+
+     <!--  App identity hero card  -->
+            <Border Margin="0,0,0,24" ClipToBounds="True" CornerRadius="16">
+     <Border.Background>
+     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+      <GradientStop Offset="0" Color="#1E3A8A" />
+   <GradientStop Offset="0.55" Color="#1D4ED8" />
+           <GradientStop Offset="1" Color="#6D28D9" />
+          </LinearGradientBrush>
+          </Border.Background>
+           <Border.Effect>
+   <DropShadowEffect BlurRadius="28" Opacity="0.3" ShadowDepth="0" Color="#1D4ED8" />
+   </Border.Effect>
+          <Grid Margin="32,28,32,28">
+ <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+         <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+  <!--  Logo  -->
+         <Border
+         Grid.Column="0"
+        Width="80" Height="80"
+       Margin="0,0,24,0"
+        Background="#30FFFFFF"
+    CornerRadius="20">
+  <Image
+        Width="54" Height="54"
+  HorizontalAlignment="Center"
+         VerticalAlignment="Center"
+       RenderOptions.BitmapScalingMode="HighQuality"
+            Source="/Assets/logowhite.png" />
+      </Border>
+
+       <!--  Name + version  -->
+    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+  <TextBlock
+                  FontFamily="pack://application:,,,/Assets/Fonts/#Audiowide"
+    FontSize="28"
+         FontWeight="Bold"
+          Foreground="White"
+          Text="FORTRESS" />
+       <StackPanel Margin="0,8,0,0" Orientation="Horizontal">
+                   <Border Margin="0,0,8,0" Padding="10,4" Background="#30FFFFFF" CornerRadius="12">
+  <TextBlock FontSize="13" FontWeight="SemiBold" Foreground="White"
+           Text="{Binding ViewModel.AppVersion}" />
+     </Border>
+     <Border Padding="10,4" Background="#30FFFFFF" CornerRadius="12">
+         <TextBlock FontSize="13" Foreground="White" Opacity="0.85"
+               Text="Windows Desktop" />
+       </Border>
+           </StackPanel>
+                   <TextBlock
+           Margin="0,10,0,0"
+          FontSize="13"
+ Foreground="White"
+               Opacity="0.75"
+   Text="A secure, local-first password manager for Windows." />
+  </StackPanel>
+      </Grid>
+            </Border>
+
+            <!--  BUILD INFORMATION  -->
+            <TextBlock Margin="0,0,0,12" FontSize="11" FontWeight="SemiBold" Opacity="0.45" Text="BUILD INFORMATION" />
+            <ui:Card Margin="0,0,0,24" Padding="20">
+        <StackPanel>
+           <Grid Margin="0,0,0,14">
+   <Grid.ColumnDefinitions>
+           <ColumnDefinition Width="160" />
+       <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+         <TextBlock VerticalAlignment="Center" FontWeight="Medium" Opacity="0.7" Text="Version" />
+     <TextBlock Grid.Column="1" VerticalAlignment="Center" FontWeight="SemiBold"
+     Text="{Binding ViewModel.AppVersion}" />
+     </Grid>
+         <Separator Margin="0,0,0,14" />
+         <Grid Margin="0,0,0,14">
+                 <Grid.ColumnDefinitions>
+  <ColumnDefinition Width="160" />
+       <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+        <TextBlock VerticalAlignment="Center" FontWeight="Medium" Opacity="0.7" Text="Build Date" />
+    <TextBlock Grid.Column="1" VerticalAlignment="Center"
+      Text="{Binding ViewModel.BuildDate}" />
+           </Grid>
+      <Separator Margin="0,0,0,14" />
+         <Grid Margin="0,0,0,14">
+         <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="160" />
+          <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+   <TextBlock VerticalAlignment="Center" FontWeight="Medium" Opacity="0.7" Text="Platform" />
+       <TextBlock Grid.Column="1" VerticalAlignment="Center"
+              Text=".NET 10 - Windows Desktop (WPF)" />
+     </Grid>
+    <Separator Margin="0,0,0,14" />
+           <Grid>
+      <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="160" />
+     <ColumnDefinition Width="*" />
+         </Grid.ColumnDefinitions>
+       <TextBlock VerticalAlignment="Center" FontWeight="Medium" Opacity="0.7" Text="UI Framework" />
+            <TextBlock Grid.Column="1" VerticalAlignment="Center"
+          Text="WPF UI (Lepo) - Fluent Design" />
+      </Grid>
+         </StackPanel>
+            </ui:Card>
+
+            <!--  PRODUCT SUITE  -->
+    <TextBlock Margin="0,0,0,12" FontSize="11" FontWeight="SemiBold" Opacity="0.45" Text="PRODUCT SUITE" />
+ <ui:Card Margin="0,0,0,24" Padding="20">
+           <StackPanel>
+    <!--  Windows Desktop  -->
+        <Grid Margin="0,0,0,16">
+        <Grid.ColumnDefinitions>
+    <ColumnDefinition Width="46" />
+           <ColumnDefinition Width="*" />
+         <ColumnDefinition Width="Auto" />
+  </Grid.ColumnDefinitions>
+      <Border Width="38" Height="38" Background="#1A3B82F6" CornerRadius="10">
+     <ui:SymbolIcon FontSize="18" Foreground="#3B82F6" Symbol="Desktop24" />
+            </Border>
+    <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+      <TextBlock FontWeight="SemiBold" Text="Fortress for Windows" />
+         <TextBlock FontSize="12" Opacity="0.55" Text="Desktop password manager" />
+              </StackPanel>
+       <Border Grid.Column="2" Padding="8,3" VerticalAlignment="Center"
+           Background="#1A22C55E" CornerRadius="6">
+            <TextBlock FontSize="11" FontWeight="SemiBold" Foreground="#22C55E" Text="Installed" />
+       </Border>
+    </Grid>
+     <Separator Margin="0,0,0,16" />
+  <!--  Mobile (MAUI)  -->
+     <Grid Margin="0,0,0,16">
+                 <Grid.ColumnDefinitions>
+         <ColumnDefinition Width="46" />
+            <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+    <Border Width="38" Height="38" Background="#1A10B981" CornerRadius="10">
+       <ui:SymbolIcon FontSize="18" Foreground="#10B981" Symbol="Phone24" />
+      </Border>
+  <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+        <TextBlock FontWeight="SemiBold" Text="Fortress for iOS &amp; Android" />
+            <TextBlock FontSize="12" Opacity="0.55" Text=".NET MAUI cross-platform mobile app" />
+              </StackPanel>
+            <Border Grid.Column="2" Padding="8,3" VerticalAlignment="Center"
+        Background="#1A8B5CF6" CornerRadius="6">
+   <TextBlock FontSize="11" FontWeight="SemiBold" Foreground="#8B5CF6" Text="Companion" />
+       </Border>
+</Grid>
+         <Separator Margin="0,0,0,16" />
+          <!--  Browser Extension  -->
+     <Grid>
+          <Grid.ColumnDefinitions>
+    <ColumnDefinition Width="46" />
+ <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+    <Border Width="38" Height="38" Background="#1AF59E0B" CornerRadius="10">
+   <ui:SymbolIcon FontSize="18" Foreground="#F59E0B" Symbol="GlobeClock24" />
+     </Border>
+     <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+        <TextBlock FontWeight="SemiBold" Text="Fortress Browser Extension" />
+ <TextBlock FontSize="12" Opacity="0.55" Text="Autofill for Chrome, Edge &amp; Firefox" />
+          </StackPanel>
+     <Border Grid.Column="2" Padding="8,3" VerticalAlignment="Center"
+             Background="#1AF59E0B" CornerRadius="6">
+             <TextBlock FontSize="11" FontWeight="SemiBold" Foreground="#F59E0B" Text="Companion" />
+  </Border>
+       </Grid>
+ </StackPanel>
+      </ui:Card>
+
+          <!--  SECURITY MODEL  -->
+    <TextBlock Margin="0,0,0,12" FontSize="11" FontWeight="SemiBold" Opacity="0.45" Text="SECURITY MODEL" />
+     <ui:Card Margin="0,0,0,24" Padding="20">
+   <StackPanel>
+ <Grid Margin="0,0,0,14">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="32" />
+      <ColumnDefinition Width="*" />
+       </Grid.ColumnDefinitions>
+  <ui:SymbolIcon Margin="0,2,0,0" VerticalAlignment="Top" FontSize="18"
+              Foreground="#3B82F6" Symbol="LockClosed24" />
+          <StackPanel Grid.Column="1" Margin="12,0,0,0">
+       <TextBlock Margin="0,0,0,2" FontWeight="SemiBold" Text="AES-256 Encryption" />
+    <TextBlock FontSize="12" Opacity="0.65" TextWrapping="Wrap"
+             Text="All vault data is encrypted at rest using AES-256-GCM before being written to disk." />
+          </StackPanel>
+    </Grid>
+     <Separator Margin="0,0,0,14" />
+    <Grid Margin="0,0,0,14">
+     <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="32" />
+      <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+             <ui:SymbolIcon Margin="0,2,0,0" VerticalAlignment="Top" FontSize="18"
+           Foreground="#10B981" Symbol="Key24" />
+      <StackPanel Grid.Column="1" Margin="12,0,0,0">
+        <TextBlock Margin="0,0,0,2" FontWeight="SemiBold" Text="Zero-Knowledge Architecture" />
+              <TextBlock FontSize="12" Opacity="0.65" TextWrapping="Wrap"
+             Text="Your master password never leaves your device. Keys are derived locally using PBKDF2." />
+         </StackPanel>
+              </Grid>
+       <Separator Margin="0,0,0,14" />
+             <Grid>
+      <Grid.ColumnDefinitions>
+       <ColumnDefinition Width="32" />
+  <ColumnDefinition Width="*" />
+       </Grid.ColumnDefinitions>
+    <ui:SymbolIcon Margin="0,2,0,0" VerticalAlignment="Top" FontSize="18"
+            Foreground="#8B5CF6" Symbol="ShieldKeyhole24" />
+  <StackPanel Grid.Column="1" Margin="12,0,0,0">
+       <TextBlock Margin="0,0,0,2" FontWeight="SemiBold" Text="Local-First Storage" />
+     <TextBlock FontSize="12" Opacity="0.65" TextWrapping="Wrap"
+             Text="Vault data is stored locally in an encrypted LiteDB database. Cloud sync is optional and end-to-end encrypted." />
+    </StackPanel>
+             </Grid>
+                </StackPanel>
+            </ui:Card>
+
+      <!--  ACTIONS  -->
+            <TextBlock Margin="0,0,0,12" FontSize="11" FontWeight="SemiBold" Opacity="0.45" Text="ACTIONS" />
+            <ui:Card Padding="20">
+  <StackPanel Orientation="Horizontal">
+            <ui:Button
+             Margin="0,0,10,0"
+            Padding="16,9"
+               Appearance="Primary"
+       Command="{Binding ViewModel.CheckForUpdatesCommand}"
+Content="Check for Updates"
+            Icon="{ui:SymbolIcon Symbol=ArrowSync24}" />
+ <ui:Button
+             Margin="0,0,10,0"
+    Padding="16,9"
+            Appearance="Secondary"
+   Command="{Binding ViewModel.ViewLicensesCommand}"
+            Content="View Licenses"
+              Icon="{ui:SymbolIcon Symbol=Document24}" />
+     </StackPanel>
+    </ui:Card>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

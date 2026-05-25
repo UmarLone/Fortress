@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<the49:BottomSheet
+    x:Class="Fortress.Views.PopupPages.BottomSheet"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:Fortress.Converters"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:the49="clr-namespace:The49.Maui.BottomSheet;assembly=The49.Maui.BottomSheet"
+    BackgroundColor="{DynamicResource CardBackgroundColor}"
+    HasBackdrop="True"
+    HasHandle="True">
+
+    <the49:BottomSheet.Resources>
+        <ResourceDictionary>
+            <!--
+                The49 BottomSheet renders inside a native Android BottomSheetDialog whose
+                window background is always light/white and does NOT inherit the app theme.
+                All colours here are therefore explicit theme-aware values so they are
+                readable on both the CardBackgroundColor surface AND the native white surface.
+            -->
+
+            <!--  Row state converters  -->
+            <converter:BoolToObjectConverter
+                x:Key="SelectedRowBgConverter"
+                FalseObject="{DynamicResource CardBackgroundColor}"
+                TrueObject="{DynamicResource PrimaryLightestColor}" />
+            <converter:BoolToObjectConverter
+                x:Key="SelectedIconBgConverter"
+                FalseObject="{DynamicResource CardBackgroundColorAlt}"
+                TrueObject="{DynamicResource PrimaryColor}" />
+            <converter:BoolToObjectConverter
+                x:Key="SelectedIconFgConverter"
+                FalseObject="{DynamicResource PrimaryColor}"
+                TrueObject="White" />
+            <converter:BoolToObjectConverter
+                x:Key="SelectedTitleColorConverter"
+                FalseObject="{DynamicResource TextColor}"
+                TrueObject="{DynamicResource PrimaryColor}" />
+            <converter:BoolToObjectConverter
+                x:Key="SelectedFontAttrConverter"
+                FalseObject="None"
+                TrueObject="Bold" />
+            <converter:InverseBoolConverter x:Key="InvertBool" />
+        </ResourceDictionary>
+    </the49:BottomSheet.Resources>
+
+    <the49:BottomSheet.Detents>
+        <the49:ContentDetent />
+    </the49:BottomSheet.Detents>
+
+    <VerticalStackLayout
+        Padding="0"
+        BackgroundColor="{DynamicResource CardBackgroundColor}"
+        Spacing="0">
+
+        <!--  Title  -->
+        <Label
+            Margin="20,20,20,16"
+            FontAttributes="Bold"
+            FontSize="17"
+            HorizontalOptions="Start"
+            LineBreakMode="TailTruncation"
+            Text="{Binding Title}"
+            TextColor="{DynamicResource TextColor}" />
+
+        <!--  Divider  -->
+        <BoxView
+            Margin="20,0"
+            HeightRequest="1"
+            Color="{DynamicResource SeparatorColor}" />
+
+        <!--  Options List  -->
+        <VerticalStackLayout
+            x:Name="ListView"
+            Margin="0,8,0,20"
+            BindableLayout.ItemsSource="{Binding BottomSheetOptions}"
+            Spacing="2">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
+                    <Border
+                        Margin="12,2"
+                        Padding="14,12"
+                        BackgroundColor="{Binding IsSelected, Converter={StaticResource SelectedRowBgConverter}}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type the49:BottomSheet}}, Path=BindingContext.RunCommand}" CommandParameter="{Binding}" />
+                        </Border.GestureRecognizers>
+
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+
+                            <!--  Icon badge  -->
+                            <Border
+                                Grid.Column="0"
+                                Padding="10"
+                                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                HeightRequest="40"
+                                InputTransparent="True"
+                                IsVisible="{Binding HasIcon}"
+                                StrokeThickness="0"
+                                WidthRequest="40">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <Label
+                                    FontFamily="MaterialIconsRegular"
+                                    FontSize="18"
+                                    HorizontalOptions="Center"
+                                    InputTransparent="True"
+                                    Text="{Binding IconGlyph}"
+                                    TextColor="{Binding IsSelected, Converter={StaticResource SelectedIconFgConverter}}"
+                                    VerticalOptions="Center" />
+                            </Border>
+
+                            <!--  Title  -->
+                            <Label
+                                Grid.Column="1"
+                                FontAttributes="{Binding IsSelected, Converter={StaticResource SelectedFontAttrConverter}}"
+                                FontSize="15"
+                                InputTransparent="True"
+                                Text="{Binding Title}"
+                                TextColor="{Binding IsSelected, Converter={StaticResource SelectedTitleColorConverter}}"
+                                VerticalOptions="Center" />
+
+                            <!--  Check / chevron  -->
+                            <Grid
+                                Grid.Column="2"
+                                HorizontalOptions="End"
+                                VerticalOptions="Center">
+                                <mi:MauiIcon
+                                    Icon="{mi:Material Icon=CheckCircle}"
+                                    IconColor="{DynamicResource PrimaryColor}"
+                                    IconSize="22"
+                                    InputTransparent="True"
+                                    IsVisible="{Binding IsSelected}" />
+                                <mi:MauiIcon
+                                    Icon="{mi:Material Icon=ChevronRight}"
+                                    IconColor="{DynamicResource TextSecondaryColor}"
+                                    IconSize="20"
+                                    InputTransparent="True"
+                                    IsVisible="{Binding IsSelected, Converter={StaticResource InvertBool}}" />
+                            </Grid>
+
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </VerticalStackLayout>
+
+    </VerticalStackLayout>
+</the49:BottomSheet>

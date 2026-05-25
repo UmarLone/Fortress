@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.GroupsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Fortress.Controls"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    xmlns:vm="clr-namespace:Fortress.ViewModels"
+    x:DataType="vm:GroupsPageViewModel"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!--  ══ HERO HEADER ══  -->
+        <controls:VaultPageHero
+            Title="My Groups"
+            Grid.Row="0"
+            BackCommand="{Binding GoBackCommand}"
+            CountText="{Binding Groups.Count, StringFormat='{0} groups'}"
+            GradientEnd="#1a3f6f"
+            GradientStart="#407cca"
+            SearchEnabled="False" />
+
+        <!--  ══ CONTENT ══  -->
+        <RefreshView
+            Grid.Row="1"
+            Command="{Binding RefreshCommand}"
+            IsRefreshing="{Binding IsRefreshing}">
+
+            <CollectionView
+                Margin="16,0"
+                ItemsSource="{Binding Groups}"
+                SelectionMode="None">
+
+                <!--  Empty state  -->
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout
+                        Padding="40"
+                        HorizontalOptions="Center"
+                        Spacing="14"
+                        VerticalOptions="Center">
+                        <Border
+                            Padding="26"
+                            BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                            HeightRequest="92"
+                            HorizontalOptions="Center"
+                            StrokeThickness="0"
+                            WidthRequest="92">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="46" />
+                            </Border.StrokeShape>
+                            <mi:MauiIcon
+                                HorizontalOptions="Center"
+                                Icon="{mi:Material Icon=FolderOpen}"
+                                IconColor="{DynamicResource PrimaryColor}"
+                                IconSize="40"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            HorizontalOptions="Center"
+                            Text="No groups yet"
+                            TextColor="{DynamicResource TextColor}" />
+                        <Label
+                            FontSize="13"
+                            HorizontalOptions="Center"
+                            HorizontalTextAlignment="Center"
+                            Text="Tap + to create a group and organise your passwords into categories."
+                            TextColor="{DynamicResource TextSecondaryColor}" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <!--  Two-column grid  -->
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout
+                        HorizontalItemSpacing="12"
+                        Orientation="Vertical"
+                        Span="2"
+                        VerticalItemSpacing="12" />
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.Header>
+                    <BoxView HeightRequest="16" Color="Transparent" />
+                </CollectionView.Header>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:VaultGroupViewModel">
+                        <Border
+                            Margin="0"
+                            Padding="0"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="20" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.07"
+                                    Radius="10"
+                                    Offset="0,3" />
+                            </Border.Shadow>
+
+                            <Grid>
+                                <VerticalStackLayout Padding="16,18,16,16" Spacing="0">
+
+                                    <!--  Gradient icon tile  -->
+                                    <Border
+                                        Padding="0"
+                                        HeightRequest="52"
+                                        HorizontalOptions="Start"
+                                        StrokeThickness="0"
+                                        WidthRequest="52">
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="14" />
+                                        </Border.StrokeShape>
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Offset="0.0" Color="{Binding Color}" />
+                                                <GradientStop Offset="1.0" Color="{Binding Color}" />
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                        <mi:MauiIcon
+                                            HorizontalOptions="Center"
+                                            Icon="{mi:Material Icon=Folder}"
+                                            IconColor="White"
+                                            IconSize="26"
+                                            VerticalOptions="Center" />
+                                    </Border>
+
+                                    <!--  Group name  -->
+                                    <Label
+                                        Margin="0,12,0,2"
+                                        FontAttributes="Bold"
+                                        FontSize="15"
+                                        LineBreakMode="TailTruncation"
+                                        Text="{Binding Name}"
+                                        TextColor="{DynamicResource TextColor}" />
+
+                                    <!--  Count badge  -->
+                                    <HorizontalStackLayout Spacing="6">
+                                        <Border
+                                            Padding="8,3"
+                                            BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                            StrokeThickness="0">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="10" />
+                                            </Border.StrokeShape>
+                                            <Label
+                                                FontAttributes="Bold"
+                                                FontSize="11"
+                                                Text="{Binding CountText}"
+                                                TextColor="{DynamicResource PrimaryColor}" />
+                                        </Border>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+
+                                <!--  Full-card tap (open group)  -->
+                                <Button
+                                    Padding="0"
+                                    BackgroundColor="Transparent"
+                                    BorderWidth="0"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:GroupsPageViewModel}}, Path=OpenGroupCommand}"
+                                    CommandParameter="{Binding .}"
+                                    HorizontalOptions="Fill"
+                                    VerticalOptions="Fill" />
+
+                                <!--  Options dot menu icon (visual only)  -->
+                                <Border
+                                    Margin="0,8,8,0"
+                                    Padding="4"
+                                    BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                    HeightRequest="30"
+                                    HorizontalOptions="End"
+                                    StrokeThickness="0"
+                                    VerticalOptions="Start"
+                                    WidthRequest="30">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <mi:MauiIcon
+                                        HorizontalOptions="Center"
+                                        Icon="{mi:Material Icon=MoreVert}"
+                                        IconColor="{DynamicResource PrimaryColor}"
+                                        IconSize="16"
+                                        InputTransparent="True"
+                                        VerticalOptions="Center" />
+                                </Border>
+
+                                <!--  Options tap — declared LAST so it is on top and receives taps  -->
+                                <Button
+                                    Margin="0,0,0,48"
+                                    Padding="0"
+                                    BackgroundColor="Transparent"
+                                    BorderWidth="0"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:GroupsPageViewModel}}, Path=ShowGroupOptionsCommand}"
+                                    CommandParameter="{Binding .}"
+                                    HeightRequest="38"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="Start"
+                                    WidthRequest="38" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.Footer>
+                    <BoxView HeightRequest="96" Color="Transparent" />
+                </CollectionView.Footer>
+            </CollectionView>
+        </RefreshView>
+
+        <Border
+            Grid.Row="1"
+            Margin="0,0,20,20"
+            Padding="0"
+            BackgroundColor="{DynamicResource PrimaryColor}"
+            HeightRequest="60"
+            HorizontalOptions="End"
+            StrokeThickness="0"
+            VerticalOptions="End"
+            WidthRequest="60">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="30" />
+            </Border.StrokeShape>
+            <Border.Shadow>
+                <Shadow
+                    Brush="{DynamicResource PrimaryColor}"
+                    Opacity="0.4"
+                    Radius="16"
+                    Offset="0,6" />
+            </Border.Shadow>
+            <Button
+                Padding="0"
+                BackgroundColor="Transparent"
+                BorderWidth="0"
+                Command="{Binding CreateGroupCommand}"
+                HeightRequest="60"
+                WidthRequest="60">
+                <Button.ImageSource>
+                    <FontImageSource
+                        FontFamily="MaterialIconsRegular"
+                        Glyph="&#xE145;"
+                        Size="28"
+                        Color="White" />
+                </Button.ImageSource>
+            </Button>
+        </Border>
+
+    </Grid>
+</ContentPage>

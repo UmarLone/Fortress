@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="5" android:versionName="1.16.0" package="com.fortress.app" android:installLocation="preferExternal">
+	 
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.RECORD_AUDIO" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.CAMERA" />
+	<uses-permission android:name="android.permission.USE_FINGERPRINT" />
+	<uses-permission android:name="android.permission.USE_BIOMETRIC" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+	<uses-permission android:name="android.permission.BATTERY_STATS" />
+	<uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY" />
+	<uses-permission android:name="android.permission.BIND_AUTOFILL_SERVICE" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+	<uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
+	<uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+	<uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<uses-permission android:name="android.permission.BIND_CREDENTIAL_PROVIDER_SERVICE" />
+	<uses-feature android:name="android.hardware.camera" android:required="false" />
+	<uses-feature android:name="android.hardware.camera.autofocus" android:required="false" />
+	<application android:label="@string/app_name" android:icon="@mipmap/appicon" android:roundIcon="@mipmap/appicon_round">
+		 <!-- Google OAuth 2.0 redirect is handled by GoogleAuthCallbackActivity.cs via [IntentFilter] attribute -->
+        <!-- OneDrive OAuth 2.0 redirect is handled by OneDriveAuthCallbackActivity.cs via [IntentFilter] attribute -->
+
+        <!-- Legacy Autofill Framework (Android 8-13) -->
+        <!-- Declared via [Service]/[IntentFilter]/[MetaData] attributes on AutofillService.cs -->
+
+        <!-- Credential Manager API (Android 14+) -->
+     <service
+            android:name="com.fortress.app.FortressCredentialProviderService"
+            android:permission="android.permission.BIND_CREDENTIAL_PROVIDER_SERVICE"
+            android:exported="true"
+   android:label="Fortress">
+   <intent-filter>
+       <action android:name="android.service.credentials.CredentialProviderService" />
+   </intent-filter>
+        <meta-data
+         android:name="android.credentials.provider"
+         android:resource="@xml/provider_capabilities" />
+        </service>
+
+        <!-- Accessibility Service (fallback for apps that block AutofillService) -->
+    <service
+            android:name="com.fortress.app.FortressAccessibilityService"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+       android:exported="true"
+          android:label="Fortress">
+    <intent-filter>
+         <action android:name="android.accessibilityservice.AccessibilityService" />
+     </intent-filter>
+  <meta-data
+       android:name="android.accessibilityservice"
+     android:resource="@xml/accessibilityservice" />
+        </service>
+	</application>
+	<!-- Package visibility (for Android 11+) -->
+	<queries>
+		<intent>
+			<action android:name="*" />
+		</intent>
+	</queries>
+</manifest>

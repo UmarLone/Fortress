@@ -1,0 +1,68 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<!-- Target -->
+		<TargetFramework>net10.0-ios</TargetFramework>
+		<SupportedOSPlatformVersion>16.0</SupportedOSPlatformVersion>
+
+		<!-- EXTENSION FLAGS -->
+		<IsAppExtension>true</IsAppExtension>
+		<UseMaui>true</UseMaui>
+		<OutputType>Library</OutputType>
+		<IsWatchExtension>false</IsWatchExtension>
+		<!-- Suppress MAUI package warning for extensions -->
+		<SkipValidateMauiImplicitPackageReferences>true</SkipValidateMauiImplicitPackageReferences>
+		<!-- Identity -->
+		<RootNamespace>Fortress.iPhone.Autofill</RootNamespace>
+		<AssemblyName>Fortress.iPhone.Autofill</AssemblyName>
+		<ApplicationId>com.fortress.app.autofill</ApplicationId>
+
+		<!-- Plist -->
+		<IosInfoPlist>Info.plist</IosInfoPlist>
+
+		<!-- Language -->
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+		<!-- Signing -->
+		<CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
+		<ProvisioningType>automatic</ProvisioningType>
+		<CodesignKey>Apple Development: Created via API (95WVDRUK93)</CodesignKey>
+		<!-- Remove specific provisioning profile to let Xcode manage it automatically -->
+		<!-- <CodesignProvision>VS: com.fortress.passwordmanager.autofill Development</CodesignProvision> -->
+	</PropertyGroup>
+
+	<!-- Ensure NuGet restore covers both device and simulator RIDs.
+	     At build time the parent app (or VS) will pass a single RuntimeIdentifier. -->
+	<PropertyGroup Condition="'$(RuntimeIdentifier)' == ''">
+		<RuntimeIdentifiers>iossimulator-x64;iossimulator-arm64;ios-arm64</RuntimeIdentifiers>
+	</PropertyGroup>
+
+	<!-- Debug -->
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<MtouchDebug>true</MtouchDebug>
+		<MtouchLink>None</MtouchLink>
+	</PropertyGroup>
+
+	<!-- Release -->
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<MtouchLink>SdkOnly</MtouchLink>
+	</PropertyGroup>
+
+	<!-- Resources -->
+	<ItemGroup>
+		<None Include="Info.plist" />
+	
+		<InterfaceDefinition Include="MainInterface.storyboard" />
+		<!-- Use direct image files for extension - asset catalogs can cause issues -->
+		<BundleResource Include="Resources\*.png" />
+		<BundleResource Include="Resources\**\*.png" />
+	</ItemGroup>
+
+	<!-- Package References -->
+	<ItemGroup>
+		<PackageReference Include="Otp.NET" Version="1.4.0" />
+	</ItemGroup>
+
+</Project>

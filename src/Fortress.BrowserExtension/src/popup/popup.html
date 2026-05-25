@@ -1,0 +1,969 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Fortress</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+<!-- =========================================================================
+     CONNECTING SCREEN
+     ========================================================================= -->
+<div id="screen-connecting" class="screen">
+
+  <div class="lock-header">
+    <div class="brand-logo">
+      <img src="../assets/icons/icon128.png" alt="Fortress">
+    </div>
+    <h1 class="brand-name">FORTRESS</h1>
+  </div>
+
+  <div class="connecting-body">
+    <div class="connecting-anim">
+      <div class="conn-pulse-ring"></div>
+      <div class="conn-pulse-ring"></div>
+      <div class="conn-pulse-ring"></div>
+      <div class="conn-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+    </div>
+    <p class="connecting-title">Connecting to Fortress</p>
+    <p class="connecting-sub">Make sure the Fortress app is running on your computer</p>
+    <p class="connecting-attempt" id="conn-attempt">Attempting to connect&hellip;</p>
+  </div>
+
+</div>
+
+
+<!-- =========================================================================
+     SETUP WIZARD  (multi-step — welcome / sync / password / pin / complete)
+     ========================================================================= -->
+<div id="screen-setup" class="screen" hidden>
+
+  <!-- Page: desktop (shown when service connected but setup not complete) ──── -->
+  <div id="setup-page-desktop" class="setup-page" hidden>
+    <div class="setup-pane-top" style="justify-content:center;">
+      <div class="setup-progress" style="max-width:200px;"><div class="setup-progress-fill" style="width:0%"></div></div>
+    </div>
+    <div class="setup-required-body">
+      <div class="setup-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="44" height="44"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <p class="setup-title">Complete setup first</p>
+      <p class="setup-desc">Open the <strong>Fortress</strong> desktop app and finish the setup wizard before using the extension.</p>
+      <div class="setup-steps">
+        <div class="setup-step"><span class="setup-step-num">1</span><span>Launch <strong>Fortress</strong> on your PC</span></div>
+        <div class="setup-step"><span class="setup-step-num">2</span><span>Complete the setup wizard</span></div>
+        <div class="setup-step"><span class="setup-step-num">3</span><span>Set a PIN or enable Windows Hello</span></div>
+        <div class="setup-step"><span class="setup-step-num">4</span><span>Return here &mdash; the extension connects automatically</span></div>
+      </div>
+      <button id="btn-setup-retry" class="btn-primary" style="margin-top:16px;">
+        <span>Check again</span>
+        <div class="btn-spinner" hidden></div>
+      </button>
+      <button id="btn-setup-use-extension-only" class="btn-secondary" style="margin-top:10px;">
+        <span>I don&rsquo;t have the desktop app — use extension only</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Page 1: master password ─────────────────────────────────────────────── -->
+  <div id="setup-page-password" class="setup-page" hidden>
+    <div class="setup-pane-top">
+      <div style="width:30px;"></div>
+      <div class="setup-progress"><div class="setup-progress-fill" style="width:33%"></div></div>
+      <div style="width:30px;"></div>
+    </div>
+    <div class="setup-pane-header">
+      <div class="setup-pane-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h3 class="setup-pane-title">Create master password</h3>
+      <p class="setup-pane-sub">This encrypts your vault. Make it strong &mdash; you can&rsquo;t recover it if forgotten.</p>
+    </div>
+    <div class="setup-wiz-body">
+      <div class="form-group">
+        <div class="field-wrap">
+          <input id="inp-setup-pw" type="password" class="vault-input" placeholder="Master password" autocomplete="new-password">
+          <button class="eye-btn" data-for="inp-setup-pw">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:9px;">
+        <div class="field-wrap">
+          <input id="inp-setup-pw2" type="password" class="vault-input" placeholder="Confirm password" autocomplete="new-password">
+          <button class="eye-btn" data-for="inp-setup-pw2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="strength-bar-wrap" style="margin:8px 0 3px;">
+        <div class="strength-bar"><div id="setup-strength-fill" class="strength-fill" style="width:0%;background:var(--border);"></div></div>
+        <span id="setup-strength-label" class="strength-label">—</span>
+      </div>
+      <ul class="setup-pw-reqs" id="setup-pw-reqs">
+        <li id="req-len"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg>At least 8 characters</li>
+        <li id="req-upper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg>Uppercase letter</li>
+        <li id="req-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><polyline points="20 6 9 17 4 12"/></svg>Number</li>
+      </ul>
+      <div class="setup-warn-card">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Write it down somewhere safe &mdash; Fortress cannot reset or recover your password.
+      </div>
+      <div id="err-setup-pw" class="error-msg" hidden></div>
+    </div>
+    <div class="setup-wiz-footer">
+      <button id="btn-pw-next" class="btn-primary" disabled><span>Continue</span></button>
+    </div>
+  </div>
+
+  <!-- Page 2: app lock / PIN ──────────────────────────────────────────────── -->
+  <div id="setup-page-pin" class="setup-page" hidden>
+    <div class="setup-pane-top">
+      <button class="setup-back-btn" data-target="password">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="setup-progress"><div class="setup-progress-fill" style="width:66%"></div></div>
+      <div style="width:30px;"></div>
+    </div>
+    <div class="setup-pane-header">
+      <div class="setup-pane-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h3 class="setup-pane-title">Quick&dash;access PIN</h3>
+      <p class="setup-pane-sub">A 4-digit PIN lets you unlock without typing your full password. You can skip this.</p>
+    </div>
+    <div class="setup-wiz-body" style="align-items:center;">
+      <p class="pin-enter-label">ENTER PIN</p>
+      <div class="pin-dots" id="setup-pin-display">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+      <div class="pin-grid">
+        <button class="pin-key" data-v="1">1</button>
+        <button class="pin-key" data-v="2">2</button>
+        <button class="pin-key" data-v="3">3</button>
+        <button class="pin-key" data-v="4">4</button>
+        <button class="pin-key" data-v="5">5</button>
+        <button class="pin-key" data-v="6">6</button>
+        <button class="pin-key" data-v="7">7</button>
+        <button class="pin-key" data-v="8">8</button>
+        <button class="pin-key" data-v="9">9</button>
+        <button class="pin-key pin-clear" data-v="clear">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
+        </button>
+        <button class="pin-key" data-v="0">0</button>
+        <button class="pin-key pin-submit" id="btn-setup-pin-confirm" data-v="confirm" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="20 6 9 17 4 12"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="setup-wiz-footer">
+      <button id="btn-pin-skip" class="btn-secondary" style="flex:1;"><span>Skip for now</span></button>
+    </div>
+  </div>
+
+  <!-- Page 3: cloud sync ──────────────────────────────────────────────────── -->
+  <div id="setup-page-sync" class="setup-page" hidden>
+    <div class="setup-pane-top">
+      <button class="setup-back-btn" data-target="pin">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="setup-progress"><div class="setup-progress-fill" style="width:100%"></div></div>
+      <div style="width:30px;"></div>
+    </div>
+    <div class="setup-pane-header">
+      <div class="setup-pane-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M18 10a6 6 0 0 0-11.84-1.18A4 4 0 0 0 4 17h13a3 3 0 0 0 1-5.83"/></svg>
+      </div>
+      <h3 class="setup-pane-title">Back up to cloud</h3>
+      <p class="setup-pane-sub">Choose where your encrypted vault is stored and synced. You can change this later in Settings.</p>
+    </div>
+    <div class="setup-wiz-body">
+      <div class="sync-provider-grid">
+        <button class="sync-provider-btn" data-provider="local">
+          <div class="sync-provider-icon sync-icon-local">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+          </div>
+          <div class="sync-provider-name">Local Only</div>
+          <div class="sync-provider-sub">This browser</div>
+        </button>
+        <button class="sync-provider-btn" data-provider="gdrive">
+          <div class="sync-provider-icon sync-icon-gdrive">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M12 2 2 19h20L12 2z"/><path d="M2 19h8l-4-7"/><path d="M22 19h-8l4-7"/></svg>
+          </div>
+          <div class="sync-provider-name">Google Drive</div>
+          <div class="sync-provider-sub">Sync across devices</div>
+        </button>
+        <button class="sync-provider-btn" data-provider="dropbox">
+          <div class="sync-provider-icon sync-icon-dropbox">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M12 2L4 7l8 5 8-5-8-5z"/><path d="M4 17l8 5 8-5"/><path d="M4 12l8 5 8-5"/></svg>
+          </div>
+          <div class="sync-provider-name">Dropbox</div>
+          <div class="sync-provider-sub">Sync across devices</div>
+          <span class="sync-soon-badge">Soon</span>
+        </button>
+        <button class="sync-provider-btn" data-provider="onedrive">
+          <div class="sync-provider-icon sync-icon-onedrive">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M18 10a6 6 0 0 0-11.84-1.18A4 4 0 0 0 4 17h13a3 3 0 0 0 1-5.83"/></svg>
+          </div>
+          <div class="sync-provider-name">OneDrive</div>
+          <div class="sync-provider-sub">Sync across devices</div>
+          <span class="sync-soon-badge">Soon</span>
+        </button>
+      </div>
+      <div id="gdrive-connect-row" hidden>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span id="gdrive-status-text" style="flex:1;font-size:12px;color:var(--text-secondary);">Not connected</span>
+          <button id="btn-gdrive-auth" class="btn-secondary" style="padding:7px 14px;font-size:12px;width:auto;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13" style="margin-right:5px;"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            Connect
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="setup-wiz-footer">
+      <button id="btn-sync-next" class="btn-primary" disabled><span>Finish Setup</span></button>
+    </div>
+  </div>
+
+  <!-- Page 4: complete ────────────────────────────────────────────────────── -->
+  <div id="setup-page-complete" class="setup-page" hidden>
+    <div class="setup-complete-wrap">
+      <div class="setup-complete-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="52" height="52"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2 class="setup-complete-title">You&rsquo;re all set!</h2>
+      <p class="setup-complete-sub" id="setup-complete-sub">Your vault is ready. Click Open Fortress to get started.</p>
+      <div id="setup-complete-sync-info" class="setup-complete-sync" hidden></div>
+    </div>
+    <div class="setup-wiz-footer">
+      <button id="btn-setup-open-vault" class="btn-primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" style="margin-right:6px;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>Open Fortress</span>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- =========================================================================
+     LOCK SCREEN
+     ========================================================================= -->
+<div id="screen-lock" class="screen" hidden>
+
+  <div class="lock-header">
+    <div class="brand-logo">
+      <img src="../assets/icons/icon128.png" alt="Fortress">
+    </div>
+    <h1 class="brand-name">FORTRESS</h1>
+    <p class="brand-tagline">Your vault is locked</p>
+  </div>
+
+  <div class="lock-body">
+
+    <!-- Password panel (hidden by default — shown via "Use master password") -->
+    <div id="tab-password" hidden>
+      <p class="pin-enter-label">MASTER PASSWORD</p>
+      <div class="field-wrap">
+        <input id="inp-password" type="password" class="vault-input" placeholder="Master password" autocomplete="current-password">
+        <button class="eye-btn" data-for="inp-password">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <div id="err-password" class="error-msg" hidden></div>
+      <button id="btn-unlock" class="btn-primary" style="margin-top:12px;">
+        <span>Unlock Vault</span>
+        <div class="btn-spinner" hidden></div>
+      </button>
+    </div>
+
+    <!-- PIN panel (shown by default) -->
+    <div id="tab-pin">
+      <p class="pin-enter-label">ENTER PIN</p>
+      <div class="pin-dots" id="pin-display">
+        <span class="dot"></span><span class="dot"></span>
+        <span class="dot"></span><span class="dot"></span>
+      </div>
+      <div class="pin-grid">
+        <button class="pin-key" data-v="1">1</button>
+        <button class="pin-key" data-v="2">2</button>
+        <button class="pin-key" data-v="3">3</button>
+        <button class="pin-key" data-v="4">4</button>
+        <button class="pin-key" data-v="5">5</button>
+        <button class="pin-key" data-v="6">6</button>
+        <button class="pin-key" data-v="7">7</button>
+        <button class="pin-key" data-v="8">8</button>
+        <button class="pin-key" data-v="9">9</button>
+        <button class="pin-key pin-clear" data-v="clear">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
+        </button>
+        <button class="pin-key" data-v="0">0</button>
+        <button class="pin-key pin-submit" data-v="submit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><polyline points="20 6 9 17 4 12"/></svg>
+        </button>
+      </div>
+      <div id="err-pin" class="error-msg" hidden></div>
+    </div>
+
+  </div>
+
+  <div class="lock-footer">
+    <button id="btn-switch-mode" class="lock-switch-btn">Use master password</button>
+    <span id="lock-footer-sep" class="lock-footer-sep">|</span>
+    <button class="lock-switch-btn lock-winhello-btn" disabled>Windows Hello</button>
+  </div>
+
+</div>
+
+<!-- =========================================================================
+     MAIN SCREEN
+     ========================================================================= -->
+<div id="screen-main" class="screen" hidden>
+
+  <!-- Header -->
+  <header class="main-header">
+    <div class="header-brand">
+      <img src="../assets/icons/icon128.png" alt="">
+      <span>FORTRESS</span>
+    </div>
+    <div class="header-actions">
+      <button id="btn-search-toggle" class="icon-btn" title="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button id="btn-add" class="icon-btn" title="Add item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+      <button id="btn-theme-toggle" class="icon-btn" title="Toggle theme">
+        <svg id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15" hidden><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button id="btn-settings-nav" class="icon-btn" title="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+      <button id="btn-lock" class="icon-btn" title="Lock vault">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Global search bar (collapsible) -->
+  <div id="global-search-bar" class="global-search-bar" hidden>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input id="global-search-input" type="search" placeholder="Search all vault items..." autocomplete="off">
+    <button id="global-search-close" class="icon-btn-sm">&#x2715;</button>
+  </div>
+
+  <!-- Nav tabs -->
+  <nav class="main-nav">
+    <button class="nav-btn active" data-view="vault">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Vault
+    </button>
+    <button class="nav-btn" data-view="autofill">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Autofill
+    </button>
+    <button class="nav-btn" data-view="health">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      Health
+    </button>
+    <button class="nav-btn" data-view="generator">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Generate
+    </button>
+    <button class="nav-btn" data-view="secure">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
+      Secure
+    </button>
+  </nav>
+
+  <!-- VAULT VIEW -->
+  <div id="view-vault" class="view">
+
+    <!-- Hero banner (populated by JS) -->
+    <div id="vault-hero" class="vault-hero" hidden>
+      <div class="vault-hero-left">
+        <div class="vault-hero-eyebrow">VAULT HEALTH</div>
+        <div class="vault-hero-score-row">
+          <span class="vault-hero-score" id="hero-score">—</span>
+          <span class="vault-hero-pct">%</span>
+        </div>
+        <div class="vault-hero-chips" id="hero-chips">
+          <!-- weak / breached chips injected by JS -->
+        </div>
+        <button class="vault-hero-btn" id="hero-health-btn">View Details →</button>
+      </div>
+      <div class="vault-hero-shield-wrap">
+        <div class="vault-hero-shield" id="hero-shield">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="44" height="44"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stat pills row (populated by JS) -->
+    <div class="vault-stats-row" id="vault-stats-row" hidden>
+      <!-- 3 pill cards injected by JS -->
+    </div>
+
+    <div class="filter-chips" style="padding-top:10px;">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="Login">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Logins
+      </button>
+      <button class="chip" data-filter="CreditCard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Cards
+      </button>
+      <button class="chip" data-filter="Authenticator">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        2FA
+      </button>
+      <button class="chip" data-filter="Identity">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Identity
+      </button>
+      <button class="chip" data-filter="Note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Notes
+      </button>
+      <button class="chip" data-filter="Favorites">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Faves
+      </button>
+    </div>
+
+    <div class="sort-row">
+      <span class="sort-label">Sort</span>
+      <select id="vault-sort" class="sort-select">
+        <option value="az">A &#8212; Z</option>
+        <option value="za">Z &#8212; A</option>
+        <option value="recent">Recently used</option>
+      </select>
+      <span id="vault-count" class="item-count"></span>
+    </div>
+
+    <div id="vault-list" class="item-list">
+      <div class="list-loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+
+  <!-- AUTOFILL VIEW -->
+  <div id="view-autofill" class="view" hidden>
+    <div class="section-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      Suggestions for this page
+    </div>
+    <div id="autofill-url" class="page-url-badge"></div>
+    <div id="autofill-list" class="item-list">
+      <div class="list-loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+
+  <!-- HEALTH VIEW -->
+  <div id="view-health" class="view" hidden>
+    <div class="health-card">
+      <div class="health-score-ring">
+        <svg viewBox="0 0 80 80" width="80" height="80">
+          <circle cx="40" cy="40" r="34" fill="none" stroke="var(--border)" stroke-width="7"/>
+          <circle id="health-ring-fill" cx="40" cy="40" r="34" fill="none"
+            stroke="var(--accent)" stroke-width="7"
+            stroke-dasharray="213.6" stroke-dashoffset="0"
+            stroke-linecap="round" transform="rotate(-90 40 40)"/>
+        </svg>
+        <div class="health-score-num" id="health-score-num">&#8212;</div>
+      </div>
+      <div class="health-score-info">
+        <div class="health-score-title" id="health-score-label">Vault Health</div>
+        <div class="health-stats">
+          <div class="health-stat">
+            <span class="health-stat-icon danger">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </span>
+            <span id="health-weak-count">&#8212;</span>
+            <span class="health-stat-lbl">Weak</span>
+          </div>
+          <div class="health-stat">
+            <span class="health-stat-icon warning">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </span>
+            <span id="health-reused-count">&#8212;</span>
+            <span class="health-stat-lbl">Reused</span>
+          </div>
+          <div class="health-stat">
+            <span class="health-stat-icon danger">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><circle cx="12" cy="8" r="5"/><path d="M9 17v1a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1"/><path d="M9 13v4"/><path d="M15 13v4"/><path d="M12 13v4"/></svg>
+            </span>
+            <span id="health-breach-count">&#8212;</span>
+            <span class="health-stat-lbl">Breached</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="health-issues-list" class="item-list" style="padding-top:4px;">
+      <div class="list-loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+
+  <!-- GENERATOR VIEW -->
+  <div id="view-generator" class="view" hidden>
+    <div class="gen-output-wrap">
+      <input id="gen-output" type="text" class="gen-output" readonly>
+      <button id="gen-copy" class="gen-copy-btn" title="Copy">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      </button>
+      <button id="gen-refresh" class="gen-refresh-btn" title="Regenerate">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+      </button>
+    </div>
+
+    <div id="gen-strength" class="strength-bar-wrap">
+      <div class="strength-bar"><div id="gen-strength-fill" class="strength-fill"></div></div>
+      <span id="gen-strength-label" class="strength-label">Strong</span>
+    </div>
+
+    <div class="gen-type-row">
+      <button class="gen-type-btn active" data-gentype="password">Password</button>
+      <button class="gen-type-btn" data-gentype="passphrase">Passphrase</button>
+      <button class="gen-type-btn" data-gentype="pin">PIN</button>
+    </div>
+
+    <!-- Password options -->
+    <div id="gen-opts-password" class="gen-options">
+      <div class="gen-row">
+        <label>Length <b id="gen-len-val">20</b></label>
+        <input id="gen-length" type="range" min="8" max="64" value="20" class="range-input">
+      </div>
+      <div class="gen-toggles">
+        <label class="toggle-row"><input type="checkbox" id="gen-upper" checked><span class="toggle-label">Uppercase (A&#8211;Z)</span></label>
+        <label class="toggle-row"><input type="checkbox" id="gen-lower" checked><span class="toggle-label">Lowercase (a&#8211;z)</span></label>
+        <label class="toggle-row"><input type="checkbox" id="gen-digits" checked><span class="toggle-label">Numbers (0&#8211;9)</span></label>
+        <label class="toggle-row"><input type="checkbox" id="gen-symbols" checked><span class="toggle-label">Symbols (!@#$...)</span></label>
+        <label class="toggle-row"><input type="checkbox" id="gen-ambiguous"><span class="toggle-label">Exclude ambiguous (0O Il1)</span></label>
+      </div>
+    </div>
+
+    <!-- Passphrase options -->
+    <div id="gen-opts-passphrase" class="gen-options" hidden>
+      <div class="gen-row">
+        <label>Words <b id="gen-words-val">4</b></label>
+        <input id="gen-words" type="range" min="3" max="8" value="4" class="range-input">
+      </div>
+      <div class="gen-row">
+        <label>Separator</label>
+        <select id="gen-sep" class="sort-select" style="width:auto;">
+          <option value="-">Hyphen (-)</option>
+          <option value=".">Dot (.)</option>
+          <option value="_">Underscore (_)</option>
+          <option value=" ">Space</option>
+        </select>
+      </div>
+      <div class="gen-toggles">
+        <label class="toggle-row"><input type="checkbox" id="gen-pp-cap" checked><span class="toggle-label">Capitalize words</span></label>
+        <label class="toggle-row"><input type="checkbox" id="gen-pp-num"><span class="toggle-label">Include number</span></label>
+      </div>
+    </div>
+
+    <!-- PIN options -->
+    <div id="gen-opts-pin" class="gen-options" hidden>
+      <div class="gen-row">
+        <label>PIN length <b id="gen-pin-len-val">6</b></label>
+        <input id="gen-pin-len" type="range" min="4" max="12" value="6" class="range-input">
+      </div>
+    </div>
+
+    <div style="padding:8px 12px 4px;display:flex;gap:6px;">
+      <button id="gen-fill-page" class="btn-secondary" style="flex:1;">Fill into active field</button>
+      <button id="gen-save-btn" class="btn-secondary" style="flex:1;">Save to vault</button>
+    </div>
+  </div>
+
+<!-- SECURE ITEMS VIEW -->
+  <div id="view-secure" class="view" hidden>
+    <div class="secure-search-row">
+      <div class="secure-search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="secure-search" type="search" class="secure-search-input" placeholder="Search secure items…" autocomplete="off">
+      </div>
+      <button id="btn-secure-add" class="secure-add-btn" title="Add &#8212; opens Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </button>
+    </div>
+    <div class="filter-chips" style="padding-top:6px;">
+      <button class="chip secure-chip active" data-sf="all">All</button>
+      <button class="chip secure-chip" data-sf="Identity">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Identity
+      </button>
+      <button class="chip secure-chip" data-sf="Documents">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
+        Docs
+      </button>
+      <button class="chip secure-chip" data-sf="WiFi">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+        Wi-Fi
+      </button>
+      <button class="chip secure-chip" data-sf="Ssh">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        SSH
+      </button>
+      <button class="chip secure-chip" data-sf="SecureNote">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Notes
+      </button>
+      <button class="chip secure-chip" data-sf="Favorites">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="10" height="10"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Faves
+      </button>
+    </div>
+    <div class="sort-row" style="padding:4px 13px 0;">
+      <span id="secure-item-count" class="item-count"></span>
+    </div>
+    <div id="secure-list" class="item-list">
+      <div class="list-loading"><div class="spinner"></div></div>
+    </div>
+  </div>
+
+  </div><!-- /screen-main -->
+
+<!-- =========================================================================
+     ADD ITEM SCREEN
+     ========================================================================= -->
+<div id="screen-add" class="screen" hidden>
+  <div class="sub-header">
+    <button id="btn-add-back" class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <h2 class="sub-title" id="add-screen-title">New Item</h2>
+  </div>
+
+  <div class="type-picker">
+    <button class="type-btn active" data-itype="Login">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Login
+    </button>
+    <button class="type-btn" data-itype="CreditCard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Card
+    </button>
+    <button class="type-btn" data-itype="Authenticator">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/><path d="M9 7h6M9 11h4"/></svg>
+      2FA
+    </button>
+  </div>
+
+  <div class="add-form" id="add-form-scroll">
+
+    <!-- Login fields -->
+    <div id="add-fields-Login">
+      <div class="form-group">
+        <label>Site / Label</label>
+        <input id="add-label" type="text" class="vault-input" placeholder="e.g. GitHub">
+      </div>
+      <div class="form-group">
+        <label>URL</label>
+        <input id="add-url" type="url" class="vault-input" placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label>Username / Email</label>
+        <input id="add-username" type="text" class="vault-input" placeholder="you@example.com" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="field-wrap">
+          <input id="add-password" type="password" class="vault-input" placeholder="Password" autocomplete="new-password">
+          <button class="eye-btn" data-for="add-password">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div id="add-strength-wrap" class="strength-bar-wrap" hidden>
+          <div class="strength-bar"><div id="add-strength-fill" class="strength-fill"></div></div>
+          <span id="add-strength-label" class="strength-label"></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>TOTP Secret (optional)</label>
+        <input id="add-totp" type="text" class="vault-input" placeholder="otpauth:// or base32 secret" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>Notes (optional)</label>
+        <textarea id="add-notes" class="vault-input vault-textarea" placeholder="Any notes..." rows="2"></textarea>
+      </div>
+      <div class="toggle-row" style="margin-top:2px;">
+        <input type="checkbox" id="add-favorite">
+        <span class="toggle-label">Mark as favourite &#9733;</span>
+      </div>
+    </div>
+
+    <!-- Credit Card fields -->
+    <div id="add-fields-CreditCard" hidden>
+      <div class="form-group">
+        <label>Card Label</label>
+        <input id="add-card-label" type="text" class="vault-input" placeholder="e.g. Visa Debit">
+      </div>
+      <div class="form-group">
+        <label>Cardholder Name</label>
+        <input id="add-card-name" type="text" class="vault-input" placeholder="Full name">
+      </div>
+      <div class="form-group">
+        <label>Card Number</label>
+        <input id="add-card-number" type="text" class="vault-input" placeholder="**** **** **** ****" maxlength="19" autocomplete="off">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="form-group">
+          <label>Expiry (MM/YY)</label>
+          <input id="add-card-expiry" type="text" class="vault-input" placeholder="MM/YY" maxlength="5">
+        </div>
+        <div class="form-group">
+          <label>CVV</label>
+          <input id="add-card-cvv" type="password" class="vault-input" placeholder="***" maxlength="4" autocomplete="off">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Notes (optional)</label>
+        <textarea id="add-card-notes" class="vault-input vault-textarea" placeholder="Any notes..." rows="2"></textarea>
+      </div>
+    </div>
+
+    <!-- Authenticator (2FA) fields -->
+    <div id="add-fields-Authenticator" hidden>
+      <div class="form-group">
+        <label>Issuer / Label</label>
+        <input id="add-auth-issuer" type="text" class="vault-input" placeholder="e.g. GitHub, Google">
+      </div>
+      <div class="form-group">
+        <label>Account / Username</label>
+        <input id="add-auth-username" type="text" class="vault-input" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label>Secret Key (Base32)</label>
+        <div class="field-wrap">
+          <input id="add-auth-secret" type="password" class="vault-input" placeholder="JBSWY3DPEHPK3PXP" autocomplete="off">
+          <button class="eye-btn" data-for="add-auth-secret">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select id="add-auth-type" class="vault-input">
+          <option value="TOTP">TOTP — Time-based (default)</option>
+          <option value="HOTP">HOTP — Counter-based</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div class="form-group">
+          <label>Digits</label>
+          <select id="add-auth-digits" class="vault-input">
+            <option value="6" selected>6 digits</option>
+            <option value="8">8 digits</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Period</label>
+          <select id="add-auth-period" class="vault-input">
+            <option value="30" selected>30 seconds</option>
+            <option value="60">60 seconds</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Algorithm</label>
+        <select id="add-auth-algorithm" class="vault-input">
+          <option value="SHA1" selected>SHA-1 (default)</option>
+          <option value="SHA256">SHA-256</option>
+          <option value="SHA512">SHA-512</option>
+        </select>
+      </div>
+      <div class="toggle-row" style="margin-top:2px;">
+        <input type="checkbox" id="add-auth-favorite">
+        <span class="toggle-label">Mark as favourite &#9733;</span>
+      </div>
+    </div>
+
+    <button id="btn-save-item" class="btn-primary" style="margin-top:4px;">
+      <span id="btn-save-item-label">Save Login</span>
+      <div class="btn-spinner" hidden></div>
+    </button>
+    <div id="err-save" class="error-msg" hidden></div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     ITEM DETAIL SCREEN
+     ========================================================================= -->
+<div id="screen-detail" class="screen" hidden>
+  <div class="sub-header">
+    <button id="btn-detail-back" class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <h2 class="sub-title" id="detail-title">Item Details</h2>
+    <div style="margin-left:auto;display:flex;gap:4px;">
+      <button id="btn-detail-edit" class="icon-btn" title="Edit item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      </button>
+      <button id="btn-detail-favorite" class="icon-btn" title="Toggle favourite">
+        <svg id="detail-fav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </button>
+      <button id="btn-detail-delete" class="icon-btn icon-btn-danger" title="Delete item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="detail-body" class="detail-body"></div>
+
+  <div class="detail-actions">
+    <button id="btn-detail-fill" class="btn-primary" style="flex:1;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+      <span>Autofill</span>
+    </button>
+    <button id="btn-detail-copy-pw" class="btn-secondary" style="flex:1;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      Copy Password
+    </button>
+  </div>
+</div>
+
+<!-- =========================================================================
+     SETTINGS SCREEN
+     ========================================================================= -->
+<div id="screen-settings" class="screen" hidden>
+  <div class="sub-header">
+    <button id="btn-settings-back" class="back-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <h2 class="sub-title">Settings</h2>
+  </div>
+
+  <div class="settings-body">
+
+    <div class="settings-section-label">Appearance</div>
+
+    <div class="settings-item">
+      <div class="settings-item-icon" style="background:rgba(64,124,202,0.12);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#407cca" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </div>
+      <div class="settings-item-body">
+        <div class="settings-item-label">Theme</div>
+        <div class="settings-item-sub">Choose your preferred appearance</div>
+      </div>
+      <div class="theme-pills">
+        <button class="theme-pill" data-theme-val="light">Light</button>
+        <button class="theme-pill" data-theme-val="dark">Dark</button>
+        <button class="theme-pill active" data-theme-val="system">Auto</button>
+      </div>
+    </div>
+
+    <div class="settings-section-label" style="margin-top:6px;">Security</div>
+
+    <div class="settings-item">
+      <div class="settings-item-icon" style="background:rgba(64,124,202,0.12);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#407cca" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <div class="settings-item-body">
+        <div class="settings-item-label">Auto-lock</div>
+        <div class="settings-item-sub">Lock vault after inactivity</div>
+      </div>
+      <select id="setting-autolock" class="sort-select">
+        <option value="60">1 minute</option>
+        <option value="300" selected>5 minutes</option>
+        <option value="900">15 minutes</option>
+        <option value="1800">30 minutes</option>
+        <option value="3600">1 hour</option>
+        <option value="0">Never</option>
+      </select>
+    </div>
+
+    <div class="settings-item">
+      <div class="settings-item-icon" style="background:rgba(34,197,94,0.12);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+      </div>
+      <div class="settings-item-body">
+        <div class="settings-item-label">Inline autofill button</div>
+        <div class="settings-item-sub">Fortress icon next to password fields</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="setting-inline-btn" checked>
+        <span class="toggle-track"></span>
+      </label>
+    </div>
+
+    <div class="settings-item">
+      <div class="settings-item-icon" style="background:rgba(245,158,11,0.12);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <div class="settings-item-body">
+        <div class="settings-item-label">Save prompt</div>
+        <div class="settings-item-sub">Ask to save new logins</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="setting-save-prompt" checked>
+        <span class="toggle-track"></span>
+      </label>
+    </div>
+
+    <div class="settings-item">
+      <div class="settings-item-icon" style="background:rgba(239,68,68,0.10);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+      </div>
+      <div class="settings-item-body">
+        <div class="settings-item-label">Breach alerts</div>
+        <div class="settings-item-sub">Check against HaveIBeenPwned</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="setting-breach-alerts" checked>
+        <span class="toggle-track"></span>
+      </label>
+    </div>
+
+    <div class="settings-section-label" style="margin-top:6px;">Generator Defaults</div>
+
+    <div class="settings-item">
+      <div class="settings-item-icon" style="background:rgba(64,124,202,0.12);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#407cca" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="settings-item-body">
+        <div class="settings-item-label">Default length</div>
+        <div class="settings-item-sub">Characters</div>
+      </div>
+      <input id="setting-gen-length" type="number" min="8" max="128" value="20" class="vault-input" style="width:62px;padding:5px 8px;text-align:center;">
+    </div>
+
+    <div class="settings-section-label" style="margin-top:6px;">About</div>
+
+    <div class="settings-item settings-item-flat">
+      <div class="settings-item-body">
+        <div class="settings-item-label">Fortress Extension</div>
+        <div class="settings-item-sub">Version 1.1.0 &mdash; Demo Mode</div>
+      </div>
+    </div>
+
+    <div class="settings-item settings-item-flat" id="settings-open-options" style="cursor:pointer;">
+      <div class="settings-item-body">
+        <div class="settings-item-label">Open full options page</div>
+        <div class="settings-item-sub">Advanced configuration</div>
+      </div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>
+
+    <div style="padding:16px 0 4px;">
+      <button id="btn-lock-from-settings" class="btn-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Lock Vault Now
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div id="toast" class="toast" hidden></div>
+
+<script src="popup.js"></script>
+</body>
+</html>
+

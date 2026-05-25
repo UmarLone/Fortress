@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fingerprint / biometric icon -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+ android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+  <path
+      android:fillColor="@android:color/transparent"
+      android:strokeColor="#FF000000"
+      android:strokeWidth="1.5"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round"
+      android:pathData="M17,12c0,2.76-2.24,5-5,5s-5-2.24-5-5 M12,3C7.03,3 3,7.03 3,12 M12,3c4.97,0 9,4.03 9,9 M12,8c2.21,0 4,1.79 4,4 M12,8c-2.21,0-4,1.79-4,4 M12,12m0,0l0,0.01" />
+  <path
+   android:fillColor="@android:color/transparent"
+      android:strokeColor="#FF000000"
+      android:strokeWidth="1.5"
+    android:strokeLineCap="round"
+      android:pathData="M8.71,5.71C9.69,5.25 10.82,5 12,5" />
+</vector>

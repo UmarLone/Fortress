@@ -1,0 +1,350 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary
+    x:Class="Fortress.Styles.Base"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Fortress.Controls;assembly=Fortress">
+
+    <!--  General  -->
+    <Style ApplyToDerivedTypes="True" TargetType="Label">
+        <Setter Property="FontSize" Value="Medium" />
+        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+    </Style>
+    <Style x:Key="text-default" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+    </Style>
+    <Style Class="text-default" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+    </Style>
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="text-muted"
+        TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource MutedColor}" />
+    </Style>
+    <Style x:Key="text-danger" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource DangerColor}" />
+    </Style>
+    <Style Class="text-danger" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource DangerColor}" />
+    </Style>
+    <Style Class="text-success" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource SuccessColor}" />
+    </Style>
+    <Style Class="text-sm" TargetType="Label">
+        <Setter Property="FontSize" Value="Small" />
+    </Style>
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="text-lg"
+        TargetType="Label">
+        <Setter Property="FontSize" Value="Large" />
+    </Style>
+    <Style Class="text-bold" TargetType="Label">
+        <Setter Property="FontAttributes" Value="Bold" />
+    </Style>
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="text-html"
+        TargetType="Label">
+        <Setter Property="TextColor" Value="Default" />
+        <Setter Property="TextType" Value="Html" />
+    </Style>
+    <Style Class="text-body" TargetType="Label">
+        <Setter Property="FontSize" Value="Body" />
+        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+    </Style>
+
+    <!--  Pages  -->
+    <Style ApplyToDerivedTypes="True" TargetType="TabbedPage">
+        <Setter Property="BarBackgroundColor" Value="{DynamicResource TabBarBackgroundColor}" />
+        <Setter Property="SelectedTabColor" Value="{DynamicResource TabBarSelectedItemColor}" />
+        <Setter Property="UnselectedTabColor" Value="{DynamicResource TabBarItemColor}" />
+    </Style>
+    <Style ApplyToDerivedTypes="True" TargetType="NavigationPage">
+        <Setter Property="BarTextColor" Value="{DynamicResource NavigationBarTextColor}" />
+        <Setter Property="BarBackgroundColor" Value="{DynamicResource NavigationBarBackgroundColor}" />
+    </Style>
+
+    <!--  Buttons  -->
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="btn-icon"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+    </Style>
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="btn-muted"
+        TargetType="Button">
+        <Setter Property="TextColor" Value="{DynamicResource MutedColor}" />
+    </Style>
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="btn-disabled"
+        TargetType="Button">
+        <Setter Property="TextColor" Value="{DynamicResource DisabledIconColor}" />
+    </Style>
+    <Style x:Key="btn-fab" TargetType="Button">
+        <Setter Property="HeightRequest" Value="56" />
+        <Setter Property="WidthRequest" Value="56" />
+        <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+        <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="Margin" Value="16" />
+        <Setter Property="CornerRadius" Value="100" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource FabColor}" />
+    </Style>
+
+    <!--  Title  -->
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="btn-title"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="TextColor" Value="{DynamicResource TitleTextColor}" />
+    </Style>
+
+    <!--  List  -->
+    <Style Class="list" TargetType="CollectionView" />
+    <Style Class="list-row-header" TargetType="StackLayout">
+        <Setter Property="Orientation" Value="Horizontal" />
+    </Style>
+    <Style Class="list-header" TargetType="Label">
+        <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+        <Setter Property="VerticalOptions" Value="FillAndExpand" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+    </Style>
+    <Style Class="list-header-sub" TargetType="Label">
+        <Setter Property="FontSize" Value="Small" />
+        <Setter Property="HorizontalTextAlignment" Value="End" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="TextColor" Value="{DynamicResource MutedColor}" />
+        <Setter Property="HorizontalOptions" Value="End" />
+        <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+    </Style>
+    <Style Class="list-row" TargetType="StackLayout">
+        <Setter Property="Padding" Value="10, 12" />
+    </Style>
+
+    <Style Class="list-row" TargetType="Grid">
+        <Setter Property="Padding" Value="2, 5, 0, 5" />
+    </Style>
+
+    <Style Class="list-section-separator-top" TargetType="BoxView">
+        <Setter Property="HeightRequest" Value="1" />
+    </Style>
+    <Style Class="list-section-separator-bottom" TargetType="BoxView">
+        <Setter Property="HeightRequest" Value="1" />
+    </Style>
+    <Style Class="list-item-separator-bottom" TargetType="BoxView">
+        <Setter Property="HeightRequest" Value="1" />
+    </Style>
+    <Style Class="list-title" TargetType="Label" />
+    <Style Class="list-sub" TargetType="Label">
+        <Setter Property="FontSize" Value="Small" />
+        <Setter Property="TextColor" Value="{DynamicResource MutedColor}" />
+    </Style>
+    <Style Class="accountlist-title" TargetType="Label" />
+    <Style Class="accountlist-sub" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource MutedColor}" />
+    </Style>
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="list-title-icon"
+        TargetType="Label">
+        <Setter Property="FontSize" Value="Small" />
+        <Setter Property="TextColor" Value="{DynamicResource MutedColor}" />
+    </Style>
+    <Style Class="list-subtitle" TargetType="Label">
+        <Setter Property="FontSize" Value="Small" />
+        <Setter Property="TextColor" Value="{DynamicResource MutedColor}" />
+    </Style>
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="list-icon"
+        TargetType="Label">
+        <Setter Property="MinimumWidthRequest" Value="26" />
+        <Setter Property="MinimumHeightRequest" Value="26" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="TextColor" Value="{DynamicResource MutedColor}" />
+    </Style>
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="list-row-button"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="TextColor" Value="{DynamicResource ButtonColor}" />
+    </Style>
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="list-row-button-text"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="TextColor" Value="{DynamicResource ButtonTextColor}" />
+    </Style>
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="segmented-button"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderColor" Value="{DynamicResource PrimaryColor}" />
+        <Setter Property="BorderWidth" Value="1" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="TextColor" Value="{DynamicResource PrimaryColor}" />
+        <Setter Property="FontAttributes" Value="None" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryColor}" />
+                            <Setter Property="BorderWidth" Value="0" />
+                            <Setter Property="TextColor" Value="{DynamicResource TitleTextColor}" />
+                            <Setter Property="FontAttributes" Value="Bold" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <!--  Box  -->
+
+    <Style Class="box" TargetType="StackLayout">
+        <Setter Property="Padding" Value="10, 0" />
+        <Setter Property="Spacing" Value="0" />
+    </Style>
+    <Style Class="box-bottom" TargetType="StackLayout">
+        <Setter Property="Padding" Value="10, 0, 10, 10" />
+        <Setter Property="Spacing" Value="0" />
+    </Style>
+    <Style Class="box-row-header" TargetType="StackLayout">
+        <Setter Property="Padding" Value="0, 10, 0, 5" />
+    </Style>
+    <Style Class="box-header" TargetType="Label" />
+    <Style Class="box-row" TargetType="Grid">
+        <Setter Property="Padding" Value="0, 10" />
+        <Setter Property="RowSpacing" Value="0" />
+        <Setter Property="ColumnSpacing" Value="10" />
+    </Style>
+    <Style Class="box-row" TargetType="StackLayout">
+        <Setter Property="Padding" Value="0, 10" />
+        <Setter Property="Spacing" Value="0" />
+    </Style>
+    <Style Class="box-row-input" TargetType="Grid">
+        <Setter Property="Padding" Value="0, 10, 0, 0" />
+    </Style>
+    <Style Class="box-row-input" TargetType="StackLayout">
+        <Setter Property="Padding" Value="0, 10, 0, 0" />
+    </Style>
+    <Style Class="box-row-switch" TargetType="StackLayout">
+        <Setter Property="Orientation" Value="Horizontal" />
+    </Style>
+    <Style Class="box-row-stepper" TargetType="StackLayout">
+        <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="Spacing" Value="10" />
+    </Style>
+    <Style Class="box-row-slider" TargetType="StackLayout">
+        <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="Spacing" Value="5" />
+    </Style>
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="box-row-button"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderWidth" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="TextColor" Value="{DynamicResource ButtonColor}" />
+        <Setter Property="HorizontalOptions" Value="End" />
+        <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+    </Style>
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="box-overlay"
+        TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderWidth" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="TextColor" Value="Transparent" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Disabled" />
+                    <VisualState x:Name="Focused" />
+                    <VisualState x:Name="Selected" />
+                    <VisualState x:Name="Pressed" />
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+    <Style Class="box-row-separator" TargetType="BoxView">
+        <Setter Property="HeightRequest" Value="1" />
+        <Setter Property="Color" Value="{DynamicResource BoxBorderColor}" />
+    </Style>
+    <Style Class="box-label" TargetType="Label">
+        <Setter Property="FontSize" Value="Small" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor" Value="{DynamicResource MutedColor}" />
+    </Style>
+    <Style Class="box-label-regular" TargetType="Label">
+        <Setter Property="FontSize" Value="Medium" />
+        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="box-value"
+        TargetType="Label">
+        <Setter Property="LineBreakMode" Value="CharacterWrap" />
+        <Setter Property="Margin" Value="0, 5, 0, 0" />
+    </Style>
+    <Style Class="box-sub-label" TargetType="Label">
+        <Setter Property="FontSize" Value="Small" />
+        <Setter Property="TextColor" Value="{DynamicResource MutedColor}" />
+    </Style>
+    <Style Class="box-footer-label" TargetType="Label">
+        <Setter Property="FontSize" Value="Small" />
+        <Setter Property="TextColor" Value="{DynamicResource MutedColor}" />
+    </Style>
+    <Style Class="box-footer-label-switch" TargetType="Label">
+        <Setter Property="Margin" Value="0, -10, 0, 0" />
+    </Style>
+    <Style Class="datetime-picker" TargetType="DatePicker">
+        <Setter Property="FontSize" Value="Medium" />
+        <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
+    </Style>
+
+    <!--  Entry  -->
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="capitalize-word-input"
+        TargetType="InputView">
+        <Setter Property="Keyboard">
+            <Keyboard x:FactoryMethod="Create">
+                <x:Arguments>
+                    <KeyboardFlags>CapitalizeWord</KeyboardFlags>
+                </x:Arguments>
+            </Keyboard>
+        </Setter>
+    </Style>
+    <Style
+        ApplyToDerivedTypes="True"
+        Class="capitalize-sentence-input"
+        TargetType="InputView">
+        <Setter Property="Keyboard">
+            <Keyboard x:FactoryMethod="Create">
+                <x:Arguments>
+                    <KeyboardFlags>CapitalizeSentence</KeyboardFlags>
+                </x:Arguments>
+            </Keyboard>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="Fortress.Views.AddEditCreditCardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:Fortress.Converters"
+    xmlns:ctrl="clr-namespace:Fortress.Controls"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:prism="http://prismlibrary.com"
+    prism:ViewModelLocator.AutowireViewModel="Automatic"
+    BackgroundColor="{DynamicResource PageBackgroundColor}"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <converter:InverseBoolConverter x:Key="InvertedBoolConverter" />
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!--  Header  -->
+        <Border
+            Grid.Row="0"
+            Padding="20,16,20,24"
+            BackgroundColor="{DynamicResource PrimaryColor}"
+            StrokeThickness="0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="0,0,24,24" />
+            </Border.StrokeShape>
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+
+                <!--  Back button  -->
+                <Border
+                    Grid.Column="0"
+                    Padding="0"
+                    BackgroundColor="#30FFFFFF"
+                    HeightRequest="40"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="40">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Button
+                        Padding="0"
+                        BackgroundColor="Transparent"
+                        BorderWidth="0"
+                        Command="{Binding GoBackCommand}"
+                        HeightRequest="40"
+                        WidthRequest="40">
+                        <Button.ImageSource>
+                            <FontImageSource
+                                FontFamily="MaterialIconsRegular"
+                                Glyph="&#xE5C4;"
+                                Size="22"
+                                Color="White" />
+                        </Button.ImageSource>
+                    </Button>
+                </Border>
+
+                <!--  Title  -->
+                <Label
+                    Grid.Column="1"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    Text="{Binding FormTitle}"
+                    TextColor="White"
+                    VerticalOptions="Center" />
+
+
+
+                <!--  Scan button — add mode  -->
+                <Border
+                    Grid.Column="2"
+                    Padding="0"
+                    BackgroundColor="#30FFFFFF"
+                    HeightRequest="40"
+                    IsVisible="{Binding IsEditMode, Converter={StaticResource InvertedBoolConverter}}"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="40">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+                    <Grid>
+                        <mi:MauiIcon
+                            HorizontalOptions="Center"
+                            Icon="{mi:Material Icon=CropFree}"
+                            IconColor="White"
+                            IconSize="22"
+                            InputTransparent="True"
+                            VerticalOptions="Center" />
+                        <Button
+                            x:Name="ScanCardButton"
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Clicked="OnScanCardTapped"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+                    </Grid>
+                </Border>
+
+            </Grid>
+        </Border>
+
+        <!--  Form body  -->
+        <ScrollView Grid.Row="1" Padding="20,16,20,0">
+            <VerticalStackLayout Spacing="14">
+
+                <!--  Live card preview  -->
+                <Border
+                    Padding="0"
+                    HeightRequest="180"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.14"
+                            Radius="18"
+                            Offset="0,5" />
+                    </Border.Shadow>
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0" Color="#F59E0B" />
+                            <GradientStop Offset="1" Color="#D97706" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Grid>
+                        <Ellipse
+                            Margin="0,0,-40,0"
+                            Fill="#20FFFFFF"
+                            HeightRequest="180"
+                            HorizontalOptions="End"
+                            VerticalOptions="Start"
+                            WidthRequest="180" />
+                        <Grid
+                            Padding="22,18,22,18"
+                            RowDefinitions="Auto,*,Auto,Auto"
+                            RowSpacing="0">
+                            <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                                <Label
+                                    Grid.Column="0"
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    Opacity="0.85"
+                                    Text="{Binding CardName, TargetNullValue='Card Name'}"
+                                    TextColor="White" />
+                                <Label
+                                    Grid.Column="1"
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    Text="{Binding CardNetwork}"
+                                    TextColor="White" />
+                            </Grid>
+                            <Border
+                                Grid.Row="1"
+                                Margin="0,14,0,0"
+                                Padding="8,6"
+                                BackgroundColor="#40FFFFFF"
+                                HeightRequest="34"
+                                HorizontalOptions="Start"
+                                StrokeThickness="0"
+                                VerticalOptions="Start"
+                                WidthRequest="48">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="6" />
+                                </Border.StrokeShape>
+                                <mi:MauiIcon
+                                    HorizontalOptions="Center"
+                                    Icon="{mi:Material Icon=Memory}"
+                                    IconColor="White"
+                                    IconSize="18"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <!--  CardNumber is already formatted "XXXX XXXX XXXX XXXX"  -->
+                            <Label
+                                Grid.Row="2"
+                                Margin="0,8,0,0"
+                                CharacterSpacing="3"
+                                FontAttributes="Bold"
+                                FontSize="18"
+                                Text="{Binding CardNumberDisplay, TargetNullValue='**** **** **** ****'}"
+                                TextColor="White" />
+                            <Grid
+                                Grid.Row="3"
+                                Margin="0,10,0,0"
+                                ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Grid.Column="0" Spacing="1">
+                                    <Label
+                                        FontSize="10"
+                                        Opacity="0.7"
+                                        Text="CARD HOLDER"
+                                        TextColor="White" />
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="13"
+                                        Text="{Binding CardHolder, TargetNullValue='Full Name'}"
+                                        TextColor="White" />
+                                </VerticalStackLayout>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="1"
+                                    VerticalOptions="End">
+                                    <Label
+                                        FontSize="10"
+                                        Opacity="0.7"
+                                        Text="EXPIRES"
+                                        TextColor="White" />
+                                    <!--  ExpiryDisplay = Expiry (already "MM/YY")  -->
+                                    <Label
+                                        FontAttributes="Bold"
+                                        FontSize="13"
+                                        Text="{Binding ExpiryDisplay, TargetNullValue='MM/YY'}"
+                                        TextColor="White" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!--  Card Label  -->
+                <ctrl:VaultFormField
+                    x:Name="FieldCardName"
+                    ErrorMessage="{Binding CardNameError}"
+                    FieldLabel="CARD LABEL"
+                    HasError="{Binding HasCardNameError}"
+                    IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    IconColor="{DynamicResource PrimaryColor}"
+                    IconGlyph="&#xE892;"
+                    Placeholder="e.g. My Visa Card"
+                    Text="{Binding CardName}" />
+
+                <!--  Card Holder  -->
+                <ctrl:VaultFormField
+                    x:Name="FieldCardHolder"
+                    ErrorMessage="{Binding CardHolderError}"
+                    FieldLabel="CARD HOLDER NAME"
+                    HasError="{Binding HasCardHolderError}"
+                    IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                    IconColor="{DynamicResource PrimaryColor}"
+                    IconGlyph="&#xE7FF;"
+                    Placeholder="Name as on card"
+                    Text="{Binding CardHolder}" />
+
+                <!--  Card Number — plain numeric Entry, preview above shows formatted  -->
+                <Border
+                    Padding="16,14"
+                    BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    Stroke="Transparent"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.04"
+                            Radius="6"
+                            Offset="0,2" />
+                    </Border.Shadow>
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Border
+                            Grid.Column="0"
+                            Padding="8"
+                            BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                            HeightRequest="36"
+                            StrokeThickness="0"
+                            WidthRequest="36">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="10" />
+                            </Border.StrokeShape>
+                            <Label
+                                FontFamily="MaterialIconsRegular"
+                                FontSize="18"
+                                HorizontalOptions="Center"
+                                Text="&#xE870;"
+                                TextColor="{DynamicResource PrimaryColor}"
+                                VerticalOptions="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" Spacing="2">
+                            <Label
+                                FontSize="11"
+                                Text="CARD NUMBER"
+                                TextColor="{DynamicResource TextTertiaryColor}" />
+                            <Entry
+                                x:Name="CardNumberEntry"
+                                FontSize="15"
+                                Keyboard="Numeric"
+                                Loaded="CardNumberEntry_Loaded"
+                                MaxLength="19"
+                                Placeholder="4111 1111 1111 1111"
+                                PlaceholderColor="{DynamicResource TextTertiaryColor}"
+                                TextChanged="OnCardNumberEntryTextChanged"
+                                TextColor="{DynamicResource TextColor}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+                <Label
+                    Margin="4,0,0,0"
+                    FontSize="12"
+                    IsVisible="{Binding HasCardNumberError}"
+                    Text="{Binding CardNumberError}"
+                    TextColor="#EF4444" />
+
+                <!--  Expiry (MM / YY) + CVV  -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+
+                    <!--  Expiry: single "MM/YY" Entry, formatted in code-behind  -->
+                    <VerticalStackLayout Grid.Column="0" Spacing="4">
+                        <Border
+                            Padding="16,14"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            Stroke="Transparent"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.04"
+                                    Radius="6"
+                                    Offset="0,2" />
+                            </Border.Shadow>
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="8"
+                                    BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                    HeightRequest="36"
+                                    StrokeThickness="0"
+                                    WidthRequest="36">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="10" />
+                                    </Border.StrokeShape>
+                                    <Label
+                                        FontFamily="MaterialIconsRegular"
+                                        FontSize="18"
+                                        HorizontalOptions="Center"
+                                        Text="&#xE8DF;"
+                                        TextColor="{DynamicResource PrimaryColor}"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                    <Label
+                                        FontSize="11"
+                                        Text="EXPIRY DATE"
+                                        TextColor="{DynamicResource TextTertiaryColor}" />
+                                    <Entry
+                                        x:Name="ExpiryEntry"
+                                        FontSize="15"
+                                        Keyboard="Numeric"
+                                        Loaded="ExpiryEntry_Loaded"
+                                        MaxLength="5"
+                                        Placeholder="MM/YY"
+                                        PlaceholderColor="{DynamicResource TextTertiaryColor}"
+                                        TextChanged="OnExpiryTextChanged"
+                                        TextColor="{DynamicResource TextColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+                        <Label
+                            Margin="4,0,0,0"
+                            FontSize="12"
+                            IsVisible="{Binding HasExpiryError}"
+                            Text="{Binding ExpiryError}"
+                            TextColor="#EF4444" />
+                    </VerticalStackLayout>
+
+                    <!--  CVV  -->
+                    <ctrl:VaultFormField
+                        x:Name="FieldCvv"
+                        Grid.Column="1"
+                        ErrorMessage="{Binding CvvError}"
+                        FieldLabel="CVV"
+                        HasError="{Binding HasCvvError}"
+                        IconBackgroundColor="{DynamicResource PrimaryLightestColor}"
+                        IconColor="{DynamicResource PrimaryColor}"
+                        IconGlyph="&#xE897;"
+                        IsPassword="True"
+                        Keyboard="Numeric"
+                        MaxLength="4"
+                        Placeholder="***"
+                        Text="{Binding Cvv}" />
+                </Grid>
+
+                <!--  Require Auth to Autofill  -->
+                <Border
+                    Padding="16,14"
+                    BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.04"
+                            Radius="6"
+                            Offset="0,2" />
+                    </Border.Shadow>
+                    <VerticalStackLayout Spacing="8">
+                        <ctrl:VaultToggleRow
+                            Title="Require Authentication to Autofill"
+                            IconBackgroundColor="#FEF2F2"
+                            IconColor="#EF4444"
+                            IconGlyph="&#xE897;"
+                            IsToggled="{Binding FormRequireAuth}"
+                            ShowSeparator="False"
+                            Subtitle="Require biometric or PIN before this card can be filled" />
+                        <!--  No-auth-method warning  -->
+                        <Border
+                            Padding="12,8"
+                            BackgroundColor="{DynamicResource WarningLightColor}"
+                            IsVisible="{Binding NoAuthMethodConfigured}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="10" />
+                            </Border.StrokeShape>
+                            <HorizontalStackLayout Spacing="8">
+                                <mi:MauiIcon
+                                    Icon="{mi:Material Icon=Warning}"
+                                    IconColor="#F59E0B"
+                                    IconSize="16"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    FontSize="12"
+                                    HorizontalOptions="Fill"
+                                    LineBreakMode="WordWrap"
+                                    Text="No PIN or biometric lock is set up. Go to Settings → Security to configure one."
+                                    TextColor="{DynamicResource TextColor}"
+                                    VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                        </Border>
+                    </VerticalStackLayout>
+                </Border>
+
+                <BoxView HeightRequest="24" Color="Transparent" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!--  Save footer  -->
+        <Grid
+            Grid.Row="2"
+            Padding="20,12,20,28"
+            BackgroundColor="{DynamicResource CardBackgroundColor}">
+            <Grid.Shadow>
+                <Shadow
+                    Brush="Black"
+                    Opacity="0.06"
+                    Radius="12"
+                    Offset="0,-4" />
+            </Grid.Shadow>
+            <ctrl:VaultGradientButton
+                ColorEnd="{DynamicResource PrimaryDarkColor}"
+                ColorStart="{DynamicResource PrimaryColor}"
+                Command="{Binding SaveCommand}"
+                CornerRadius="14"
+                HeightRequest="52"
+                IsEnabled="{Binding CanSave}"
+                IsLoading="{Binding IsSaving}"
+                Text="{Binding SaveButtonText}" />
+        </Grid>
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/gk_bg">
+
+    <!-- GRADIENT HERO (unchanged) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+        android:orientation="vertical"
+      android:background="@drawable/bg_autofill_header"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="28dp"
+        android:paddingBottom="32dp"
+        android:gravity="center">
+
+        <ImageView
+    android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/logowhite"
+       android:scaleType="fitCenter"
+         android:contentDescription="FORTRESS" />
+
+        <TextView
+  android:id="@+id/fortressTitle"
+            android:tag="fortressTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+      android:layout_marginTop="14dp"
+         android:text="FORTRESS"
+            android:textSize="22sp"
+            android:textStyle="bold"
+      android:letterSpacing="0.15"
+            android:textColor="@color/white" />
+
+  <TextView
+ android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+         android:layout_marginTop="4dp"
+            android:text="Security Warning"
+          android:textSize="13sp"
+       android:textColor="#BFDBFF" />
+
+        <View
+            android:layout_width="40dp"
+          android:layout_height="2dp"
+            android:layout_marginTop="14dp"
+      android:background="#40FFFFFF" />
+    </LinearLayout>
+
+    <!-- WARNING ICON + TITLE -->
+  <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+ android:gravity="center"
+        android:paddingStart="28dp"
+        android:paddingEnd="28dp"
+ android:paddingTop="24dp"
+    android:paddingBottom="0dp">
+
+   <!-- Red shield/warning icon circle -->
+      <com.google.android.material.card.MaterialCardView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+     app:cardCornerRadius="32dp"
+   app:cardElevation="0dp"
+            app:strokeWidth="0dp"
+       app:cardBackgroundColor="#FEE2E2">
+
+        <ImageView
+                android:layout_width="30dp"
+       android:layout_height="30dp"
+ android:layout_gravity="center"
+   android:src="@drawable/ic_lock"
+ android:tint="#DC2626" />
+   </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+ android:text="Suspicious Fill Detected"
+       android:textSize="19sp"
+     android:textStyle="bold"
+         android:textColor="@color/gk_gray_800"
+          android:gravity="center" />
+
+        <TextView
+            android:id="@+id/riskSubtitle"
+ android:layout_width="match_parent"
+   android:layout_height="wrap_content"
+  android:layout_marginTop="6dp"
+      android:text="This fill request looks unusual."
+            android:textSize="13sp"
+            android:textColor="@color/gk_gray_500"
+      android:gravity="center"
+     android:lineSpacingMultiplier="1.4" />
+    </LinearLayout>
+
+    <!-- RISK DETAIL CARD -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="18dp"
+    app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="#FECACA"
+        app:cardBackgroundColor="#FFF5F5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+  android:orientation="vertical"
+      android:padding="16dp">
+
+      <!-- Domain row -->
+       <LinearLayout
+     android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+     android:orientation="horizontal"
+  android:gravity="center_vertical">
+
+            <TextView
+            android:layout_width="0dp"
+     android:layout_height="wrap_content"
+        android:layout_weight="1"
+          android:text="Requesting domain"
+           android:textSize="12sp"
+    android:textColor="@color/gk_gray_500" />
+
+       <TextView
+      android:id="@+id/riskDomain"
+             android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+           android:text="unknown"
+   android:textSize="12sp"
+                android:textStyle="bold"
+       android:textColor="@color/gk_gray_800"
+      android:maxLines="1"
+  android:ellipsize="end"
+           android:layout_marginStart="8dp" />
+       </LinearLayout>
+
+     <View
+            android:layout_width="match_parent"
+   android:layout_height="1dp"
+             android:layout_marginTop="10dp"
+     android:layout_marginBottom="10dp"
+                android:background="#FECACA" />
+
+            <!-- Risk level row -->
+            <LinearLayout
+     android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+           android:orientation="horizontal"
+          android:gravity="center_vertical">
+
+      <TextView
+ android:layout_width="0dp"
+         android:layout_height="wrap_content"
+            android:layout_weight="1"
+     android:text="Risk level"
+     android:textSize="12sp"
+     android:textColor="@color/gk_gray_500" />
+
+             <!-- Pill badge for risk level -->
+    <TextView
+      android:id="@+id/riskLevel"
+   android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:text="High"
+    android:textSize="11sp"
+              android:textStyle="bold"
+               android:textColor="#DC2626"
+   android:paddingStart="10dp"
+           android:paddingEnd="10dp"
+     android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+   android:background="@drawable/badge_risk_bg" />
+   </LinearLayout>
+
+            <View
+        android:layout_width="match_parent"
+      android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+  android:layout_marginBottom="10dp"
+       android:background="#FECACA" />
+
+        <!-- Probability row -->
+  <LinearLayout
+      android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+          android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+     <TextView
+              android:layout_width="0dp"
+       android:layout_height="wrap_content"
+       android:layout_weight="1"
+   android:text="Threat probability"
+       android:textSize="12sp"
+ android:textColor="@color/gk_gray_500" />
+
+  <TextView
+       android:id="@+id/riskProbability"
+            android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+       android:text="-"
+              android:textSize="13sp"
+android:textStyle="bold"
+           android:textColor="#DC2626" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+           android:layout_height="1dp"
+      android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+           android:background="#FECACA" />
+
+       <!-- Reason -->
+  <TextView
+   android:id="@+id/riskReason"
+ android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+           android:text="The domain does not match the saved credential."
+         android:textSize="12sp"
+       android:textColor="@color/gk_gray_500"
+        android:lineSpacingMultiplier="1.4" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- BUTTON BAR -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="28dp">
+
+        <!-- Cancel Fill — primary safe action, full-width solid -->
+ <com.google.android.material.button.MaterialButton
+   android:id="@+id/cancelRiskButton"
+       android:layout_width="match_parent"
+            android:layout_height="52dp"
+  android:text="Cancel Fill"
+android:textSize="15sp"
+            android:textStyle="bold"
+       android:textColor="@color/white"
+            android:letterSpacing="0.02"
+            app:backgroundTint="@color/colorPrimary"
+       app:cornerRadius="14dp" />
+
+        <!-- Fill Anyway — destructive text-style, less prominent -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fillAnywayButton"
+      android:layout_width="match_parent"
+            android:layout_height="48dp"
+   android:layout_marginTop="4dp"
+android:text="Fill Anyway"
+   android:textSize="14sp"
+         android:textColor="#DC2626"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+app:backgroundTint="@android:color/transparent"
+            app:rippleColor="#20DC2626" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,147 @@
+﻿<ui:FluentWindow
+  x:Class="Fortress.Windows.Desktop.Views.Dialogs.PinSetupDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="Set PIN Unlock"
+    Width="400"
+    Height="340"
+    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+    ExtendsContentIntoTitleBar="True"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    WindowBackdropType="Mica"
+  WindowCornerPreference="Round"
+    WindowStartupLocation="CenterOwner"
+    mc:Ignorable="d">
+
+ <Grid Margin="0,32,0,0">
+        <StackPanel Margin="28,20,28,24">
+
+   <!--  Header  -->
+          <Border
+        Margin="0,0,0,20"
+      Padding="14"
+      Background="#1A4F46E5"
+        CornerRadius="12">
+                <StackPanel Orientation="Horizontal">
+          <Border
+   Width="36"
+   Height="36"
+      Margin="0,0,12,0"
+  Background="#DBEAFE"
+                CornerRadius="9">
+             <ui:SymbolIcon FontSize="18" Foreground="#2563EB" Symbol="Password24" />
+           </Border>
+   <StackPanel VerticalAlignment="Center">
+         <TextBlock
+           FontSize="14"
+          FontWeight="SemiBold"
+          Foreground="#4F46E5"
+            Text="Set a 4-digit PIN" />
+       <TextBlock
+      FontSize="12"
+        Opacity="0.7"
+    Text="You'll type this PIN each time you open Fortress" />
+           </StackPanel>
+  </StackPanel>
+            </Border>
+
+            <!--  PIN field  -->
+   <TextBlock Margin="0,0,0,6" FontSize="13" FontWeight="SemiBold" Text="Enter PIN" />
+          <ui:PasswordBox
+      x:Name="PinBox"
+            Margin="0,0,0,4"
+          MaxLength="6"
+   PlaceholderText="4-6 digits"
+              PasswordChanged="OnPinChanged" />
+         <TextBlock
+          x:Name="PinError"
+                Margin="0,0,0,10"
+          FontSize="12"
+       Foreground="#EF4444"
+        Text="PIN must be 4-6 digits"
+       Visibility="Collapsed" />
+
+  <!--  Confirm PIN field  -->
+  <TextBlock Margin="0,0,0,6" FontSize="13" FontWeight="SemiBold" Text="Confirm PIN" />
+            <ui:PasswordBox
+ x:Name="ConfirmBox"
+ Margin="0,0,0,4"
+  MaxLength="6"
+         PlaceholderText="Re-enter PIN"
+      PasswordChanged="OnConfirmChanged" />
+            <TextBlock
+     x:Name="ConfirmError"
+     Margin="0,0,0,16"
+           FontSize="12"
+            Foreground="#EF4444"
+  Text="PINs do not match"
+    Visibility="Collapsed" />
+
+        <!--  Buttons  -->
+          <Grid>
+          <Grid.ColumnDefinitions>
+       <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="8" />
+   <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+          <Button
+         Grid.Column="0"
+        Height="44"
+         HorizontalAlignment="Stretch"
+        Click="OnCancel"
+                 Content="Cancel"
+ Cursor="Hand" />
+<Button
+     x:Name="SaveButton"
+     Grid.Column="2"
+  Height="44"
+                  HorizontalAlignment="Stretch"
+       Click="OnSave"
+          Cursor="Hand"
+        IsEnabled="False">
+         <Button.Style>
+        <Style TargetType="Button">
+         <Setter Property="Template">
+         <Setter.Value>
+       <ControlTemplate TargetType="Button">
+       <Border x:Name="Root" CornerRadius="8">
+           <Border.Background>
+   <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+      <GradientStop Offset="0" Color="#4F46E5" />
+       <GradientStop Offset="1" Color="#7C3AED" />
+                     </LinearGradientBrush>
+         </Border.Background>
+   <ContentPresenter
+    HorizontalAlignment="Center"
+ VerticalAlignment="Center"
+      TextElement.FontWeight="SemiBold"
+             TextElement.Foreground="White" />
+  </Border>
+    <ControlTemplate.Triggers>
+    <Trigger Property="IsEnabled" Value="False">
+     <Setter TargetName="Root" Property="Opacity" Value="0.4" />
+    </Trigger>
+          <Trigger Property="IsMouseOver" Value="True">
+         <Setter TargetName="Root" Property="Opacity" Value="0.88" />
+              </Trigger>
+   <Trigger Property="IsPressed" Value="True">
+     <Setter TargetName="Root" Property="Opacity" Value="0.72" />
+         </Trigger>
+           </ControlTemplate.Triggers>
+          </ControlTemplate>
+  </Setter.Value>
+   </Setter>
+            </Style>
+  </Button.Style>
+      <TextBlock Text="Save PIN" />
+                </Button>
+            </Grid>
+
+        </StackPanel>
+    </Grid>
+</ui:FluentWindow>
+

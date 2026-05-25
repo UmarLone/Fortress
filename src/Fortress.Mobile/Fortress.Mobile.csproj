@@ -1,0 +1,448 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net10.0-ios;net10.0-android</TargetFrameworks>
+		<OutputType>Exe</OutputType>
+		<RootNamespace>Fortress.Mobile</RootNamespace>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<UseMaui>true</UseMaui>
+		<LangVersion>preview</LangVersion>
+		<ApplicationTitle>FORTRESS</ApplicationTitle>
+		<ApplicationId>com.fortress.app</ApplicationId>
+		<ApplicationIdGuid>334EA20D-E66A-4555-868C-EA5EB7CE3472</ApplicationIdGuid>
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+		<!--<MauiVersion>9.0.100</MauiVersion>-->
+		<ShinyVersion>3.3.4</ShinyVersion>
+	</PropertyGroup>
+	<ItemGroup Condition="$(TargetFramework.StartsWith('net10.0-android'))">
+		<!-- Align both Tracing libs to satisfy Shiny.Core -->
+		<PackageReference Include="Xamarin.AndroidX.Tracing.Tracing" Version="1.3.0.1" />
+		<PackageReference Include="Xamarin.AndroidX.Tracing.Tracing.Ktx" Version="1.3.0.1" />
+	</ItemGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.StartsWith('net10.0-android'))">
+		<!-- Use d8 only (no R8 shrinker/optimizer) -->
+		<AndroidDexTool>d8</AndroidDexTool>
+		<AndroidEnableR8>false</AndroidEnableR8>
+
+		<!-- Keep if you still want to skip duplicate tracing libs -->
+		<AndroidAarExcludePattern>**/androidx.tracing.tracing-android*.aar</AndroidAarExcludePattern>
+	</PropertyGroup>
+	<ItemGroup>
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(Filename)%(Extension)" />
+	</ItemGroup>
+	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">
+		<DefineConstants>$(DefineConstants);PLATFORM</DefineConstants>
+		<SupportedOSPlatformVersion>33.0</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+		<SupportedOSPlatformVersion>16.0</SupportedOSPlatformVersion>
+		<DefineConstants>$(DefineConstants);APPLE;PLATFORM</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net10.0-android'">
+	</ItemGroup>
+
+	<ItemGroup Condition="$(TargetFramework.StartsWith('net10.0-android'))">
+		<AndroidResource Include="ViewModels\Platforms\Android\Resources\layout\**\*.xml" />
+	</ItemGroup>
+	 
+	 
+	<!-- Assets & Fonts -->
+	<ItemGroup>
+		<TrimmerRootDescriptor Include="Linker.xml" Condition="'$(Configuration)' == 'Release'" />
+		<MauiImage Include="Resources\Images\*" />
+		<MauiFont Include="Resources\Fonts\*" />
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+		<MauiAsset Include="appsettings.json" LogicalName="appsettings.json" />
+		<MauiAsset Include="appsettings.android.json" LogicalName="appsettings.android.json" />
+		<MauiAsset Include="appsettings.apple.json" LogicalName="appsettings.apple.json" />
+		<Content Remove="**\appsettings.json" />
+		<Content Remove="**\appsettings.*.json" />
+	</ItemGroup>
+ 
+	<ItemGroup>
+	  <Compile Remove="Resources\Fonts\MaterialIcons.cs" />
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiFont Remove="C:\Users\Raj\.nuget\packages\syncfusion.maui.core\31.2.5\buildTransitive\..\buildTransitive\Resources\Fonts\MauiMaterialAssets.ttf" />
+	  <MauiFont Remove="C:\Users\Raj\.nuget\packages\syncfusion.maui.toolkit\1.0.7\buildTransitive\..\buildTransitive\Resources\Fonts\MauiMaterialAssets.ttf" />
+	  <MauiFont Remove="Resources\Fonts\MontserratBold.ttf" />
+	  <MauiFont Remove="Resources\Fonts\MontserratMedium.ttf" />
+	  <MauiFont Remove="Resources\Fonts\MontserratSemiBold.ttf" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="Resources\Splash\appsplash.svg" />
+	</ItemGroup>
+
+	<!-- Packages -->
+	<ItemGroup>
+		<PackageReference Include="AathifMahir.Maui.MauiIcons.Core" Version="5.0.0" />
+		<PackageReference Include="AathifMahir.Maui.MauiIcons.FontAwesome" Version="5.0.0" />
+		<PackageReference Include="AathifMahir.Maui.MauiIcons.FontAwesome.Brand" Version="5.0.0" />
+		<PackageReference Include="AathifMahir.Maui.MauiIcons.FontAwesome.Solid" Version="5.0.0" />
+		<PackageReference Include="AathifMahir.Maui.MauiIcons.Material" Version="5.0.0" />
+		<PackageReference Include="Controls.UserDialogs.Maui" Version="1.12.0" />
+		<PackageReference Include="FluentValidation" Version="11.11.0" />
+		<PackageReference Include="NReco.Logging.File" Version="1.3.1" />
+		<PackageReference Include="Plugin.Maui.Stepper" Version="1.0.3" />
+		<PackageReference Include="Prism.Maui" Version="9.0.540" />
+		<PackageReference Include="Shiny.Core" Version="$(ShinyVersion)" />
+		<PackageReference Include="Shiny.Hosting.Maui" Version="$(ShinyVersion)" />
+		<PackageReference Include="Shiny.Extensions.DependencyInjection" Version="1.3.1" />
+		<PackageReference Include="Shiny.Extensions.Stores" Version="1.3.1" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.20" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.10" Condition="'$(Configuration)' == 'Debug'" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="12.3.0" />
+		<PackageReference Include="Camera.Maui" Version="1.5.1" />
+		<PackageReference Include="Prism.DryIoc.Maui" Version="9.0.537" />
+		<PackageReference Include="Shiny.Extensions.Configuration" Version="$(ShinyVersion)" />
+		<PackageReference Include="Shiny.Jobs" Version="3.3.4" />
+		<PackageReference Include="Plugin.StoreReview" Version="6.2.0" />
+		<PackageReference Include="SimpleBase" Version="5.5.0" />
+		<PackageReference Include="Oscore.Maui.Biometric" Version="2.4.1" />
+		<PackageReference Include="Syncfusion.Maui.Toolkit" Version="1.0.7" />
+		<PackageReference Include="The49.Maui.BottomSheet" Version="8.0.3" />
+		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="3.0.0" />
+		<PackageReference Include="FFImageLoading.Maui" Version="1.3.2" />
+		<PackageReference Include="ZXing.Net.Maui" Version="0.6.0" />
+		<PackageReference Include="ZXing.Net.Maui.Controls" Version="0.6.0" />
+		<PackageReference Include="IeuanWalker.Maui.Switch" Version="2.0.0" />
+	</ItemGroup>
+	<ItemGroup Condition="$(TargetFramework.StartsWith('net10.0-android'))">
+		<PackageReference Include="Xamarin.AndroidX.AutoFill" Version="1.3.0.1" />
+		<PackageReference Include="Xamarin.AndroidX.Credentials" Version="1.5.0.1" />
+		<PackageReference Include="Xamarin.AndroidX.Credentials.PlayServicesAuth" Version="1.5.0.1" />
+	</ItemGroup>
+	<ItemGroup Condition="$(TargetFramework.Contains('android'))">
+		<!-- Include all Android resources under Platforms/Android/Resources -->
+		<AndroidResource Include="ViewModels\Platforms\Android\Resources\**\*.*" />
+	</ItemGroup>
+	<!-- Proguard for Android -->
+	<ItemGroup Condition="$(TargetFramework.Contains('android'))">
+		<ProguardConfiguration Include="Platforms/Android/proguard.cfg" />
+	</ItemGroup>
+	<PropertyGroup Condition="$(TargetFramework.StartsWith('net10.0-android'))">
+		<AndroidMinSdkVersion>33</AndroidMinSdkVersion>
+		<AndroidTargetSdkVersion>35</AndroidTargetSdkVersion>
+	</PropertyGroup>
+	 
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0-ios|AnyCPU'">
+	  <CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0-ios|AnyCPU'">
+	  <CodesignEntitlements>Platforms\iOS\Entitlements.plist</CodesignEntitlements>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(TargetFramework)'=='net10.0-ios'">
+	  <ProvisioningType>automatic</ProvisioningType>
+	  <CodesignKey>Apple Development: Created via API (95WVDRUK93)</CodesignKey>
+	  <!-- Let Xcode automatically manage provisioning profiles -->
+	  <!-- <CodesignProvision>VS: com.fortress.passwordmanager Development</CodesignProvision> -->
+	</PropertyGroup>
+	<!-- Project references -->
+
+	<!--<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+		<ProjectReference Include="..\Fortress.iPhone.Autofill\Fortress.iPhone.Autofill.csproj">
+			<IsAppExtension>true</IsAppExtension>
+			<IsWatchExtension>false</IsWatchExtension>
+		</ProjectReference>
+	</ItemGroup>-->
+
+
+
+	<!-- Ensure extension is copied to Plugins folder -->
+	 
+	
+	<ItemGroup>
+		<ProjectReference Include="..\Fortress.Mobile.Core\Fortress.Mobile.Core.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="Views\PlaceholderPage.xaml.cs">
+	    <DependentUpon>PlaceholderPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\PopupPages\LogFiltersSheet.xaml.cs">
+	    <DependentUpon>LogFiltersSheet.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\GoogleDriveSyncPage.xaml.cs">
+	    <DependentUpon>GoogleDriveSyncPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiAsset Update="Resources\Raw\Alert.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\step5.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\blecomputer.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\bleon.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\blescanning.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\connection.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\creditcard.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\desktop.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\empty.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\error.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\notifcation.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\notifications.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\passwords.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\Protection.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\QrCode.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\serverconnected.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\step1.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\step2.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\step3.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\step4.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\step6.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	  <MauiAsset Update="Resources\Raw\Success.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiImage Update="Resources\Images\gklogoblue.png">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiImage>
+	  <MauiImage Update="Resources\Images\gklogogrey.png">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiImage>
+	</ItemGroup>
+	<ItemGroup>
+	  <MauiXaml Update="Controls\IconActionButton.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\SelectionCheckMark.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\VaultFormField.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\VaultGeneratedPasswordCard.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\VaultGradientButton.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\VaultLengthSlider.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\VaultPageHero.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\VaultPasswordStrengthBar.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\VaultToggleRow.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Base.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Black.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\BorderStyles.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\BoxViewStyles.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\ButtonStyles.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\CheckBoxStyles.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\ComboBoxStyles.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\CustomStyles.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Dark.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\EntryStyles.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\FontIcons.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\LabelStyles.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Light.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\ListViewStyles.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Resources\Styles\Nord.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ActivityLogPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\AddEditAuthenticatorPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\AddEditCredentialPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\AddEditCreditCardPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\AddEditIdentityPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\AddEditSecureItemPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\AuthenticatorDetailPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\CloudSyncPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\CredentialDetailPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\DropboxSyncPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\GoogleDriveSyncPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\GroupMembersPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\GroupsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\IdentitiesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ImportPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\LocalLogsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\NotificationDetailPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\OneDriveSyncPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\PasskeyDetailPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\PasskeysPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\PopupPages\AddMemberSheet.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\PopupPages\AlertSheet.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\PopupPages\VoiceListeningSheet.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ReceiveItemPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SecureItemsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SecurityInsightsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SetupPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ShareItemPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\UsbExportPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\VaultHealthPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+	<Target Name="DumpIosExtensionReference" BeforeTargets="Build">
+		<Message Importance="High" Text="&gt;&gt;&gt; TargetFramework=$(TargetFramework), PlatformId=$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)'))" />
+	</Target>
+	
+  <!-- ── Pre-build: train and bundle the ML.NET intent model ──────────────────
+       Skipped when Fortress.ModelTrainer project is not present in the solution.
+  ──────────────────────────────────────────────────────────────────────── -->
+  <PropertyGroup>
+    <IntentModelAsset>Resources\Raw\intent_classifier_v1.zip</IntentModelAsset>
+    <TrainerProject>$(MSBuildThisFileDirectory)..\Fortress.ModelTrainer\Fortress.ModelTrainer.csproj</TrainerProject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net10.0-android|AnyCPU'">
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+  </PropertyGroup>
+
+  <Target Name="TrainIntentModel" BeforeTargets="BeforeBuild" Condition="Exists('$(TrainerProject)')" Inputs="$(TrainerProject)" Outputs="$(MSBuildThisFileDirectory)$(IntentModelAsset)">
+    <Message Importance="high" Text="[TrainIntentModel] Restoring trainer packages..." />
+    <MSBuild Projects="$(TrainerProject)" Targets="Restore" Properties="Configuration=Release;TargetFramework=net10.0" BuildInParallel="false" />
+    <Message Importance="high" Text="[TrainIntentModel] Building trainer..." />
+    <MSBuild Projects="$(TrainerProject)" Targets="Build" Properties="Configuration=Release;TargetFramework=net10.0" BuildInParallel="false" />
+    <Exec Command="dotnet run --project &quot;$(TrainerProject)&quot; --configuration Release --framework net10.0 -- &quot;$(MSBuildThisFileDirectory)$(IntentModelAsset)&quot;" ConsoleToMSBuild="true" IgnoreExitCode="false" />
+    <Message Importance="high" Text="[TrainIntentModel] Model written to $(IntentModelAsset)" />
+  </Target>
+
+  <!-- Register the generated zip as a MauiAsset so it is bundled into the app -->
+  <ItemGroup>
+    <MauiAsset Include="$(IntentModelAsset)" LogicalName="intent_classifier_v1.zip" />
+  </ItemGroup>
+  <ItemGroup>
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" />
+    <MauiSplashScreen Include="Resources\Splash\appsplash.svg" Color="#548ce8" BaseSize="512,512" />
+  </ItemGroup>
+</Project>

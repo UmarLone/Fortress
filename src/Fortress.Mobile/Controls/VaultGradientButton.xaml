@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  VaultGradientButton
+  A full-width gradient action button with loading spinner support.
+
+  Bindable properties
+  Text          string   - button label
+  Command   ICommand - tap command
+  IsLoading   bool     - shows spinner, hides icon when true
+  HeightRequest double   - height (default 56)
+ColorStart    Color    - gradient start  (default: PrimaryColor resource)
+  ColorEnd      Color    - gradient end (default: PrimaryGradient resource)
+  CornerRadius  double   - corner radius   (default 16)
+
+  Usage
+<ctrl:VaultGradientButton Text="Save Card"
+    ColorStart="#F59E0B" ColorEnd="#D97706"
+Command="{Binding SaveCardCommand}" />
+-->
+<ContentView
+    x:Class="Fortress.Controls.VaultGradientButton"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    x:Name="This">
+
+    <Border
+        Padding="0"
+        BackgroundColor="{DynamicResource PrimaryColor}"
+      HeightRequest="{Binding HeightRequest, Source={x:Reference This}}"
+        StrokeThickness="0">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="{Binding CornerRadius, Source={x:Reference This}}" />
+        </Border.StrokeShape>
+
+        <Border.Shadow>
+  <Shadow x:Name="ShadowBrush"
+  Brush="{DynamicResource PrimaryColor}"
+               Opacity="0.35"
+     Radius="12"
+                    Offset="0,4" />
+</Border.Shadow>
+
+        <Grid>
+    <HorizontalStackLayout
+            HorizontalOptions="Center"
+     InputTransparent="True"
+            Spacing="10"
+       VerticalOptions="Center">
+
+             <ActivityIndicator
+        HeightRequest="20"
+ IsRunning="{Binding IsLoading, Source={x:Reference This}}"
+          IsVisible="{Binding IsLoading, Source={x:Reference This}}"
+      WidthRequest="20"
+   Color="White" />
+
+          <mi:MauiIcon
+ Icon="{mi:Material Icon=AutoAwesome}"
+IconColor="White"
+            IconSize="22"
+             InputTransparent="True"
+           IsVisible="True"
+     VerticalOptions="Center">
+          <mi:MauiIcon.Triggers>
+     <DataTrigger
+               Binding="{Binding IsLoading, Source={x:Reference This}}"
+     TargetType="mi:MauiIcon"
+         Value="True">
+        <Setter Property="IsVisible" Value="False" />
+            </DataTrigger>
+   </mi:MauiIcon.Triggers>
+         </mi:MauiIcon>
+
+<Label
+           FontAttributes="Bold"
+         FontSize="16"
+  InputTransparent="True"
+  Text="{Binding Text, Source={x:Reference This}}"
+           TextColor="White"
+            VerticalOptions="Center" />
+            </HorizontalStackLayout>
+
+      <Button
+     x:Name="InnerButton"
+     Padding="0"
+        BackgroundColor="Transparent"
+         BorderWidth="0"
+        Command="{Binding Command, Source={x:Reference This}}"
+     HorizontalOptions="Fill"
+          VerticalOptions="Fill" />
+        </Grid>
+    </Border>
+</ContentView>

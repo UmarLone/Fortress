@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Fortress.Controls.SearchableTitleView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Name="This">
+
+    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+
+        <!--  Title (visible when not searching)  -->
+        <Label
+            x:Name="TitleLabel"
+            Grid.Column="0"
+            FontAttributes="Bold"
+            FontSize="20"
+            IsVisible="True"
+            TextColor="White"
+            VerticalOptions="Center" />
+
+        <!--  Search Container (hidden initially)  -->
+        <Border
+            x:Name="SearchContainer"
+            Grid.Column="0"
+            Padding="0"
+            BackgroundColor="#20FFFFFF"
+            HeightRequest="42"
+            IsVisible="False"
+            StrokeThickness="0"
+            VerticalOptions="Center">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="12" />
+            </Border.StrokeShape>
+
+            <Grid
+                Padding="12,0"
+                ColumnDefinitions="Auto,*,Auto">
+                <!--  Search Icon  -->
+                <mi:MauiIcon
+                    Grid.Column="0"
+                    Icon="{mi:Material Icon=Search}"
+                    IconColor="#CCFFFFFF"
+                    IconSize="20"
+                    VerticalOptions="Center" />
+
+                <!--  Search Entry  -->
+                <Entry
+                    x:Name="SearchEntry"
+                    Grid.Column="1"
+                    Margin="8,0,0,0"
+                    BackgroundColor="Transparent"
+                    FontSize="16"
+                    PlaceholderColor="#99FFFFFF"
+                    TextChanged="OnSearchEntryTextChanged"
+                    TextColor="White"
+                    VerticalOptions="Center" />
+
+                <!--  Clear Button  -->
+                <Border
+                    x:Name="ClearButton"
+                    Grid.Column="2"
+                    Padding="4"
+                    BackgroundColor="#30FFFFFF"
+                    HeightRequest="28"
+                    IsVisible="False"
+                    StrokeThickness="0"
+                    VerticalOptions="Center"
+                    WidthRequest="28">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14" />
+                    </Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnClearClicked" />
+                    </Border.GestureRecognizers>
+                    <mi:MauiIcon
+                        HorizontalOptions="Center"
+                        Icon="{mi:Material Icon=Close}"
+                        IconColor="White"
+                        IconSize="16"
+                        InputTransparent="True"
+                        VerticalOptions="Center" />
+                </Border>
+            </Grid>
+        </Border>
+
+        <!--  Search/Close Toggle Button  -->
+        <Border
+            x:Name="SearchToggleButton"
+            Grid.Column="1"
+            Padding="0"
+            BackgroundColor="#20FFFFFF"
+            HeightRequest="42"
+            StrokeThickness="0"
+            VerticalOptions="Center"
+            WidthRequest="42">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="12" />
+            </Border.StrokeShape>
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="OnSearchToggleClicked" />
+            </Border.GestureRecognizers>
+            <Border.Behaviors>
+                <toolkit:TouchBehavior
+                    DefaultAnimationDuration="100"
+                    DefaultAnimationEasing="{x:Static Easing.CubicOut}"
+                    PressedOpacity="0.7"
+                    PressedScale="0.92" />
+            </Border.Behaviors>
+            <mi:MauiIcon
+                x:Name="ToggleIcon"
+                HorizontalOptions="Center"
+                Icon="{mi:Material Icon=Search}"
+                IconColor="White"
+                IconSize="22"
+                InputTransparent="True"
+                VerticalOptions="Center" />
+        </Border>
+
+    </Grid>
+</ContentView>

@@ -1,0 +1,1001 @@
+﻿<the49:BottomSheet
+    x:Class="Fortress.Views.PopupPages.ScanQrCodeSheet"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converter="clr-namespace:Fortress.Converters"
+    xmlns:the49="clr-namespace:The49.Maui.BottomSheet;assembly=The49.Maui.BottomSheet"
+    xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.Maui.Controls"
+    x:Name="CV"
+    HasBackdrop="True"
+    HasHandle="True">
+
+    <the49:BottomSheet.Detents>
+        <the49:RatioDetent IsDefault="True" Ratio="0.92" />
+        <the49:ContentDetent />
+    </the49:BottomSheet.Detents>
+
+    <the49:BottomSheet.Resources>
+        <!--  Simple bool inverter  -->
+        <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
+
+        <!--  Tab active: indigo gradient start  -->
+        <converter:BoolToObjectConverter
+            x:Key="BoolToIndigoOrTransparent"
+            FalseObject="Transparent"
+            TrueObject="#6366F1" />
+
+        <!--  Tab active: indigo gradient end  -->
+        <converter:BoolToObjectConverter
+            x:Key="BoolToDarkIndigoOrTransparent"
+            FalseObject="Transparent"
+            TrueObject="#4F46E5" />
+
+        <!--  Tab icon / text color: white when active, indigo when inactive  -->
+        <converter:BoolToObjectConverter
+            x:Key="BoolToWhiteOrIndigo"
+            FalseObject="#6366F1"
+            TrueObject="White" />
+
+        <!--  Camera border background: black while scanning, surface otherwise  -->
+        <converter:BoolToObjectConverter
+            x:Key="BoolToBlackOrSurface"
+            FalseObject="{DynamicResource Gray-100}"
+            TrueObject="Black" />
+
+        <!--  Start/Stop button gradient start  -->
+        <converter:BoolToObjectConverter
+            x:Key="BoolToRedOrIndigo"
+            FalseObject="#6366F1"
+            TrueObject="#EF4444" />
+
+        <!--  Start/Stop button gradient end  -->
+        <converter:BoolToObjectConverter
+            x:Key="BoolToDarkRedOrDarkIndigo"
+            FalseObject="#4F46E5"
+            TrueObject="#DC2626" />
+
+        <!--  Start/Stop button label  -->
+        <converter:BoolToObjectConverter
+            x:Key="BoolToStopOrStart"
+            FalseObject="Start Scanning"
+            TrueObject="Stop Scanning" />
+
+        <!--  Validation border thickness  -->
+        <converter:BoolToObjectConverter
+            x:Key="BoolToStroke15OrNone"
+            FalseObject="0"
+            TrueObject="1.5" />
+
+        <!--  Validation border stroke color  -->
+        <converter:BoolToObjectConverter
+            x:Key="BoolToRedOrTransparent"
+            FalseObject="Transparent"
+            TrueObject="#EF4444" />
+
+        <!--  Threat icon color  -->
+        <converter:BoolToObjectConverter
+            x:Key="BoolToBlockedRedOrWarningAmber"
+            FalseObject="#D97706"
+            TrueObject="#DC2626" />
+
+        <!--  Threat badge gradient start  -->
+        <converter:BoolToObjectConverter
+            x:Key="BoolToRedLightOrYellowLight"
+            FalseObject="#FEF9C3"
+            TrueObject="#FEE2E2" />
+
+        <!--  Threat badge gradient end  -->
+        <converter:BoolToObjectConverter
+            x:Key="BoolToRedPaleOrYellowPale"
+            FalseObject="#FDE68A"
+            TrueObject="#FECACA" />
+    </the49:BottomSheet.Resources>
+
+    <!--
+        Root Grid: rows = Header | Tabs | Content(*) | AddButton
+        The * row expands to fill the full sheet height so both tabs
+        get all the vertical space they need.
+    -->
+    <Grid
+        Padding="20,16,20,28"
+        RowDefinitions="Auto,Auto,*,Auto"
+        RowSpacing="0">
+
+        <!--  ═══ HEADER ═══  -->
+        <VerticalStackLayout
+            Grid.Row="0"
+            Margin="0,0,0,16"
+            Spacing="4">
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                <!--  QrCodeScanner glyph  -->
+                <Label
+                    FontFamily="MaterialIcons"
+                    FontSize="24"
+                    Text="&#xf206;"
+                    TextColor="#6366F1"
+                    VerticalOptions="Center" />
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    Text="{Binding SheetTitle}"
+                    TextColor="{DynamicResource TextColor}"
+                    VerticalOptions="Center" />
+            </HorizontalStackLayout>
+            <Label
+                FontSize="13"
+                HorizontalTextAlignment="Center"
+                Text="{Binding SheetSubtitle}"
+                TextColor="{DynamicResource TextSecondaryColor}" />
+        </VerticalStackLayout>
+
+        <!--  ═══ TAB SWITCHER ═══  -->
+        <Border
+            Grid.Row="1"
+            Margin="0,0,0,16"
+            Padding="4"
+            BackgroundColor="{DynamicResource Gray-100}"
+            IsVisible="{Binding ShowManualTab}"
+            StrokeThickness="0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="14" />
+            </Border.StrokeShape>
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="0">
+                <!--  Scan tab  -->
+                <Border
+                    Grid.Column="0"
+                    Padding="0"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0" Color="{Binding IsScanTab, Converter={StaticResource BoolToIndigoOrTransparent}}" />
+                            <GradientStop Offset="1" Color="{Binding IsScanTab, Converter={StaticResource BoolToDarkIndigoOrTransparent}}" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Grid>
+                        <HorizontalStackLayout
+                            Padding="0,10"
+                            HorizontalOptions="Center"
+                            InputTransparent="True"
+                            Spacing="6">
+                            <!--  QrCodeScanner glyph  -->
+                            <Label
+                                FontFamily="MaterialIcons"
+                                FontSize="18"
+                                InputTransparent="True"
+                                Text="&#xf206;"
+                                TextColor="{Binding IsScanTab, Converter={StaticResource BoolToWhiteOrIndigo}}"
+                                VerticalOptions="Center" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                InputTransparent="True"
+                                Text="Scan QR"
+                                TextColor="{Binding IsScanTab, Converter={StaticResource BoolToWhiteOrIndigo}}"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding SwitchToScanCommand}"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+                    </Grid>
+                </Border>
+                <!--  Manual tab  -->
+                <Border
+                    Grid.Column="1"
+                    Padding="0"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Offset="0" Color="{Binding IsManualTab, Converter={StaticResource BoolToIndigoOrTransparent}}" />
+                            <GradientStop Offset="1" Color="{Binding IsManualTab, Converter={StaticResource BoolToDarkIndigoOrTransparent}}" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Grid>
+                        <HorizontalStackLayout
+                            Padding="0,10"
+                            HorizontalOptions="Center"
+                            InputTransparent="True"
+                            Spacing="6">
+                            <!--  Edit glyph  -->
+                            <Label
+                                FontFamily="MaterialIcons"
+                                FontSize="18"
+                                InputTransparent="True"
+                                Text="&#xe3c9;"
+                                TextColor="{Binding IsManualTab, Converter={StaticResource BoolToWhiteOrIndigo}}"
+                                VerticalOptions="Center" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                InputTransparent="True"
+                                Text="Enter Manually"
+                                TextColor="{Binding IsManualTab, Converter={StaticResource BoolToWhiteOrIndigo}}"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding SwitchToManualCommand}"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!--  ═══ CONTENT AREA ═══  -->
+        <Grid Grid.Row="2" VerticalOptions="Fill">
+
+            <!--  ── SCAN TAB ──  -->
+            <Grid
+                IsVisible="{Binding IsScanTab}"
+                RowDefinitions="*,Auto"
+                RowSpacing="12"
+                VerticalOptions="Fill">
+
+                <Border
+                    Grid.Row="0"
+                    Padding="0"
+                    BackgroundColor="{Binding IsScanning, Converter={StaticResource BoolToBlackOrSurface}}"
+                    IsVisible="{Binding IsScanActive}"
+                    StrokeThickness="0"
+                    VerticalOptions="Fill">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20" />
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow
+                            Brush="Black"
+                            Opacity="0.12"
+                            Radius="16"
+                            Offset="0,4" />
+                    </Border.Shadow>
+                    <Grid>
+                        <!--  Idle placeholder  -->
+                        <VerticalStackLayout Spacing="14" VerticalOptions="Center">
+                            <VerticalStackLayout.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding IsScanning}"
+                                    TargetType="VerticalStackLayout"
+                                    Value="True">
+                                    <Setter Property="IsVisible" Value="False" />
+                                </DataTrigger>
+                            </VerticalStackLayout.Triggers>
+                            <Border
+                                Padding="22"
+                                BackgroundColor="{DynamicResource PrimaryLightestColor}"
+                                HeightRequest="100"
+                                HorizontalOptions="Center"
+                                StrokeThickness="0"
+                                WidthRequest="100">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="50" />
+                                </Border.StrokeShape>
+                                <!--  QrCodeScanner glyph  -->
+                                <Label
+                                    FontFamily="MaterialIcons"
+                                    FontSize="44"
+                                    HorizontalOptions="Center"
+                                    Text="&#xf206;"
+                                    TextColor="{DynamicResource PrimaryColor}"
+                                    VerticalOptions="Center" />
+                            </Border>
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="17"
+                                HorizontalTextAlignment="Center"
+                                Text="Ready to Scan"
+                                TextColor="{DynamicResource TextColor}" />
+                            <Label
+                                Margin="24,0"
+                                FontSize="13"
+                                HorizontalTextAlignment="Center"
+                                Text="Tap Start Scanning, then point your camera at the QR code"
+                                TextColor="{DynamicResource TextSecondaryColor}" />
+                        </VerticalStackLayout>
+
+                        <!--  Live camera feed  -->
+                        <Grid
+                            HorizontalOptions="Fill"
+                            IsVisible="{Binding IsScanning}"
+                            VerticalOptions="Fill">
+                            <zxing:CameraBarcodeReaderView
+                                x:Name="scannerView"
+                                BarcodesDetected="scannerView_BarcodesDetected"
+                                CameraLocation="Rear"
+                                HorizontalOptions="Fill"
+                                IsDetecting="{Binding IsAnalyzing}"
+                                IsTorchOn="False"
+                                VerticalOptions="Fill" />
+
+
+                            <!--  Corner-finder frame overlay  -->
+                            <Grid
+                                HeightRequest="210"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                WidthRequest="210">
+                                <!--  Top-left  -->
+                                <BoxView
+                                    BackgroundColor="#6366F1"
+                                    HeightRequest="3"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Start"
+                                    WidthRequest="40" />
+                                <BoxView
+                                    BackgroundColor="#6366F1"
+                                    HeightRequest="40"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Start"
+                                    WidthRequest="3" />
+                                <!--  Top-right  -->
+                                <BoxView
+                                    BackgroundColor="#6366F1"
+                                    HeightRequest="3"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="Start"
+                                    WidthRequest="40" />
+                                <BoxView
+                                    BackgroundColor="#6366F1"
+                                    HeightRequest="40"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="Start"
+                                    WidthRequest="3" />
+                                <!--  Bottom-left  -->
+                                <BoxView
+                                    BackgroundColor="#6366F1"
+                                    HeightRequest="3"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="End"
+                                    WidthRequest="40" />
+                                <BoxView
+                                    BackgroundColor="#6366F1"
+                                    HeightRequest="40"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="End"
+                                    WidthRequest="3" />
+                                <!--  Bottom-right  -->
+                                <BoxView
+                                    BackgroundColor="#6366F1"
+                                    HeightRequest="3"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="End"
+                                    WidthRequest="40" />
+                                <BoxView
+                                    BackgroundColor="#6366F1"
+                                    HeightRequest="40"
+                                    HorizontalOptions="End"
+                                    VerticalOptions="End"
+                                    WidthRequest="3" />
+                            </Grid>
+
+                            <!--  Scanning status pill  -->
+                            <Border
+                                Margin="0,0,0,16"
+                                Padding="14,9"
+                                BackgroundColor="#CC000000"
+                                HorizontalOptions="Center"
+                                StrokeThickness="0"
+                                VerticalOptions="End">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="20" />
+                                </Border.StrokeShape>
+                                <HorizontalStackLayout HorizontalOptions="Center" Spacing="8">
+                                    <ActivityIndicator
+                                        HeightRequest="16"
+                                        IsRunning="True"
+                                        WidthRequest="16"
+                                        Color="#6366F1" />
+                                    <Label
+                                        FontSize="13"
+                                        Text="Scanning for QR code…"
+                                        TextColor="White"
+                                        VerticalOptions="Center" />
+                                </HorizontalStackLayout>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!--  Start / Stop button  -->
+                <Border
+                    Grid.Row="1"
+                    Padding="0"
+                    HeightRequest="52"
+                    StrokeThickness="0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="14" />
+                    </Border.StrokeShape>
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Offset="0" Color="{Binding IsScanning, Converter={StaticResource BoolToRedOrIndigo}}" />
+                            <GradientStop Offset="1" Color="{Binding IsScanning, Converter={StaticResource BoolToDarkRedOrDarkIndigo}}" />
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <Grid>
+                        <HorizontalStackLayout
+                            HorizontalOptions="Center"
+                            InputTransparent="True"
+                            Spacing="8"
+                            VerticalOptions="Center">
+                            <!--  Icon: glyph from VM, switches between QrCodeScanner and Stop  -->
+                            <Label
+                                FontFamily="MaterialIcons"
+                                FontSize="20"
+                                InputTransparent="True"
+                                Text="{Binding ScanButtonIconGlyph}"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                            <Label
+                                FontAttributes="Bold"
+                                FontSize="15"
+                                InputTransparent="True"
+                                Text="{Binding IsScanning, Converter={StaticResource BoolToStopOrStart}}"
+                                TextColor="White"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                        <Button
+                            Padding="0"
+                            BackgroundColor="Transparent"
+                            BorderWidth="0"
+                            Command="{Binding ToggleScanCommand}"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill" />
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!--  ── MANUAL TAB ──  -->
+            <ScrollView
+                IsVisible="{Binding IsManualTab}"
+                VerticalOptions="Fill"
+                VerticalScrollBarVisibility="Never">
+                <VerticalStackLayout Spacing="12">
+
+                    <!--  Issuer  -->
+                    <VerticalStackLayout Spacing="4">
+                        <Border
+                            Padding="14,12"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="{Binding HasIssuerError, Converter={StaticResource BoolToStroke15OrNone}}">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Border.Stroke>
+                                <SolidColorBrush Color="{Binding HasIssuerError, Converter={StaticResource BoolToRedOrTransparent}}" />
+                            </Border.Stroke>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.04"
+                                    Radius="6"
+                                    Offset="0,2" />
+                            </Border.Shadow>
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="7"
+                                    BackgroundColor="#EEF2FF"
+                                    HeightRequest="34"
+                                    StrokeThickness="0"
+                                    WidthRequest="34">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <!--  Business glyph  -->
+                                    <Label
+                                        FontFamily="MaterialIcons"
+                                        FontSize="18"
+                                        HorizontalOptions="Center"
+                                        Text="&#xe0af;"
+                                        TextColor="#6366F1"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                    <Label
+                                        FontSize="11"
+                                        Text="ISSUER / SERVICE NAME *"
+                                        TextColor="{DynamicResource TextTertiaryColor}" />
+                                    <Entry
+                                        FontSize="15"
+                                        Placeholder="e.g. Google, GitHub"
+                                        PlaceholderColor="{DynamicResource TextTertiaryColor}"
+                                        Text="{Binding ManualIssuer}"
+                                        TextColor="{DynamicResource TextColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+                        <Label
+                            Margin="4,0"
+                            FontSize="12"
+                            IsVisible="{Binding HasIssuerError}"
+                            Text="{Binding IssuerError}"
+                            TextColor="#EF4444" />
+                    </VerticalStackLayout>
+
+                    <!--  Account  -->
+                    <VerticalStackLayout Spacing="4">
+                        <Border
+                            Padding="14,12"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.04"
+                                    Radius="6"
+                                    Offset="0,2" />
+                            </Border.Shadow>
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="7"
+                                    BackgroundColor="#EEF2FF"
+                                    HeightRequest="34"
+                                    StrokeThickness="0"
+                                    WidthRequest="34">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <!--  Person glyph  -->
+                                    <Label
+                                        FontFamily="MaterialIcons"
+                                        FontSize="18"
+                                        HorizontalOptions="Center"
+                                        Text="&#xe7fd;"
+                                        TextColor="#6366F1"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                    <Label
+                                        FontSize="11"
+                                        Text="ACCOUNT / USERNAME (optional)"
+                                        TextColor="{DynamicResource TextTertiaryColor}" />
+                                    <Entry
+                                        FontSize="15"
+                                        Placeholder="e.g. user@email.com"
+                                        PlaceholderColor="{DynamicResource TextTertiaryColor}"
+                                        Text="{Binding ManualAccount}"
+                                        TextColor="{DynamicResource TextColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!--  Secret key  -->
+                    <VerticalStackLayout Spacing="4">
+                        <Border
+                            Padding="14,12"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="{Binding HasSecretError, Converter={StaticResource BoolToStroke15OrNone}}">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Border.Stroke>
+                                <SolidColorBrush Color="{Binding HasSecretError, Converter={StaticResource BoolToRedOrTransparent}}" />
+                            </Border.Stroke>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.04"
+                                    Radius="6"
+                                    Offset="0,2" />
+                            </Border.Shadow>
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="7"
+                                    BackgroundColor="#EEF2FF"
+                                    HeightRequest="34"
+                                    StrokeThickness="0"
+                                    WidthRequest="34">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <!--  Key glyph  -->
+                                    <Label
+                                        FontFamily="MaterialIcons"
+                                        FontSize="18"
+                                        HorizontalOptions="Center"
+                                        Text="&#xe73c;"
+                                        TextColor="#6366F1"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                    <Label
+                                        FontSize="11"
+                                        Text="SECRET KEY *"
+                                        TextColor="{DynamicResource TextTertiaryColor}" />
+                                    <Entry
+                                        FontSize="15"
+                                        Keyboard="Text"
+                                        Placeholder="Base32 secret (A–Z, 2–7)"
+                                        PlaceholderColor="{DynamicResource TextTertiaryColor}"
+                                        Text="{Binding ManualSecret}"
+                                        TextColor="{DynamicResource TextColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+                        <Label
+                            Margin="4,0"
+                            FontSize="12"
+                            IsVisible="{Binding HasSecretError}"
+                            Text="{Binding SecretError}"
+                            TextColor="#EF4444" />
+                    </VerticalStackLayout>
+
+                    <!--  Period  -->
+                    <VerticalStackLayout Spacing="4">
+                        <Border
+                            Padding="14,12"
+                            BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            StrokeThickness="{Binding HasPeriodError, Converter={StaticResource BoolToStroke15OrNone}}">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+                            <Border.Stroke>
+                                <SolidColorBrush Color="{Binding HasPeriodError, Converter={StaticResource BoolToRedOrTransparent}}" />
+                            </Border.Stroke>
+                            <Border.Shadow>
+                                <Shadow
+                                    Brush="Black"
+                                    Opacity="0.04"
+                                    Radius="6"
+                                    Offset="0,2" />
+                            </Border.Shadow>
+                            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="7"
+                                    BackgroundColor="#EEF2FF"
+                                    HeightRequest="34"
+                                    StrokeThickness="0"
+                                    WidthRequest="34">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="8" />
+                                    </Border.StrokeShape>
+                                    <!--  Timer glyph  -->
+                                    <Label
+                                        FontFamily="MaterialIcons"
+                                        FontSize="18"
+                                        HorizontalOptions="Center"
+                                        Text="&#xe425;"
+                                        TextColor="#6366F1"
+                                        VerticalOptions="Center" />
+                                </Border>
+                                <VerticalStackLayout Grid.Column="1" Spacing="2">
+                                    <Label
+                                        FontSize="11"
+                                        Text="PERIOD (seconds, default 30)"
+                                        TextColor="{DynamicResource TextTertiaryColor}" />
+                                    <Entry
+                                        FontSize="15"
+                                        Keyboard="Numeric"
+                                        MaxLength="3"
+                                        Placeholder="30"
+                                        PlaceholderColor="{DynamicResource TextTertiaryColor}"
+                                        Text="{Binding ManualPeriod}"
+                                        TextColor="{DynamicResource TextColor}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Border>
+                        <Label
+                            Margin="4,0"
+                            FontSize="12"
+                            IsVisible="{Binding HasPeriodError}"
+                            Text="{Binding PeriodError}"
+                            TextColor="#EF4444" />
+                    </VerticalStackLayout>
+
+                    <!--  Info chip  -->
+                    <Border
+                        Padding="12,10"
+                        BackgroundColor="#EEF2FF"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="10" />
+                        </Border.StrokeShape>
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                            <!--  Info glyph  -->
+                            <Label
+                                Grid.Column="0"
+                                FontFamily="MaterialIcons"
+                                FontSize="16"
+                                Text="&#xe88e;"
+                                TextColor="#6366F1"
+                                VerticalOptions="Start" />
+                            <Label
+                                Grid.Column="1"
+                                FontSize="12"
+                                Text="The secret key is provided by the service. Look for a 'Can&#x27;t scan?' or 'Enter manually' link on the 2FA setup page."
+                                TextColor="#4338CA" />
+                        </Grid>
+                    </Border>
+
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <!--  ── THREAT ANALYSING OVERLAY ──  -->
+            <Grid
+                BackgroundColor="{DynamicResource PageBackgroundColor}"
+                IsVisible="{Binding IsAnalysingThreat}"
+                RowDefinitions="*,Auto,*"
+                ZIndex="10">
+                <VerticalStackLayout
+                    Grid.Row="1"
+                    HorizontalOptions="Center"
+                    Spacing="20"
+                    VerticalOptions="Center">
+                    <Border
+                        Padding="20"
+                        BackgroundColor="#EEF2FF"
+                        HeightRequest="90"
+                        HorizontalOptions="Center"
+                        StrokeThickness="0"
+                        WidthRequest="90">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="45" />
+                        </Border.StrokeShape>
+                        <ActivityIndicator
+                            HeightRequest="40"
+                            HorizontalOptions="Center"
+                            IsRunning="{Binding IsAnalysingThreat}"
+                            VerticalOptions="Center"
+                            WidthRequest="40"
+                            Color="#6366F1" />
+                    </Border>
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="6">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="17"
+                            HorizontalTextAlignment="Center"
+                            Text="Analysing QR Code"
+                            TextColor="{DynamicResource TextColor}" />
+                        <Label
+                            FontSize="13"
+                            HorizontalTextAlignment="Center"
+                            Text="{Binding ThreatAnalysisText}"
+                            TextColor="{DynamicResource TextSecondaryColor}" />
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Grid>
+
+            <!--  ── THREAT RESULT OVERLAY ──  -->
+            <Grid
+                BackgroundColor="{DynamicResource PageBackgroundColor}"
+                IsVisible="{Binding HasThreatResult}"
+                RowDefinitions="*,Auto,*"
+                ZIndex="10">
+                <VerticalStackLayout
+                    Grid.Row="1"
+                    Padding="4,0"
+                    Spacing="16">
+                    <!--  Icon badge  -->
+                    <Border
+                        Padding="0"
+                        HeightRequest="90"
+                        HorizontalOptions="Center"
+                        StrokeThickness="0"
+                        WidthRequest="90">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="45" />
+                        </Border.StrokeShape>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Offset="0" Color="{Binding ThreatIsBlocked, Converter={StaticResource BoolToRedLightOrYellowLight}}" />
+                                <GradientStop Offset="1" Color="{Binding ThreatIsBlocked, Converter={StaticResource BoolToRedPaleOrYellowPale}}" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <!--  Icon: glyph from VM, switches between Block and Warning  -->
+                        <Label
+                            FontFamily="MaterialIcons"
+                            FontSize="40"
+                            HorizontalOptions="Center"
+                            Text="{Binding ThreatIconGlyph}"
+                            TextColor="{Binding ThreatIsBlocked, Converter={StaticResource BoolToBlockedRedOrWarningAmber}}"
+                            VerticalOptions="Center" />
+                    </Border>
+                    <!--  Title + message  -->
+                    <VerticalStackLayout HorizontalOptions="Center" Spacing="6">
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="18"
+                            HorizontalTextAlignment="Center"
+                            Text="{Binding ThreatResultTitle}"
+                            TextColor="{DynamicResource TextColor}" />
+                        <Label
+                            Margin="8,0"
+                            FontSize="13"
+                            HorizontalTextAlignment="Center"
+                            Text="{Binding ThreatResultMessage}"
+                            TextColor="{DynamicResource TextSecondaryColor}" />
+                    </VerticalStackLayout>
+                    <!--  Blocked: Scan Again  -->
+                    <Border
+                        Padding="0"
+                        HeightRequest="50"
+                        IsVisible="{Binding ThreatIsBlocked}"
+                        StrokeThickness="0">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="13" />
+                        </Border.StrokeShape>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Offset="0" Color="#EF4444" />
+                                <GradientStop Offset="1" Color="#DC2626" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Grid>
+                            <HorizontalStackLayout
+                                HorizontalOptions="Center"
+                                InputTransparent="True"
+                                Spacing="8"
+                                VerticalOptions="Center">
+                                <!--  Icon: glyph from VM, switches between QrCodeScanner and Stop  -->
+                                <Label
+                                    FontFamily="MaterialIcons"
+                                    FontSize="20"
+                                    InputTransparent="True"
+                                    Text="{Binding ScanButtonIconGlyph}"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="15"
+                                    InputTransparent="True"
+                                    Text="{Binding IsScanning, Converter={StaticResource BoolToStopOrStart}}"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                            <Button
+                                Padding="0"
+                                BackgroundColor="Transparent"
+                                BorderWidth="0"
+                                Command="{Binding ToggleScanCommand}"
+                                HorizontalOptions="Fill"
+                                VerticalOptions="Fill" />
+                        </Grid>
+                    </Border>
+                    <!--  Warning: Cancel + Proceed  -->
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="10"
+                        IsVisible="{Binding ThreatIsWarning}">
+                        <Border
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="{DynamicResource Gray-100}"
+                            HeightRequest="50"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="13" />
+                            </Border.StrokeShape>
+                            <Grid>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    InputTransparent="True"
+                                    Text="Cancel"
+                                    TextColor="{DynamicResource TextColor}"
+                                    VerticalOptions="Center" />
+                                <Button
+                                    Padding="0"
+                                    BackgroundColor="Transparent"
+                                    BorderWidth="0"
+                                    Command="{Binding DismissThreatCommand}"
+                                    HorizontalOptions="Fill"
+                                    VerticalOptions="Fill" />
+                            </Grid>
+                        </Border>
+                        <Border
+                            Grid.Column="1"
+                            Padding="0"
+                            HeightRequest="50"
+                            StrokeThickness="0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="13" />
+                            </Border.StrokeShape>
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Offset="0" Color="#F59E0B" />
+                                    <GradientStop Offset="1" Color="#D97706" />
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Grid>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    InputTransparent="True"
+                                    Text="Proceed Anyway"
+                                    TextColor="White"
+                                    VerticalOptions="Center" />
+                                <Button
+                                    Padding="0"
+                                    BackgroundColor="Transparent"
+                                    BorderWidth="0"
+                                    Command="{Binding ProceedAnywayCommand}"
+                                    HorizontalOptions="Fill"
+                                    VerticalOptions="Fill" />
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+            </Grid>
+
+        </Grid>
+        <!--  END CONTENT AREA  -->
+
+        <!--  ═══ ADD BUTTON ═══  -->
+        <Border
+            Grid.Row="3"
+            Margin="0,16,0,0"
+            Padding="0"
+            HeightRequest="52"
+            IsVisible="{Binding IsManualTab}"
+            StrokeThickness="0">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="14" />
+            </Border.StrokeShape>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Offset="0" Color="#6366F1" />
+                    <GradientStop Offset="1" Color="#4F46E5" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <HorizontalStackLayout
+                    HorizontalOptions="Center"
+                    InputTransparent="True"
+                    Spacing="8"
+                    VerticalOptions="Center">
+                    <ActivityIndicator
+                        HeightRequest="20"
+                        InputTransparent="True"
+                        IsRunning="{Binding IsSaving}"
+                        IsVisible="{Binding IsSaving}"
+                        WidthRequest="20"
+                        Color="White" />
+                    <!--  Add glyph — hidden while saving  -->
+                    <Label
+                        FontFamily="MaterialIcons"
+                        FontSize="20"
+                        InputTransparent="True"
+                        IsVisible="{Binding IsSaving, Converter={StaticResource InverseBoolConverter}}"
+                        Text="&#xe145;"
+                        TextColor="White"
+                        VerticalOptions="Center" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="15"
+                        InputTransparent="True"
+                        Text="Add Authenticator"
+                        TextColor="White"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <Button
+                    Padding="0"
+                    BackgroundColor="Transparent"
+                    BorderWidth="0"
+                    Command="{Binding AddManualCommand}"
+                    HorizontalOptions="Fill"
+                    VerticalOptions="Fill" />
+            </Grid>
+        </Border>
+
+    </Grid>
+</the49:BottomSheet>

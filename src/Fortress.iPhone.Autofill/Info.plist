@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+
+    <!-- Identity -->
+    <key>CFBundleDisplayName</key>
+    <string>Fortress</string>
+
+    <key>CFBundleName</key>
+    <string>Fortress Autofill</string>
+
+    <key>CFBundleIdentifier</key>
+    <string>com.fortress.app.autofill</string>
+
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+
+    <key>CFBundleVersion</key>
+    <string>1</string>
+
+    <key>CFBundlePackageType</key>
+    <string>XPC!</string>
+
+    <!-- App Icon -->
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
+    
+    <key>XSAppIconAssets</key>
+    <string>Assets.xcassets/AppIcon.appiconset</string>
+
+    <!-- App Transport Security - Allow HTTPS connections for logo loading -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+      <key>NSAllowsArbitraryLoads</key>
+      <false/>
+      <key>NSExceptionDomains</key>
+      <dict>
+        <key>hubfunctions-us.azurewebsites.net</key>
+        <dict>
+          <key>NSExceptionAllowsInsecureHTTPLoads</key>
+          <false/>
+          <key>NSIncludesSubdomains</key>
+          <true/>
+        </dict>
+      </dict>
+    </dict>
+
+    <!-- URL Schemes we can query/open -->
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>fortress</string>
+    </array>
+
+    <!-- Autofill Extension -->
+    <key>NSExtension</key>
+    <dict>
+
+      <!-- ✅ CORRECT extension point -->
+      <key>NSExtensionPointIdentifier</key>
+      <string>com.apple.authentication-services-credential-provider-ui</string>
+
+      <!-- Use storyboard-based UI (remove NSExtensionPrincipalClass to fix conflict) -->
+      <key>NSExtensionMainStoryboard</key>
+      <string>MainInterface</string>
+
+      <key>NSExtensionAttributes</key>
+      <dict>
+        <key>ASCredentialProviderExtensionCapabilities</key>
+        <dict>
+          <key>ProvidesPasswords</key>
+          <true/>
+          <key>ShowsConfigurationUI</key>
+          <true/>
+        </dict>
+      </dict>
+
+    </dict>
+
+  </dict>
+</plist>
