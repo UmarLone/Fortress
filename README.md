@@ -43,7 +43,9 @@ Vaults are encrypted on-device. Sync is optional and goes through *your* Google 
 
 ## Screenshots
 
-> All screenshots are from the Android build of **Fortress.Mobile** — the only client that is currently feature-complete. Screenshots for the WPF desktop, the browser side panel, and the iOS build will be added once those clients reach the same state.
+> Screenshots below cover the Android build of **Fortress.Mobile** and the WPF **Fortress.Windows.Desktop** app. Screenshots for the browser side panel and the iOS build will be added once those clients reach the same state.
+
+### Mobile (Android)
 
 <table>
   <tr>
@@ -69,6 +71,21 @@ Vaults are encrypted on-device. Sync is optional and goes through *your* Google 
     <td></td>
     <td></td>
     <td></td>
+  </tr>
+</table>
+
+### Windows desktop (WPF)
+
+<table>
+  <tr>
+    <td><img src="Screenshots/Screenshot_2026-05-25_111232.png" alt="Windows desktop" /></td>
+    <td><img src="Screenshots/Screenshot_2026-05-25_111325.png" alt="Windows desktop" /></td>
+    <td><img src="Screenshots/Screenshot_2026-05-25_111402.png" alt="Windows desktop" /></td>
+  </tr>
+  <tr>
+    <td><img src="Screenshots/Screenshot_2026-05-25_111659.png" alt="Windows desktop" /></td>
+    <td><img src="Screenshots/Screenshot_2026-05-25_111728.png" alt="Windows desktop" /></td>
+    <td><img src="Screenshots/Screenshot_2026-05-25_112003.png" alt="Windows desktop" /></td>
   </tr>
 </table>
 
