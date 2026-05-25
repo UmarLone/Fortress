@@ -74,7 +74,7 @@ Vaults are encrypted on-device. Sync is optional and goes through *your* Google 
   </tr>
 </table>
 
-### Windows desktop (WPF)
+### Windows desktop (WPF) and browser extension
 
 <table>
   <tr>
